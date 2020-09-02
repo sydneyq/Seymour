@@ -14,6 +14,7 @@ class Meta:
         self.dbConnection = database
 
         dirname = os.path.dirname(__file__)
+        '''
         filename = os.path.join(dirname, 'docs/store.json')
         filename2 = os.path.join(dirname, 'docs/emojis.json')
         filename3 = os.path.join(dirname, 'docs/ids.json')
@@ -26,6 +27,7 @@ class Meta:
 
         with open(filename3) as json_file:
             self.ids = json.load(json_file)
+        '''
 
     def embed(self, title, desc, color = None):
         if color is None:
@@ -93,45 +95,12 @@ class Meta:
             return False
 
     def isBotOwner(self, member: discord.Member):
-        if member.id == secret.BOT_OWNER_ID:
+        if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
             return True
         return False
 
-    def isBean(self, member: discord.Member):
-        if member.id == secret.BEAN_ID:
-            return True
-        return False
-
-    def isBeanOrJarvis(self, member: discord.Member):
-        if member.id == secret.BEAN_ID or member.id == secret.JARVIS_ID:
-            return True
-        return False
-
-    #isAdmin
-    def isAdmin(self, member: discord.Member):
-        if self.isBotOwner(member):
-            return True
-        if self.ids['ADMIN_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    #isDirector
-    def isDirector(self, member: discord.Member):
-        if self.isBotOwner(member):
-            return True
-        if self.ids['DIRECTOR_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    #isMgmt
-    def isMgmt(self, member: discord.Member):
-        return self.isAdmin(member) or self.isDirector(member)
-
-    #isStaff
-    def isStaff(self, member: discord.Member):
-        if self.isBotOwner(member):
-            return True
-        if self.ids['STAFF_ROLE'] in [role.id for role in member.roles]:
+    def isSelf(self, member: discord.Member):
+        if member.id == secret.SEYMOUR_ID:
             return True
         return False
 
@@ -139,42 +108,13 @@ class Meta:
     def isMod(self, member: discord.Member):
         if self.isBotOwner(member):
             return True
-        if self.isAdmin(member):
-            return True
-        if self.ids['MOD_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    def isEventCoordinator(self, member: discord.Member):
-        if self.ids['EVENTCOORDINATOR_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    def isMarketingOfficer(self, member: discord.Member):
-        if self.ids['MARKETINGOFFICER_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    def isPatron(self, member: discord.Member):
-        if self.ids['PATRON_ROLE'] in [role.id for role in member.roles]:
-            return True
+        #if self.ids['MOD_ROLE'] in [role.id for role in member.roles]:
+        #    return True
         return False
 
     #verified
     def isVerified(self, member: discord.Member):
         if self.ids['VERIFIED_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    #certified
-    def isCertified(self, member: discord.Member):
-        if self.ids['CERTIFIED_ROLE'] in [role.id for role in member.roles]:
-            return True
-        return False
-
-    #blindfolded
-    def isRestricted(self, member: discord.Member):
-        if self.ids['BLINDFOLDED_ROLE'] in [role.id for role in member.roles]:
             return True
         return False
 
@@ -203,17 +143,6 @@ class Meta:
         )
         return embed
 
-    def msgWelcomeSquad(self, member: discord.Member = None):
-        if member is None:
-            return
-
-        user = self.getProfile(member)
-        squad = user['squad']
-
-        msg = '**__🎉 Let\'s all welcome <@' + str(member.id) + '> to the '+squad+' Squad! 🎉__**'
-        msg += '\n> Say hello to your new teammate! You\'ll be working with them during events.'
-        return msg
-
     def getProfile(self, member: discord.Member = None):
         if member is None:
             return
@@ -222,14 +151,8 @@ class Meta:
 
         profile = self.dbConnection.findProfile({"id": id})
         if profile is None:
-            self.dbConnection.insertProfile({'id': id, 'squad': '', 'helped': 0, 'coins': 50, 'companion': '', 'gifts': 0, 'affinity':'', 'daily': '', 'badges':[], 'booster': 0,'dex' : [], 'soulmates' : [], 'cakes': 0, 'gems': 0, 'redeemed': []})
+            self.dbConnection.insertProfile({'id': id, 'points': 0, 'coins': 50, 'gifts': 0, 'badges':[], 'cakes': 0})
             profile = self.dbConnection.findProfile({"id": id})
-
-        squad = profile['squad']
-        if self.isAdmin(member):
-            profile['squad'] = 'Admin'
-        elif self.isStaff(member):
-            profile['squad'] = 'Staff'
 
         return profile
 
@@ -339,92 +262,6 @@ class Meta:
         gems = user['gems']
         return 'You have:\t`' + str(helped) + '` Help Points ' + self.emojis['HelpPoint'] + ' `' + str(coins) + '` Coins ' + self.emojis['Coin'] + ' `' + str(gems) + '` Gems ' + self.emojis['Gem']
 
-    def inDex(self, member: discord.Member, companion):
-        user = self.getProfile(member)
-        companions = user['dex']
-        if companion in companions:
-            return True
-        else:
-            return False
-
-    def addToDex(self, member: discord.Member, companion):
-        if self.inDex(member, companion):
-            return False
-        user = self.getProfile(member)
-        companions = user['dex']
-        companions.append(companion)
-        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"dex": companions}})
-        return True
-
-    def inRedeemed(self, member: discord.Member, companion):
-        user = self.getProfile(member)
-        companions = user['redeemed']
-        if companion in companions:
-            return True
-        else:
-            return False
-
-    def addToRedeemed(self, member: discord.Member, companion):
-        if self.inDex(member, companion):
-            return False
-        user = self.getProfile(member)
-        companions = user['redeemed']
-        companions.append(companion)
-        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"redeemed": companions}})
-        return True
-
-    def hasAllEvolutionsOf(self, member: discord.Member, companion):
-        user = self.getProfile(member)
-        companions = user['dex']
-        evolve = self.getStoreItem(companion)
-        evolve = evolve['JSON']['evolve']
-        for e in evolve:
-            if not (e in companions):
-                return False
-        return True
-
-    def changeAffinity(self, member: discord.Member, affinity):
-        if not (affinity in self.getProfile(member)['badges']):
-            self.addBadgeToProfile(member, affinity)
-
-        if self.hasBadge(member, 'Fire') and self.hasBadge(member, 'Water') and self.hasBadge(member, 'Earth') and self.hasBadge(member, 'Air'):
-            self.addBadgeToProfile(member, 'Avatar')
-
-        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"affinity": affinity, "booster":0}})
-
-    #is directly buyable from store.json
-    def isBuyable(self, item):
-        if self.getStoreItem(item) == '':
-            return False
-
-        unbuyable_stores = ['Evolved Companions']
-
-        for s in unbuyable_stores:
-            for i in self.store[s]:
-                if i['name'].lower() == item:
-                    return False
-        return True
-
-    #returns the JSON data of the item in store.json
-    def getStoreItem(self, item):
-        item = item.lower()
-
-        stores = ['Coin Companions',
-        'Helped Companions',
-        'Evolvable Companions',
-        'Items',
-        'Evolved Companions']
-
-        for s in stores:
-            for i in self.store[s]:
-                if i['name'].lower() == item:
-                    return {
-                    "JSON": i,
-                    "type": s
-                    }
-
-        return ''
-
     def getFullDateTime(self):
         return datetime.datetime.now()
 
@@ -507,16 +344,16 @@ class Meta:
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"coins": coins}})
         return True
 
-    def changeHelped(self, member: discord.Member, val: int):
+    def update_points(self, member: discord.Member, val: int):
         user = self.getProfile(member)
-        helped = user['helped']
-        helped += val
+        pts = user['pts']
+        pts += val
 
         #cannot afford
-        if helped < 0:
+        if pts < 0:
             return False
 
-        self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"helped": helped}})
+        self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"pts": pts}})
         return True
 
     def hasWord(self, string, word):
@@ -545,58 +382,8 @@ class Meta:
 
         return False
 
-    def getChannelOwnerID(self, channel: discord.TextChannel):
-        if not '-' in channel.name:
-            return -1
-        channel_owner_id = channel.name[channel.name.rfind('-')+1:]
-        try:
-            channel_owner_id = int(channel_owner_id)
-        except:
-            return -1
-        else:
-            return channel_owner_id
-
-    def getChannelOwner(self, ctx, channel: discord.TextChannel):
-        return self.getMemberByID(self.getChannelOwnerID(channel))
-
-    def isChannelOwner(self, member: discord.Member, channel: discord.TextChannel):
-        channel_owner_id = self.getChannelOwnerID(channel)
-        if type(channel_owner_id) is not int or channel_owner_id == -1:
-            return -1
-        return member.id == channel_owner_id
-
-    def isSupportChannel(self, channel: discord.TextChannel):
-        return channel.name.lower().startswith('s-')
-
     def isModMailChannel(self, channel: discord.TextChannel):
         return channel.name.lower().startswith('mm-')
-
-    def isEeveelution(self, companion):
-        eeveelutions = self.getEeveelutions()
-        if companion in eeveelutions:
-            return True
-        return False
-
-    def getEeveelutions(self):
-        eeveelutions = ['Espeon',
-        'Flareon',
-        'Glaceon',
-        'Jolteon',
-        'Leafeon',
-        'Sylveon',
-        'Umbreon',
-        'Vaporeon']
-        return eeveelutions
-
-    def getRecorded(self):
-        list = self.getEeveelutions()
-        list.append('Ditto')
-        return list
-
-    def isRecorded(self, companion):
-        if companion in self.getRecorded():
-            return True
-        return False
 
     def getMention(self, id:int):
         return '<@' + str(id) + '>'
@@ -607,11 +394,6 @@ class Meta:
     def getMemberByID(self, ctx, id:int):
         return ctx.guild.get_member(id)
 
-    def getSquadChannel(self, guild, squad):
-        id = self.ids['SQUAD_COFFEE_CHANNEL']
-        if squad == 'Tea':
-            id = self.ids['SQUAD_TEA_CHANNEL']
-        return guild.get_channel(id)
 
 class Global(commands.Cog):
 
@@ -619,16 +401,6 @@ class Global(commands.Cog):
         self.client = client
         self.meta = meta
         self.dbConnection = database
-
-        dirname = os.path.dirname(__file__)
-        filename2 = os.path.join(dirname, 'docs/emojis.json')
-        filename3 = os.path.join(dirname, 'docs/ids.json')
-
-        with open(filename2) as json_file:
-            self.emojis = json.load(json_file)
-
-        with open(filename3) as json_file:
-            self.ids = json.load(json_file)
 
     @commands.command()
     async def test(self, ctx):
@@ -689,54 +461,8 @@ class Global(commands.Cog):
         return
 
     @commands.command()
-    async def verify(self, ctx, *, squad = None):
-        member = ctx.author
-        if not self.meta.isVerified(member):
-            guild = ctx.guild
-            #spirits
-            verified_role = guild.get_role(self.ids['VERIFIED_ROLE'])
-            await member.add_roles(verified_role)
-            #basicroles
-            basicroles = guild.get_role(593065193966403587)
-            await member.add_roles(basicroles)
-            #helpingothers
-            helpingothers = guild.get_role(593064902038650880)
-            await member.add_roles(helpingothers)
-            #welcome
-            #casual = guild.get_channel(secret.WORKSHOP_CHANNEL)
-            casual = guild.get_channel(self.ids['GENERAL_CHANNEL'])
-            msg = '**__🎉 Let\'s all welcome <@' + str(member.id) + '> to Mind Cafe! 🎉__**'
-            msg += '\n> **Need Support?** Take a look at <#601444570600964097> and get started in <#597026335835291659>.'
-            msg += '\n> **Want to join a Squad?** Go to <#621499838856560642> and say `+profile` to get started.'
-            await casual.send(msg)
-            #delete command
-            await ctx.message.delete()
-            if squad != None:
-                id = member.id
-                user = self.meta.getProfile(member)
-                guild = ctx.guild
-
-                if 'tea' in squad:
-                    self.dbConnection.updateProfile({"id": id}, {"$set": {"squad": "Tea"}})
-                    role = ctx.guild.get_role(612788003542401035)
-                    await ctx.author.add_roles(role)
-                    await guild.get_channel(self.ids['SQUAD_TEA_CHANNEL']).send(self.meta.msgWelcomeSquad(member))
-                elif 'coffee' in squad:
-                    self.dbConnection.updateProfile({"id": id}, {"$set": {"squad": "Coffee"}})
-                    role = ctx.guild.get_role(612788004926521365)
-                    await ctx.author.add_roles(role)
-                    await guild.get_channel(self.ids['SQUAD_COFFEE_CHANNEL']).send(self.meta.msgWelcomeSquad(member))
-                else:
-                    embed = discord.Embed(
-                        title = 'That Squad doesn\'t exist. Please choose either Coffee or Tea.',
-                        color = discord.Color.teal()
-                    )
-                    await ctx.send(embed = embed, delete_after=10)
-                    return
-
-    @commands.command()
-    async def bean(self, ctx, channel: discord.TextChannel, *, message):
-        if self.meta.isBotOwner(ctx.author):
+    async def say(self, ctx, channel: discord.TextChannel, *, message):
+        if self.meta.isBotOwner(ctx.author) or self.meta.isMod(ctx.author):
 
             embed = discord.Embed(
                 description = message,
@@ -751,185 +477,6 @@ class Global(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-    #clear archive
-    @commands.command(aliases=['clearA'])
-    async def clearArchive(self, ctx):
-        async with ctx.channel.typing():
-            guild = self.client.get_guild(257751892241809408)
-            author = ctx.message.author
-            archive = 0
-
-            if (self.meta.isAdmin(author)):
-                for ch in guild.categories:
-                    if ch.name.lower() == 'archive':
-                        archive = ch
-                        break
-            else:
-                await ctx.send(embed = self.meta.noAccessEmbed())
-                return
-
-            for ch in archive.channels:
-                await ch.delete(reason='Archive clear')
-
-        embed = discord.Embed(
-            title = 'Archive cleared! ✅',
-            color = discord.Color.teal()
-        )
-        await ctx.send(embed = embed)
-
-    #switch
-    @commands.command(aliases=['swapST', 'swap', 'switchST'])
-    async def switch(self, ctx):
-        isAdmin = self.meta.isAdmin(ctx.author)
-        isMod = self.meta.isMod(ctx.author)
-        isCertified = self.meta.isCertified(ctx.author)
-        isChannelOwner = self.meta.isChannelOwner(ctx.author, ctx.channel)
-        log = ctx.guild.get_channel(self.ids['LOG_CHANNEL'])
-        channel = ctx.channel
-        guild = ctx.guild
-
-        if not isAdmin:
-            if ((not isMod) and (not isChannelOwner) and (not isCertified)) or (not self.meta.isSupportChannel(channel)):
-                embed = discord.Embed(
-                    title = 'Sorry, that command can only be used in Support Ticket channels by the Support Ticket Owner, Certifieds, or Moderators+.',
-                    color = discord.Color.teal()
-                )
-                await ctx.send(embed = embed)
-                return
-
-        if channel.is_nsfw():
-            #change to sfw
-            await channel.edit(nsfw = False)
-            await channel.edit(sync_permissions = True)
-            await channel.set_permissions(self.meta.getChannelOwner(ctx, ctx.channel), read_messages=True, send_messages=True)
-
-            await log.send('<@' + str(ctx.author.id) + '> has switched ' + '<#' + str(channel.id) + '> to SFW.')
-
-            embed = discord.Embed(
-                title = 'Switched support channel to SFW! ✅',
-                color = discord.Color.teal()
-            )
-            await ctx.send(embed = embed)
-        else:
-            await channel.set_permissions(ctx.author, read_messages=True, send_messages=True)
-            await channel.edit(nsfw = True)
-            #await newChannel.set_permissions(guild.default_role, read_messages=False)
-            await channel.set_permissions(guild.get_role(self.ids['VERIFIED_ROLE']), read_messages=False)
-            await channel.set_permissions(self.meta.getChannelOwner(ctx, ctx.channel), read_messages=True, send_messages=True)
-            await channel.set_permissions(guild.get_role(self.ids['NSFW_ROLE']), read_messages=True)
-
-            await log.send('<@' + str(ctx.author.id) + '> has switched ' + '<#' + str(channel.id) + '> to NSFW.')
-
-            embed = discord.Embed(
-                title = 'Switched support channel to NSFW! ✅',
-                color = discord.Color.teal()
-            )
-            await ctx.send(embed = embed)
-
-    #archive
-    @commands.command(aliases=['archivest'])
-    async def archive(self, ctx):
-        isAdmin = self.meta.isAdmin(ctx.author)
-        isMod = self.meta.isMod(ctx.author)
-        isCertified = self.meta.isCertified(ctx.author)
-        isChannelOwner = self.meta.isChannelOwner(ctx.author, ctx.channel)
-        log = ctx.guild.get_channel(self.ids['LOG_CHANNEL'])
-        channel = ctx.channel
-        guild = ctx.guild
-
-        category = 0
-        for c in ctx.guild.categories:
-            if c.name.lower() == 'archive':
-                category = c #Archive
-
-        if self.meta.isSupportChannel(channel):
-            isChannelOwner = self.meta.isChannelOwner(ctx.author, ctx.channel)
-            if not isChannelOwner and not isMod and not isCertified:
-                await ctx.send(embed = self.meta.embedNoAccess())
-                return
-
-            embed = discord.Embed(
-                title = 'Thanks for talking with us!',
-                description = 'If you felt a Listener was supportive, you can use the command `+helpedby @user` in #botspam to show them how much you appreciated their help!',
-                color = discord.Color.teal()
-            )
-            embed.set_thumbnail(url = 'https://cdn.discordapp.com/emojis/602887275289772052.png?v=1')
-
-            channel_owner_id = self.meta.getChannelOwnerID(channel)
-            if channel_owner_id != -1:
-                user = self.client.get_user(channel_owner_id)
-                try:
-                    await user.send(embed = embed)
-                except:
-                    print('Could not send private message.')
-
-            await log.send('Support Ticket [**' + channel.name + '**] has been archived.')
-        elif self.meta.isModMailChannel(channel):
-            if not isMod:
-                await ctx.send(embed = self.meta.embedNoAccess())
-                return
-            await log.send('ModMail Ticket [**' + channel.name + '**] has been archived.')
-        else:
-            if not isAdmin:
-                await ctx.send(embed = self.meta.embedNoAccess())
-                return
-
-        await ctx.message.channel.edit(name = 'archived-'+ channel.name)
-        try:
-            await ctx.message.channel.edit(category = category, sync_permissions = True)
-        except:
-            async with ctx.channel.typing():
-                embed = discord.Embed(
-                    title = 'Archive full. Clearing archive...',
-                    color = discord.Color.teal()
-                )
-                await ctx.send(embed = embed)
-
-                for ch in category.channels:
-                    await ch.delete(reason='Archive clear')
-
-                embed = discord.Embed(
-                    title = 'Archive auto-cleared! ✅',
-                    color = discord.Color.teal()
-                )
-                await log.send(embed = embed)
-                await ctx.send(embed = embed)
-            await ctx.message.channel.edit(category = category, sync_permissions = True)
-
-    #close/delete
-    @commands.command(aliases=['delete'])
-    async def close(self, ctx):
-        if self.meta.isAdmin(ctx.author):
-            await ctx.message.channel.delete(reason='Deleted by ' + ctx.author.name)
-        else:
-            await ctx.send(embed = self.meta.embedNoAccess())
-
-    #lock
-
-    '''
-    #edit msg example
-    @commands.command()
-    async def test(self, ctx):
-        channel = ctx.guild.get_channel(612449175686086667)
-        msg = channel.last_message
-
-        if msg.author != self.client.user:
-            embed = discord.Embed(
-                title = 'edit me',
-                color = discord.Color.teal()
-            )
-
-            await channel.send(embed = embed)
-        else:
-            embeds = msg.embeds
-            embed = embeds[0]
-            embed2 = discord.Embed(
-                title = 'edited wow',
-                color = discord.Color.gold()
-            )
-
-            await msg.edit(embed = embed2)
-    '''
 
 def setup(client):
     database_connection = Database()
