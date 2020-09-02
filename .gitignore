@@ -1,0 +1,5 @@
+.DS_Store
+cogs/__pycache__/
+secret.py
+__pycache__/
+.idea/

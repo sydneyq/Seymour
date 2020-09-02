@@ -1,0 +1,98 @@
+[
+    {
+        "NUM":0,
+        "STRIKES":1,
+        "TITLE":"Other: Moderator's Discretion",
+        "DESC":"Please see the custom reason."
+    },
+    {
+        "NUM":1,
+        "STRIKES":1,
+        "TITLE":"English only",
+        "DESC":"Conversation and moderation flows more easily in a language all of us knows."
+    },
+    {
+        "NUM":2,
+        "STRIKES":0,
+        "TITLE":"Names with QWERTY characters only",
+        "DESC":"We should be able to use a QWERTY keyboard to type your name out and tag you."
+    },
+    {
+        "NUM":3,
+        "STRIKES":2,
+        "TITLE":"We are a SFW, TW (Trigger Warning)-labeled restricted server",
+        "DESC":"We do not allow nudity, porn, gore, graphically described NSFW or TW content, or any images that are NSFW or TW. Those statements also apply to the content of any links posted in the server. Anything that may be commonly triggering (TW) such as surgery or sex should be in TW-labeled channels only."
+    },
+    {
+        "NUM":4,
+        "STRIKES":2,
+        "TITLE":"Be respectful",
+        "DESC":"Drama and insults are to be kept outside of the server. We also won't stand for any discrimination, slurs, or \"jokes\" against others about their race, religion, sexuality, gender, political views, and more."
+    },
+    {
+        "NUM":5,
+        "STRIKES":2,
+        "TITLE":"You do NOT talk about Fight Club",
+        "DESC":"For non-moderators+, anything posted in support channels should not be posted outside of them, and we ask that supporters also not share specific details from support DMs."
+    },
+    {
+        "NUM":6,
+        "STRIKES":2,
+        "TITLE":"No advertising",
+        "DESC":"This includes posting or promoting other server invites, publicly or in DMs, and personal social media if done too often."
+    },
+    {
+        "NUM":7,
+        "STRIKES":1,
+        "TITLE":"No unnecessary/unallowed pinging or general spam/flood",
+        "DESC":"Do not ping roles without reason, and spam pinging roles or members is strictly prohibited. All roles except for Help roles and Staff roles should not be pinged by non-staff. General spamming or flooding in chatrooms will also be moderated."
+    },
+    {
+        "NUM":8,
+        "STRIKES":1,
+        "TITLE":"No-Reply channels",
+        "DESC":"Do not reply to any posts in these channels. No content can be directed towards, mention, or contain content from any current members in Mind Café; this includes pictures, even if they are censored."
+    },
+    {
+        "NUM":9,
+        "STRIKES":1,
+        "TITLE":"Controversial channels",
+        "DESC":"If you are found to be unable to handle the topics in controversial or you are taking the discussion to hate-speech or insults, you will have your controversial access removed from you."
+    },
+    {
+        "NUM":10,
+        "STRIKES":0,
+        "TITLE":"Check-in channels",
+        "DESC":"Please do not have any conversations in these channels, for that is not the purpose of them."
+    },
+    {
+        "NUM":11,
+        "STRIKES":1,
+        "TITLE":"Support channels",
+        "DESC":"For public support, the topic cannot be about or relating to anyone else in the server who can possibly see your conversation. Those support requests should be through DM only. Any venting, upsetting, or support topics should be in support channels only. #focused-support is meant for Support DM tags or Support Ticket setups only, not support. Listeners and other roles should not be tagged in the support group channels. In support group channels, the conversation will be free-flowing. If you feel that you require more attention, use a Support Ticket or DM."
+    },
+    {
+        "NUM":12,
+        "STRIKES":0,
+        "TITLE":"If you are in a crisis, seek professional help",
+        "DESC":"We are not a replacement for trained, professional resources. If you find yourself in danger of harming yourself or others, or being harmed by others, please contact your (local emergency services)[https://en.wikipedia.org/wiki/List_of_emergency_telephone_numbers]."
+    },
+    {
+        "NUM":13,
+        "STRIKES":3,
+        "TITLE":"Discord Above All, Hail Discord",
+        "DESC":"In addition to our other rules, we enforce Discord's (ToS)[https://discordapp.com/terms] and (Guidelines)[https://discordapp.com/guidelines]. It is your responsibility to be informed about them."
+    },
+    {
+        "NUM":14,
+        "STRIKES":0,
+        "TITLE":"No begging",
+        "DESC":"Badgering people for roles, positions, currency, etc. is not enjoyable! Earn your stats, earn your privileges."
+    },
+    {
+        "NUM":15,
+        "STRIKES":1,
+        "TITLE":"Casual channels",
+        "DESC":"Trigger changes are enforced in Inclusivity Casual unless someone has too many triggers or a very common topic as their trigger. In Inclusivity Casual, we aim to be able to include all participants. If your discussion is deemed by a staff member to be exclusive, please move your discussion to a different channel or change your discussion to include others."
+    }
+]

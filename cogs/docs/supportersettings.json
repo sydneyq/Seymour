@@ -1,0 +1,32 @@
+[
+    {
+        "name":"Active Supporter",
+        "var":"active",
+        "default":false,
+        "symbol":"🔰"
+    },
+    {
+        "name":"Allow DMs",
+        "var":"allows_dm",
+        "default":true,
+        "symbol":"💖"
+    },
+    {
+        "name":"Allow Support Tickets",
+        "var":"allows_public",
+        "default":true,
+        "symbol":"💞"
+    },
+    {
+        "name":"Allows Ping Offline",
+        "var":"ping_offline",
+        "default":true,
+        "symbol":"🔔"
+    },
+    {
+        "name":"Triggers",
+        "var":"triggers",
+        "default":[],
+        "symbol":"🔫"
+    }
+]
