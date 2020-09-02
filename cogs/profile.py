@@ -88,7 +88,7 @@ class Profile(commands.Cog):
         embed = discord.Embed(color=discord.Color.orange())
         embed.add_field(name="Coins", value=user['coins'], inline=True)
         embed.add_field(name="Points", value=user['pts'], inline=True)
-        embed.add_field(name="Bumps", value=user['pts'], inline=True)
+        embed.add_field(name="Bumps", value=user['bumps'], inline=True)
         embed.add_field(name="Gifts", value=user['gifts'], inline=True)
         embed.add_field(name="Pies", value=user['pies'], inline=True)
 
