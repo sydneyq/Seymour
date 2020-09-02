@@ -9,7 +9,7 @@ class Database:
 
     def openDatabase(self):
         self.dbclient = pymongo.MongoClient(secret.DB_KEY)
-        self.db = self.dbclient.bot
+        self.db = self.dbclient.seymour
 
     def closeDatabase(self):
         self.dbclient.close()
@@ -51,44 +51,6 @@ class Database:
 
     def countSoulmatePairs(self, findCriteria):
         return self.db.soulmate.count(findCriteria)
-
-    #supporter profile
-    def insertSupporterProfile(self, toInsert):
-        self.db.supporter.insert(toInsert)
-
-    def findSupporterProfile(self, findCriteria):
-        return self.db.supporter.find_one(findCriteria)
-
-    def findSupporterProfiles(self, findCriteria):
-        return self.db.supporter.find(findCriteria)
-
-    def updateSupporterProfile(self, updateCritera, change):
-        self.db.supporter.update(updateCritera, change)
-
-    def removeSupporterProfile(self, toRemove):
-        self.db.supporter.remove(toRemove)
-
-    def countSupporterProfiles(self, findCriteria):
-        return self.db.supporter.count(findCriteria)
-
-    #support (tickets)
-    def insertSupport(self, toInsert):
-        self.db.support.insert(toInsert)
-
-    def findSupport(self, findCriteria):
-        return self.db.support.find_one(findCriteria)
-
-    def findSupports(self, findCriteria):
-        return self.db.support.find(findCriteria)
-
-    def updateSupports(self, updateCritera, change):
-        self.db.support.update(updateCritera, change)
-
-    def removeSupports(self, toRemove):
-        self.db.support.remove(toRemove)
-
-    def countSupports(self, findCriteria):
-        return self.db.support.count(findCriteria)
 
     #quote
     def insertQuote(self, toInsert):
