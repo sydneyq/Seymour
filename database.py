@@ -5,7 +5,7 @@ class Database:
 
     def __init__(self):
         self.dbclient = pymongo.MongoClient(secret.DB_KEY)
-        self.db = self.dbclient.bot
+        self.db = self.dbclient.seymour
 
     def openDatabase(self):
         self.dbclient = pymongo.MongoClient(secret.DB_KEY)

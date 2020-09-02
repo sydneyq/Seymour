@@ -11,16 +11,18 @@ import math
 import database
 import secret
 
-client = commands.Bot(commands.when_mentioned_or('+'), case_insensitive=True)
+from cogs.meta import Meta
+
+client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True)
 
 @client.event
 async def on_ready():
-    print('Bean is online!\n---')
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('DM me for ModMail!'))
+    print('Online!\n---')
+    await client.change_presence(status=discord.Status.online)#, activity=discord.Game('DM me for ModMail!'))
 
 @client.command()
 async def reload(ctx, extension):
-    if ctx.message.author.id == secret.BOT_OWNER_ID:
+    if Meta.isBotOwner(None, ctx.author):
         client.unload_extension(f'cogs.{extension}')
         client.load_extension(f'cogs.{extension}')
         await ctx.send('Cog reloaded!')
@@ -29,7 +31,7 @@ async def reload(ctx, extension):
 
 @client.command()
 async def load(ctx, extension):
-    if ctx.message.author.id == secret.BOT_OWNER_ID:
+    if Meta.isBotOwner(ctx.author):
         client.load_extension(f'cogs.{extension}')
         await ctx.send('Cog loaded!')
     else:
@@ -37,7 +39,7 @@ async def load(ctx, extension):
 
 @client.command()
 async def unload(ctx, extension):
-    if ctx.message.author.id == secret.BOT_OWNER_ID:
+    if Meta.isBotOwner(ctx.author):
         client.unload_extension(f'cogs.{extension}')
         await ctx.send('Cog unloaded!')
     else:

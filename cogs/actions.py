@@ -54,32 +54,9 @@ class Actions(commands.Cog):
         'https://media1.tenor.com/images/d6a91b652fd260f7d063bee23cd7f9ee/tenor.gif?itemid=8102480',
         'https://data.whicdn.com/images/38611077/original.gif',
         'https://media1.tenor.com/images/ca552807b4720928130e5f188cfbe2c9/tenor.gif?itemid=8061431',
-        'https://media.giphy.com/media/Epd1qTKdonBhC/giphy-downsized-large.gif',
-        'https://thumbs.gfycat.com/AlarmedAmpleFox-size_restricted.gif',
         'https://media1.tenor.com/images/b89e2aa380639d37b9521b72a266d498/tenor.gif?itemid=4215410']
 
         await ctx.send(embed = self.action(ctx.message, random.choice(responses), 'patted', 'patpat'))
-
-    @commands.command()
-    async def blep(self, ctx):
-        responses = ['https://media1.tenor.com/images/abf08100392109094617cb59eb159486/tenor.gif?itemid=3437296',
-        'https://media2.giphy.com/media/SewaEY6yMH6x2/giphy.gif',
-        'https://media1.giphy.com/media/muPGAcnm1YCoZA50jQ/giphy.gif',
-        'https://66.media.tumblr.com/493e8df5839f92e8b5632050797c23a8/tumblr_pml5x2Dm7f1w9j4ono1_540.gif',
-        'https://thumbs.gfycat.com/DentalDarlingCardinal-size_restricted.gif',
-        'https://thumbs.gfycat.com/AntiqueGrayHyrax-size_restricted.gif',
-        'http://cdn.funnyisms.com/24ce5866-24d1-4fc7-8ac4-92111f4e5d95.gif',
-        'http://the.earth.li/~jon/junk/blep.gif',
-        'https://s.mltshp.com/r/1F8ND',
-        'https://media.giphy.com/media/Y9MJ0otgR03yE/giphy.gif',
-        'https://media.tenor.com/images/1ee46c26979bc89baceb2b3cc52c32a2/tenor.gif']
-        embed = discord.Embed(
-            title = 'mlem',
-            color = discord.Color.teal()
-        )
-        embed.set_image(url = random.choice(responses))
-
-        await ctx.send(embed = embed)
 
     @commands.command(pass_context=True)
     async def hug(self, ctx):

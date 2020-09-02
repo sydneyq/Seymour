@@ -40,7 +40,7 @@ class ModMail(commands.Cog):
                 return
 
         embed = discord.Embed(
-            title = 'A Mind Café Staff Member says:',
+            title = 'A Staff Member says:',
             description = content,
             color = discord.Color.red()
         )
@@ -58,7 +58,7 @@ class ModMail(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         #the bot itself
-        if self.meta.isBeanOrJarvis(message.author):
+        if self.meta.isSelf(message.author):
             return
 
         if isinstance(message.channel, discord.DMChannel):

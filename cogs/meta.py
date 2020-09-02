@@ -108,8 +108,8 @@ class Meta:
     def isMod(self, member: discord.Member):
         if self.isBotOwner(member):
             return True
-        #if self.ids['MOD_ROLE'] in [role.id for role in member.roles]:
-        #    return True
+        if 733765934938062909 in [role.id for role in member.roles]:
+            return True
         return False
 
     #verified
@@ -145,13 +145,13 @@ class Meta:
 
     def getProfile(self, member: discord.Member = None):
         if member is None:
-            return
+            return False
 
         id = member.id
 
         profile = self.dbConnection.findProfile({"id": id})
         if profile is None:
-            self.dbConnection.insertProfile({'id': id, 'points': 0, 'coins': 50, 'gifts': 0, 'badges':[], 'cakes': 0})
+            self.dbConnection.insertProfile({'id': id, 'server': member.guild.id, 'pts': 0, 'coins': 0, 'gifts': 0, 'pies': 0, 'bumps':0, 'badges':[]})
             profile = self.dbConnection.findProfile({"id": id})
 
         return profile
@@ -344,7 +344,15 @@ class Meta:
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"coins": coins}})
         return True
 
-    def update_points(self, member: discord.Member, val: int):
+    def addBumps(self, member: discord.Member, val: int):
+        user = self.getProfile(member)
+        bumps = user['bumps']
+        bumps += val
+
+        self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"bumps": bumps}})
+        return True
+
+    def changePoints(self, member: discord.Member, val: int):
         user = self.getProfile(member)
         pts = user['pts']
         pts += val
@@ -405,9 +413,9 @@ class Global(commands.Cog):
     @commands.command()
     async def test(self, ctx):
         if self.meta.isBotOwner(ctx.author):
-            guild = ctx.guild
-            self.dbConnection.renameColumn("companions", "dex")
-            self.dbConnection.makeColumn("redeemed", [])
+            #guild = ctx.guild
+            #self.dbConnection.renameColumn("companions", "dex")
+            #self.dbConnection.makeColumn("redeemed", [])
             #self.dbConnection.removeColumn("cakes")
             '''
             profiles = self.dbConnection.findProfiles({})
@@ -420,7 +428,7 @@ class Global(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        if (self.meta.isAdmin(ctx.message.author)):
+        if (self.meta.isMod(ctx.message.author)):
             await ctx.send(f'Pong! `{round(self.client.latency * 1000)}ms`')
 
     @commands.command()
@@ -429,36 +437,6 @@ class Global(commands.Cog):
             await self.client.change_presence(status=discord.Status.online, activity=discord.Game(msg))
         else:
             await ctx.send(embed = self.meta.embedNoAccess())
-
-    @commands.command()
-    async def echo(self, ctx, channel: discord.TextChannel, *, message):
-        author = ctx.message.author
-        isMod = True if self.meta.isMod(author) else False
-        isStaff = True if self.meta.isStaff(author) else False
-        isOfficialMod = True if isMod and isStaff else False
-        isMgmt = True if self.meta.isMgmt(author) else False
-
-        if not isOfficialMod and not isMgmt:
-            await ctx.send(embed = self.meta.embedOops())
-            return
-
-        if not isMgmt:
-            if ctx.channel.id != self.ids['MOD_CHANNEL']:
-                await ctx.send(embed = self.meta.embedOops())
-                return
-
-        #check if they have permission to talk in that channel first
-        if not author.permissions_in(channel).send_messages:
-            await ctx.send(embed = self.meta.embedOops())
-            return
-
-        e = self.meta.embed('A Mind Café Staff Member Says:', message, 'red')
-        await channel.send(embed = e)
-
-        await ctx.message.delete()
-        e.set_footer(text='' + ctx.author.name + ' in ' + channel.name, icon_url = ctx.author.avatar_url)
-        await ctx.guild.get_channel(self.ids['MOD_CHANNEL']).send(embed = e)
-        return
 
     @commands.command()
     async def say(self, ctx, channel: discord.TextChannel, *, message):

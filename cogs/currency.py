@@ -30,7 +30,7 @@ class Currency(commands.Cog):
         with open(filename3) as json_file:
             self.ids = json.load(json_file)
         '''
-
+    '''
     @commands.command(aliases=['i', 'coins'])
     async def inventory(self, ctx, other: discord.Member = None):
         if other == None:
@@ -71,9 +71,10 @@ class Currency(commands.Cog):
 
         embed.set_thumbnail(url = pic)
         await ctx.send(embed = embed)
+    '''
 
-    @commands.command(aliases=['givecoins', 'agive', 'admgive', 'admingive', 'take'])
-    async def give(self, ctx, member: discord.Member, amt: int, *, reason = ''):
+    @commands.command(aliases=['give', 'take'])
+    async def givecoins(self, ctx, member: discord.Member, amt: int, *, reason = ''):
         if not self.meta.isAdmin(ctx.author):
             return
 
