@@ -169,10 +169,13 @@ class Meta:
 
     def makeBadge(self, badge_id, badge_literal: str):
         # check if badge_id already exists
-        if self.getBadge(badge_id) is None:
+        if not self.badgeExists(badge_id):
             self.dbConnection.insertBadge({"id": badge_id, "literal": badge_literal})
             return True
         return False
+
+    def badgeExists(self, badge):
+        return not self.dbConnection.findBadge({"id": badge}) is None
 
     def getBadge(self, badge):
         b = self.dbConnection.findBadge({"id": badge})['literal']
