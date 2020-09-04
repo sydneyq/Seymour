@@ -23,7 +23,10 @@ class Help(commands.Cog):
             color=discord.Color.teal()
         )
 
-        v='[In Development]'
+        v = '[In Development]'
+        v += '\n`profile [@member]` aka `p`: show profile'
+        v += '\n`actions`: show action commands'
+        v += '\n`badge <badge_id>` aka `showbadge`: display a badge'
 
         embed.add_field(name='Help Commands',
                         value=v,
@@ -31,14 +34,11 @@ class Help(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['commands', 'cmds', 'command', 'cmd', 'funcmd', 'fcmd', 'fcmds'])
-    async def funcmds(self, ctx):
-        pass
-
-    @commands.command(aliases=['mcmd', 'mcmds'])
+    @commands.command()
     async def actions(self, ctx):
         embed = discord.Embed(
             title='Actions',
+            description='`[]` = optional, `<>` = required',
             color=discord.Color.teal()
         )
 
