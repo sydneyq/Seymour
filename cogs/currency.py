@@ -15,21 +15,7 @@ class Currency(commands.Cog):
         self.client = client
         self.dbConnection = database
         self.meta = meta
-        '''
-        dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, 'docs/store.json')
-        filename2 = os.path.join(dirname, 'docs/emojis.json')
-        filename3 = os.path.join(dirname, 'docs/ids.json')
 
-        with open(filename) as json_file:
-            self.store = json.load(json_file)
-
-        with open(filename2) as json_file:
-            self.emojis = json.load(json_file)
-
-        with open(filename3) as json_file:
-            self.ids = json.load(json_file)
-        '''
     '''
     @commands.command(aliases=['i', 'coins'])
     async def inventory(self, ctx, other: discord.Member = None):

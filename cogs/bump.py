@@ -9,6 +9,7 @@ import asyncio
 from numpy.random import choice
 import secret
 
+
 class Bump(commands.Cog):
 
     def __init__(self, client, database, meta):
@@ -33,17 +34,18 @@ class Bump(commands.Cog):
                     member = message.guild.get_member(id)
 
                     profile = self.meta.getProfile(member)
-                    bumps_1 = profile['bumps']
-                    bumps_2 = bumps_1 + 1
+                    bumps = profile['bumps']
+                    coins = profile['coins']
 
                     self.meta.addBumps(member, 1)
+                    self.meta.addCoins(member, 50)
 
-                    embed = discord.Embed(
-                        title='Thanks for Bumping!',
-                        description= mention + f", you\'ve gained one Bump! [`{bumps_1}` -> `{bumps_2}`]",
-                        color=discord.Color.teal()
-                    )
-                    await message.channel.send(embed=embed)
+                    title = 'Thanks for Bumping!',
+                    desc = mention + f", you\'ve gained: "
+                    desc += f"\n`+1` Bump! [`{bumps}` -> `{bumps+1}`]"
+                    desc += f"\n`50` Coins! [`{coins}` -> `{coins+50}`]"
+
+                    await message.channel.send(embed=self.meta.embed(title, desc, 'gold'))
 
 
 def setup(client):
