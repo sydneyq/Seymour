@@ -109,11 +109,11 @@ class Profile(commands.Cog):
         # Acknowledgements
         badges = self.getBadges(member)
         if badges is None or len(badges) == 0:
-            badges = 'No badges yet.'
+            v = 'No badges yet.'
         else:
-            badges = " ".join(badges)
+            v = " ".join(badges)
 
-        embed.add_field(name="Badges (`" + str(len(badges)) + "`)", value=badges, inline=False)
+        embed.add_field(name="Badges (`" + str(len(badges)) + "`)", value=v, inline=False)
 
         embed.set_thumbnail(url=pic)
         embed.set_author(name=name)
