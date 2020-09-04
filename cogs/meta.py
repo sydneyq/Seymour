@@ -95,7 +95,7 @@ class Meta:
     def isMod(self, member: discord.Member):
         if self.isBotOwner(member):
             return True
-        if 733765934938062909 in [role.id for role in member.roles]:
+        if member.guild_permissions.ban_members:
             return True
         return False
 

@@ -99,7 +99,7 @@ class Profile(commands.Cog):
         name = member.name
 
         # Basics
-        embed = discord.Embed(color=discord.Color.orange())
+        embed = discord.Embed(color=member.color)
         embed.add_field(name="Coins", value=user['coins'], inline=True)
         embed.add_field(name="Points", value=user['pts'], inline=True)
         embed.add_field(name="Bumps", value=user['bumps'], inline=True)
