@@ -107,6 +107,9 @@ class Database:
     def insertBadge(self, toInsert):
         self.db.badge.insert(toInsert)
 
+    def removeBadge(self, toRemove):
+        self.db.badge.remove(toRemove)
+
     #meta
     def findMeta(self, findCriteria):
         return self.db.meta.find_one(findCriteria)

@@ -174,6 +174,12 @@ class Meta:
             return True
         return False
 
+    def deleteBadge(self, badge_id: str):
+        if not self.badgeExists(badge_id):
+            return False
+        self.dbConnection.removeBadge({"id": badge_id})
+        return True
+
     def badgeExists(self, badge):
         return not self.dbConnection.findBadge({"id": badge}) is None
 
