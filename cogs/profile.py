@@ -60,6 +60,14 @@ class Profile(commands.Cog):
             self.meta.removeBadgeFromProfile(member, badge)
             await ctx.send(embed=self.meta.embedDone())
 
+    @commands.command(aliases=['createbadge'])
+    async def makebadge(self, ctx, badge_id: str, badge_literal: str):
+        if not self.meta.isMod(ctx.author):
+            return
+        else:
+            self.meta.makeBadge(badge_id, badge_literal)
+            await ctx.send(embed=self.meta.embedDone())
+
     #   Goes through certain elements of a users data in the database
     #   and puts them into an embed to send to the user through the bot
     @commands.command(aliases=['p'])
