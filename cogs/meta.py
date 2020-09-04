@@ -169,10 +169,10 @@ class Meta:
 
         id = member.id
 
-        profile = self.dbConnection.findProfile({"id": id, "server": member.guild.id})
+        profile = self.dbConnection.findProfile({"id": id, "server": str(member.guild.id)})
         if profile is None:
             self.dbConnection.insertProfile(
-                {'id': id, 'server': member.guild.id, 'pts': 0, 'coins': 0, 'gifts': 0, 'pies': 0, 'bumps': 0,
+                {'id': id, 'server': str(member.guild.id), 'pts': 0, 'coins': 0, 'gifts': 0, 'pies': 0, 'bumps': 0,
                  'badges': []})
             profile = self.dbConnection.findProfile({"id": id})
 
