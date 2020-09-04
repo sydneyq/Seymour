@@ -56,7 +56,7 @@ class Help(commands.Cog):
     @commands.command(aliases=['badgelist'])
     async def badges(self, ctx):
         desc = []
-        badges = self.dbConnection.findBadges()
+        badges = self.dbConnection.findBadges({})
         for badge in badges:
             desc.append(badge['id'])
 
