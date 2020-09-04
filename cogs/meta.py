@@ -195,6 +195,15 @@ class Meta:
         self.dbConnection.updateProfile({"id": member.id}, {"$set": {"badges": badges}})
         return True
 
+    def removeBadgeFromProfile(self, member: discord.Member, badge):
+        if not self.hasBadge(member, badge):
+            return False
+        user = self.getProfile(member)
+        badges = user['badges']
+        badges.remove(badge)
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"badges": badges}})
+        return True
+
     def getTempSquad(self, member: discord.Member):
         temp_squads = self.dbConnection.findMeta({'id': 'temp_squads'})
         if member.id in temp_squads['Tea']:
