@@ -104,6 +104,9 @@ class Database:
     def findBadge(self, findCriteria):
         return self.db.badge.find_one(findCriteria)
 
+    def insertBadge(self, toInsert):
+        self.db.badge.insert(toInsert)
+
     #meta
     def findMeta(self, findCriteria):
         return self.db.meta.find_one(findCriteria)

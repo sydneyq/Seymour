@@ -8,6 +8,7 @@ import json
 import os
 import asyncio
 
+
 class Meta:
 
     def __init__(self, database):
@@ -29,7 +30,7 @@ class Meta:
             self.ids = json.load(json_file)
         '''
 
-    def embed(self, title, desc, color = None):
+    def embed(self, title, desc, color=None):
         if color is None:
             color = discord.Color.teal()
         elif color == 'red':
@@ -38,26 +39,27 @@ class Meta:
             color = discord.Color.gold()
 
         embed = discord.Embed(
-            title = title,
-            description = desc,
-            color = color
+            title=title,
+            description=desc,
+            color=color
         )
         return embed
 
-    async def confirm(self, context, client, responder: discord.Member, msg = None):
+    async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
             msg = 'Are you sure?'
 
         embed = discord.Embed(
-            title = msg,
-            description = 'Please use the reactions of this message.',
-            color = discord.Color.teal()
+            title=msg,
+            description='Please use the reactions of this message.',
+            color=discord.Color.teal()
         )
-        msg = await context.send(embed = embed)
+        msg = await context.send(embed=embed)
         await msg.add_reaction('✅')
         await msg.add_reaction('⛔')
 
         emoji = ''
+
         def check(reaction, user2):
             nonlocal emoji
             emoji = str(reaction.emoji)
@@ -67,27 +69,27 @@ class Meta:
             reaction, user2 = await client.wait_for('reaction_add', timeout=60.0, check=check)
         except asyncio.TimeoutError:
             embed = discord.Embed(
-                title = msg,
-                description = 'Choice timed out.',
-                color = discord.Color.red()
+                title=msg,
+                description='Choice timed out.',
+                color=discord.Color.red()
             )
-            await context.send(embed = embed)
+            await context.send(embed=embed)
             return False
         else:
             if emoji == '⛔':
                 embed = discord.Embed(
-                    title = 'Action canceled.',
-                    color = discord.Color.red()
+                    title='Action canceled.',
+                    color=discord.Color.red()
                 )
-                await context.send(embed = embed)
+                await context.send(embed=embed)
                 return False
             return True
 
     async def sendEmbedToLog(self, ctx, embed):
         log = ctx.guild.get_channel(self.ids['LOG_CHANNEL'])
-        await log.send(embed = embed)
+        await log.send(embed=embed)
 
-    def hasRole(self, member:discord.Member, rolename):
+    def hasRole(self, member: discord.Member, rolename):
         rolename = rolename.lower()
         if rolename in [role.name.lower() for role in member.roles]:
             return True
@@ -104,7 +106,7 @@ class Meta:
             return True
         return False
 
-    #isMod
+    # isMod
     def isMod(self, member: discord.Member):
         if self.isBotOwner(member):
             return True
@@ -112,34 +114,34 @@ class Meta:
             return True
         return False
 
-    #verified
+    # verified
     def isVerified(self, member: discord.Member):
         if self.ids['VERIFIED_ROLE'] in [role.id for role in member.roles]:
             return True
         return False
 
-    #not allowed embed
+    # not allowed embed
     def embedNoAccess(self):
         embed = discord.Embed(
-            title = 'Sorry, you don\'t have permission to do that!',
-            color = discord.Color.teal()
+            title='Sorry, you don\'t have permission to do that!',
+            color=discord.Color.teal()
         )
         return embed
 
     def embedDone(self):
         embed = discord.Embed(
-            title = 'Consider it done! ✅',
-            color = discord.Color.teal()
+            title='Consider it done! ✅',
+            color=discord.Color.teal()
         )
         return embed
 
-    def embedOops(self, desc = None):
+    def embedOops(self, desc=None):
         if desc is None:
             desc = 'Something went wrong.'
         embed = discord.Embed(
-            title = 'Oops!',
-            description = desc,
-            color = discord.Color.red()
+            title='Oops!',
+            description=desc,
+            color=discord.Color.red()
         )
         return embed
 
@@ -151,7 +153,9 @@ class Meta:
 
         profile = self.dbConnection.findProfile({"id": id})
         if profile is None:
-            self.dbConnection.insertProfile({'id': id, 'server': member.guild.id, 'pts': 0, 'coins': 0, 'gifts': 0, 'pies': 0, 'bumps':0, 'badges':[]})
+            self.dbConnection.insertProfile(
+                {'id': id, 'server': member.guild.id, 'pts': 0, 'coins': 0, 'gifts': 0, 'pies': 0, 'bumps': 0,
+                 'badges': []})
             profile = self.dbConnection.findProfile({"id": id})
 
         return profile
@@ -163,11 +167,15 @@ class Meta:
         else:
             return True
 
-    def getBadge(self, badge):
-        b = self.dbConnection.findBadge({"id":badge})['literal']
+    def makeBadge(self, badge_id, badge_literal: str):
+        # check if badge_id already exists
+        if self.getBadge(badge_id) is None:
+            self.dbConnection.insertBadge({"id": badge_id, "literal": badge_literal})
+            return True
+        return False
 
-        if b is None:
-            b = self.emojis[badge]
+    def getBadge(self, badge):
+        b = self.dbConnection.findBadge({"id": badge})['literal']
         return b
 
     def hasBadge(self, member: discord.Member, badge):
@@ -188,7 +196,7 @@ class Meta:
         return True
 
     def getTempSquad(self, member: discord.Member):
-        temp_squads = self.dbConnection.findMeta({'id':'temp_squads'})
+        temp_squads = self.dbConnection.findMeta({'id': 'temp_squads'})
         if member.id in temp_squads['Tea']:
             return 'Tea'
         elif member.id in temp_squads['Coffee']:
@@ -196,7 +204,7 @@ class Meta:
         else:
             return ''
 
-    def subCake(self, member: discord.Member, amt:int = 1):
+    def subCake(self, member: discord.Member, amt: int = 1):
         user = self.getProfile(member)
         cakes = user['cakes']
         cakes -= amt
@@ -205,45 +213,45 @@ class Meta:
         self.dbConnection.updateProfile({"id": member.id}, {"$set": {"cakes": cakes}})
         return True
 
-    def addCake(self, member: discord.Member, amt:int = 1):
+    def addCake(self, member: discord.Member, amt: int = 1):
         user = self.getProfile(member)
         cakes = user['cakes']
         cakes += amt
         self.dbConnection.updateProfile({"id": member.id}, {"$set": {"cakes": cakes}})
         return
 
-    def subCoins(self, member: discord.Member, amt:int):
+    def subCoins(self, member: discord.Member, amt: int):
         user = self.getProfile(member)
         coins = user['coins']
         coins -= amt
 
-        #cannot afford
+        # cannot afford
         if coins < 0:
             return False
 
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"coins": coins}})
         return True
 
-    def addCoins(self, member: discord.Member, amt:int):
+    def addCoins(self, member: discord.Member, amt: int):
         user = self.getProfile(member)
         coins = user['coins']
         coins += amt
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"coins": coins}})
         return True
 
-    def subGems(self, member: discord.Member, amt:int):
+    def subGems(self, member: discord.Member, amt: int):
         user = self.getProfile(member)
         gems = user['gems']
         gems -= amt
 
-        #cannot afford
+        # cannot afford
         if gems < 0:
             return False
 
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"gems": gems}})
         return True
 
-    def addGems(self, member: discord.Member, amt:int):
+    def addGems(self, member: discord.Member, amt: int):
         user = self.getProfile(member)
         gems = user['gems']
         gems += amt
@@ -260,7 +268,8 @@ class Meta:
         helped = user['helped']
         coins = user['coins']
         gems = user['gems']
-        return 'You have:\t`' + str(helped) + '` Help Points ' + self.emojis['HelpPoint'] + ' `' + str(coins) + '` Coins ' + self.emojis['Coin'] + ' `' + str(gems) + '` Gems ' + self.emojis['Gem']
+        return 'You have:\t`' + str(helped) + '` Help Points ' + self.emojis['HelpPoint'] + ' `' + str(
+            coins) + '` Coins ' + self.emojis['Coin'] + ' `' + str(gems) + '` Gems ' + self.emojis['Gem']
 
     def getFullDateTime(self):
         return datetime.datetime.now()
@@ -303,7 +312,7 @@ class Meta:
         else:
             return True
 
-    #currently only works with <60 min
+    # currently only works with <60 min
     def hasBeenMinutes(self, mins: int, previous, current):
         if previous['hour'] == current['hour']:
             if abs(previous['minute'] - current['minute']) >= mins:
@@ -337,7 +346,7 @@ class Meta:
         coins = user['coins']
         coins += val
 
-        #cannot afford
+        # cannot afford
         if coins < 0:
             return False
 
@@ -357,7 +366,7 @@ class Meta:
         pts = user['pts']
         pts += val
 
-        #cannot afford
+        # cannot afford
         if pts < 0:
             return False
 
@@ -365,25 +374,25 @@ class Meta:
         return True
 
     def hasWord(self, string, word):
-        #case-insensitive, ignores punctuation: 32-96, 123-126 (not 97 - 122)
+        # case-insensitive, ignores punctuation: 32-96, 123-126 (not 97 - 122)
         string = string.lower()
         word = word.lower()
         filtered = ''
-        #print('string: ' + filtered)
-        #print('word: ' + filtered)
+        # print('string: ' + filtered)
+        # print('word: ' + filtered)
 
         if word not in string:
             return False
 
         for portion in string.split():
             filtered = ''
-            #print('portion: ' + filtered)
+            # print('portion: ' + filtered)
             if word in portion:
                 for c in portion:
                     ascii = ord(c)
                     if ascii >= 97 and ascii <= 122:
                         filtered += c
-                #print('filtered: ' + filtered)
+                # print('filtered: ' + filtered)
 
                 if filtered == word:
                     return True
@@ -393,13 +402,13 @@ class Meta:
     def isModMailChannel(self, channel: discord.TextChannel):
         return channel.name.lower().startswith('mm-')
 
-    def getMention(self, id:int):
+    def getMention(self, id: int):
         return '<@' + str(id) + '>'
 
-    def getUserByID(self, client, id:int):
+    def getUserByID(self, client, id: int):
         return client.get_user(id)
 
-    def getMemberByID(self, ctx, id:int):
+    def getMemberByID(self, ctx, id: int):
         return ctx.guild.get_member(id)
 
 
@@ -413,17 +422,17 @@ class Global(commands.Cog):
     @commands.command()
     async def test(self, ctx):
         if self.meta.isBotOwner(ctx.author):
-            #guild = ctx.guild
-            #self.dbConnection.renameColumn("companions", "dex")
-            #self.dbConnection.makeColumn("redeemed", [])
-            #self.dbConnection.removeColumn("cakes")
+            # guild = ctx.guild
+            # self.dbConnection.renameColumn("companions", "dex")
+            # self.dbConnection.makeColumn("redeemed", [])
+            # self.dbConnection.removeColumn("cakes")
             '''
             profiles = self.dbConnection.findProfiles({})
             for profile in profiles:
                 if profile['soulmates'] is None:
                     self.dbConnection.updateProfile({"id": profile['id']}, {"$set": {"soulmates": []}})
             '''
-            await ctx.send(embed = self.meta.embedDone())
+            await ctx.send(embed=self.meta.embedDone())
             print("Done!")
 
     @commands.command()
@@ -436,24 +445,24 @@ class Global(commands.Cog):
         if (self.meta.isAdmin(ctx.message.author)):
             await self.client.change_presence(status=discord.Status.online, activity=discord.Game(msg))
         else:
-            await ctx.send(embed = self.meta.embedNoAccess())
+            await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command()
     async def say(self, ctx, channel: discord.TextChannel, *, message):
         if self.meta.isBotOwner(ctx.author) or self.meta.isMod(ctx.author):
 
             embed = discord.Embed(
-                description = message,
-                color = discord.Color.teal()
+                description=message,
+                color=discord.Color.teal()
             )
 
-            await channel.send(embed = embed)
+            await channel.send(embed=embed)
         else:
             embed = discord.Embed(
-                title = 'Sorry, you don\'t have permission to do that!',
-                color = discord.Color.teal()
+                title='Sorry, you don\'t have permission to do that!',
+                color=discord.Color.teal()
             )
-            await ctx.send(embed = embed)
+            await ctx.send(embed=embed)
 
 
 def setup(client):
