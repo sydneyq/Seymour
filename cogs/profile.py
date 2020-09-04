@@ -69,7 +69,7 @@ class Profile(commands.Cog):
             await ctx.send(embed=self.meta.embedDone())
 
     @commands.command(aliases=[])
-    async def deletebadge(self, ctx, badge_id: str, badge_literal: str):
+    async def deletebadge(self, ctx, badge_id: str):
         if not self.meta.isMod(ctx.author):
             return
         else:
