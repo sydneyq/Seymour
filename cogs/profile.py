@@ -44,7 +44,7 @@ class Profile(commands.Cog):
 
         return full
 
-    @commands.command(aliases=['show', 'badge', 'printbadge'])
+    @commands.command(aliases=['show', 'printbadge'])
     async def showbadge(self, ctx, badge):
         literal = self.meta.getBadge(badge)
         if literal is not None:
