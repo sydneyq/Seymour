@@ -45,10 +45,10 @@ class Profile(commands.Cog):
         return full
 
     @commands.command(aliases=['badge'])
-    async def showbadge(self, ctx, badge):
-        literal = self.meta.getBadge(badge)
+    async def showbadge(self, ctx, badge=None):
+        literal = None if badge is None else self.meta.getBadge(badge)
         if literal is not None:
-            await ctx.send(embed=self.meta.embedNew(f'{badge}: '+ literal))
+            await ctx.send(embed=self.meta.embed(badge, literal))
         else:
             await ctx.send(embed=self.meta.embedOops('Badge not found.'))
         return

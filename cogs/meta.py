@@ -30,21 +30,6 @@ class Meta:
             self.ids = json.load(json_file)
         '''
 
-    def embed(self, title, desc, color=None):
-        if color is None:
-            color = discord.Color.teal()
-        elif color == 'red':
-            color = discord.Color.red()
-        elif color == 'gold':
-            color = discord.Color.gold()
-
-        embed = discord.Embed(
-            title=title,
-            description=desc,
-            color=color
-        )
-        return embed
-
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
             msg = 'Are you sure?'
@@ -145,14 +130,38 @@ class Meta:
         )
         return embed
 
-    def embedNew(self, desc=None):
-        if desc is None:
-            desc = 'o7'
+    def embed(self, title, desc, color=None):
+        if color is None:
+            color = discord.Color.orange()
+        elif color == 'red':
+            color = discord.Color.red()
+        elif color == 'gold':
+            color = discord.Color.gold()
+        elif color == 'teal':
+            color = discord.Color.teal()
+
         embed = discord.Embed(
+            title=title,
             description=desc,
-            color=discord.Color.teal()
+            color=color
         )
         return embed
+
+    def getServer(self):
+        """
+        will get server by id
+        or if None then addServer()
+        :return: db server dict obj
+        """
+        pass
+
+    def addServer(self):
+        """
+        will add server to database with
+        name: str, id: int, mod: int, verified: int
+        :return: bool
+        """
+        pass
 
     def getProfile(self, member: discord.Member = None):
         if member is None:

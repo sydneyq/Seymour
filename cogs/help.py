@@ -19,7 +19,8 @@ class Help(commands.Cog):
     async def help(self, ctx):
         embed = discord.Embed(
             title='Seymour the Bear Bot Help',
-            description='Created by <@' + str(secret.OLIVE_ID) + '> ' + self.meta.getBadge('dev'),
+            description='Created by <@' + str(secret.OLIVE_ID) + '> ' + self.meta.getBadge('dev')
+            + '\n`[]` = optional, `<>` = required',
             color=discord.Color.teal()
         )
 

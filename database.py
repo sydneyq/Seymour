@@ -1,6 +1,7 @@
 import pymongo
 import secret
 
+
 class Database:
 
     def __init__(self):
@@ -14,7 +15,7 @@ class Database:
     def closeDatabase(self):
         self.dbclient.close()
 
-    #profile
+    # profile
     def insertProfile(self, toInsert):
         self.db.profile.insert(toInsert)
 
@@ -33,7 +34,7 @@ class Database:
     def countProfiles(self, findCriteria):
         return self.db.profile.count(findCriteria)
 
-    #soulmate
+    # soulmate
     def insertSoulmatePair(self, toInsert):
         self.db.soulmate.insert(toInsert)
 
@@ -52,7 +53,7 @@ class Database:
     def countSoulmatePairs(self, findCriteria):
         return self.db.soulmate.count(findCriteria)
 
-    #quote
+    # quote
     def insertQuote(self, toInsert):
         self.db.quote.insert(toInsert)
 
@@ -68,7 +69,7 @@ class Database:
     def countQuotes(self, findCriteria):
         return self.db.quote.count(findCriteria)
 
-    #modlog
+    # modlog
     def insertModLog(self, toInsert):
         self.db.modlog.insert(toInsert)
 
@@ -87,7 +88,7 @@ class Database:
     def updateModLog(self, updateCritera, change):
         self.db.modlog.update(updateCritera, change)
 
-    #modprofile
+    # modprofile
     def insertModProfile(self, toInsert):
         self.db.modprofile.insert(toInsert)
 
@@ -100,7 +101,7 @@ class Database:
     def updateModProfile(self, updateCritera, change):
         self.db.modprofile.update(updateCritera, change)
 
-    #badges
+    # badges
     def findBadge(self, findCriteria):
         return self.db.badge.find_one(findCriteria)
 
@@ -110,19 +111,25 @@ class Database:
     def removeBadge(self, toRemove):
         self.db.badge.remove(toRemove)
 
-    #meta
-    def findMeta(self, findCriteria):
-        return self.db.meta.find_one(findCriteria)
+    # server
+    def findServer(self, findCriteria):
+        return self.db.server.find_one(findCriteria)
 
-    def updateMeta(self, updateCritera, change):
-        self.db.meta.update(updateCritera, change)
+    def updateServer(self, updateCritera, change):
+        self.db.server.update(updateCritera, change)
 
-    #db
+    def insertServer(self, toInsert):
+        self.db.server.insert(toInsert)
+
+    def removeServer(self, toRemove):
+        self.db.server.remove(toRemove)
+
+    # db
     def makeColumn(self, title, value):
-        self.db.profile.update({},{"$set": {title: value}},upsert=False,multi=True)
+        self.db.profile.update({}, {"$set": {title: value}}, upsert=False, multi=True)
 
     def renameColumn(self, old, new):
-        self.db.profile.update({},{"$rename": {old: new}},upsert=False,multi=True)
+        self.db.profile.update({}, {"$rename": {old: new}}, upsert=False, multi=True)
 
     def removeColumn(self, col):
-        self.db.profile.update({},{"$unset":{col: 1}},upsert=False,multi=True)
+        self.db.profile.update({}, {"$unset": {col: 1}}, upsert=False, multi=True)
