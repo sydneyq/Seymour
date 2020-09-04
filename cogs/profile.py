@@ -44,6 +44,15 @@ class Profile(commands.Cog):
 
         return full
 
+    @commands.command(aliases=['show', 'badge', 'printbadge'])
+    async def showbadge(self, ctx, badge):
+        literal = self.meta.getBadge(badge)
+        if literal is not None:
+            await ctx.send(embed=self.meta.embedNew(literal))
+        else:
+            await ctx.send(embed=self.meta.embedOops('Badge not found.'))
+        return
+
     @commands.command()
     async def givebadge(self, ctx, member: discord.Member, *, badge):
         if not self.meta.isMod(ctx.author):

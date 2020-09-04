@@ -145,6 +145,15 @@ class Meta:
         )
         return embed
 
+    def embedNew(self, desc=None):
+        if desc is None:
+            desc = 'o7'
+        embed = discord.Embed(
+            description=desc,
+            color=discord.Color.teal()
+        )
+        return embed
+
     def getProfile(self, member: discord.Member = None):
         if member is None:
             return False
@@ -184,8 +193,10 @@ class Meta:
         return not self.dbConnection.findBadge({"id": badge}) is None
 
     def getBadge(self, badge):
-        b = self.dbConnection.findBadge({"id": badge})['literal']
-        return b
+        if self.badgeExists(badge):
+            return self.dbConnection.findBadge({"id": badge})['literal']
+        else:
+            return None
 
     def hasBadge(self, member: discord.Member, badge):
         user = self.getProfile(member)
@@ -460,14 +471,15 @@ class Global(commands.Cog):
 
     @commands.command()
     async def status(self, ctx, *, msg):
-        if (self.meta.isAdmin(ctx.message.author)):
-            await self.client.change_presence(status=discord.Status.online, activity=discord.Game(msg))
+        if self.meta.isMod(ctx.message.author):
+            await self.client.change_presence(activity=discord.Game(msg))
+            await ctx.send(embed=self.meta.embedDone())
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command()
     async def say(self, ctx, channel: discord.TextChannel, *, message):
-        if self.meta.isBotOwner(ctx.author) or self.meta.isMod(ctx.author):
+        if self.meta.isMod(ctx.author):
 
             embed = discord.Embed(
                 description=message,
@@ -475,12 +487,9 @@ class Global(commands.Cog):
             )
 
             await channel.send(embed=embed)
+            await ctx.send(embed=self.meta.embedDone())
         else:
-            embed = discord.Embed(
-                title='Sorry, you don\'t have permission to do that!',
-                color=discord.Color.teal()
-            )
-            await ctx.send(embed=embed)
+            await ctx.send(embed=self.meta.embedNoAccess())
 
 
 def setup(client):
