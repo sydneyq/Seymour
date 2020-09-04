@@ -55,12 +55,14 @@ class Help(commands.Cog):
 
     @commands.command(aliases=['badgelist'])
     async def badges(self, ctx):
-        embed = discord.Embed(
-            title='Badge List',
-            color=discord.Color.teal()
-        )
+        desc = []
+        badges = self.dbConnection.findBadges()
+        for badge in badges:
+            desc.append(badge['id'])
 
-        await ctx.send(embed=embed)
+        desc = ", ".join(desc)
+
+        await ctx.send(embed=self.meta.embed('Badges', desc))
         return
 
 

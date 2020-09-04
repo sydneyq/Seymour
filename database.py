@@ -111,6 +111,9 @@ class Database:
     def removeBadge(self, toRemove):
         self.db.badge.remove(toRemove)
 
+    def findBadges(self, findCriteria):
+        return self.db.badge.find(findCriteria)
+
     # server
     def findServer(self, findCriteria):
         return self.db.server.find_one(findCriteria)
