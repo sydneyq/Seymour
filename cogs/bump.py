@@ -40,10 +40,10 @@ class Bump(commands.Cog):
                     self.meta.addBumps(member, 1)
                     self.meta.addCoins(member, 50)
 
-                    title = 'Thanks for Bumping!',
+                    title = 'Thanks for Bumping!'
                     desc = mention + f", you\'ve gained: "
                     desc += f"\n`+1` Bump! [`{bumps}` -> `{bumps+1}`]"
-                    desc += f"\n`50` Coins! [`{coins}` -> `{coins+50}`]"
+                    desc += f"\n`+50` Coins! [`{coins}` -> `{coins+50}`]"
 
                     await message.channel.send(embed=self.meta.embed(title, desc, 'gold'))
 
