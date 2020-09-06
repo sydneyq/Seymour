@@ -392,7 +392,7 @@ class Meta:
         total = user[currency]
         total += val
 
-        self.dbConnection.updateProfile({"id": member.id, "guild": str(member.guild.id)}, {"$set": {currency: total}})
+        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {currency: total}})
         return total
 
     def addBumps(self, member: discord.Member, val: int):
