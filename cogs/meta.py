@@ -379,17 +379,18 @@ class Meta:
 
         return abs(minutes - 1440)
 
-    def changeCoins(self, member: discord.Member, val: int):
+    def changeCurrency(self, member: discord.Member, val: int, currency: str):
         user = self.getProfile(member)
-        coins = user['coins']
-        coins += val
-
-        # cannot afford
-        if coins < 0:
+        if currency not in ['coins', 'bumps', 'pts', 'points', 'pies']:
             return False
+        if currency == 'points':
+            currency = 'pts'
 
-        self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"coins": coins}})
-        return True
+        total = user[currency]
+        total += val
+
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {currency: total}})
+        return total
 
     def addBumps(self, member: discord.Member, val: int):
         user = self.getProfile(member)
@@ -397,7 +398,7 @@ class Meta:
         bumps += val
 
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"bumps": bumps}})
-        return True
+        return bumps
 
     def changePoints(self, member: discord.Member, val: int):
         user = self.getProfile(member)
@@ -409,7 +410,7 @@ class Meta:
             return False
 
         self.dbConnection.updateProfile({"id": user['id']}, {"$set": {"pts": pts}})
-        return True
+        return pts
 
     def hasWord(self, string, word):
         # case-insensitive, ignores punctuation: 32-96, 123-126 (not 97 - 122)

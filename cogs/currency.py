@@ -9,6 +9,7 @@ import asyncio
 from numpy.random import choice
 import secret
 
+
 class Currency(commands.Cog):
 
     def __init__(self, client, database, meta):
@@ -16,162 +17,54 @@ class Currency(commands.Cog):
         self.dbConnection = database
         self.meta = meta
 
-    '''
-    @commands.command(aliases=['i', 'coins'])
-    async def inventory(self, ctx, other: discord.Member = None):
-        if other == None:
-            member = ctx.author
-            id = ctx.author.id
-        else:
-            member = other
-            id = other.id
+    @commands.command(aliases=['take'])
+    async def give(self, ctx, member: discord.Member, amt: int, currency: str):
+        """
+        as in 'give @member 50 coins'
+        take into account plural/single
+        :param ctx:
+        :param member:
+        :param amt:
+        :param currency:
+        :return:
+        """
 
-        user = self.meta.getProfile(member)
-        name = self.client.get_user(id).name
-
-        pic = member.avatar_url
-
-        embed = discord.Embed(
-            title = name + '\'s Inventory',
-            color = discord.Color.teal()
-        )
-
-        #Achievements
-        #   helped
-        helped = user['helped']
-        embed.add_field(name=self.emojis['HelpPoint'] + " Help Points", value='`' + str(helped) + '`', inline=True)
-
-        #   coins
-        coins = user['coins']
-        embed.add_field(name=self.emojis['Coin'] + " Coins", value='`' + str(coins) + '`', inline=True)
-
-        #   coins
-        gifts = user['gifts']
-        embed.add_field(name=self.emojis['Gift'] + " Gifts", value='`' + str(gifts) + '`', inline=True)
-
-        cakes = user['cakes']
-        embed.add_field(name=self.emojis['Cake'] + " Cakes", value='`' + str(cakes) + '`', inline=True)
-
-        gems = user['gems']
-        embed.add_field(name=self.emojis['Gem'] + " Gems", value='`' + str(gems) + '`', inline=True)
-
-        embed.set_thumbnail(url = pic)
-        await ctx.send(embed = embed)
-    '''
-
-    @commands.command(aliases=['give', 'take'])
-    async def givecoins(self, ctx, member: discord.Member, amt: int, *, reason = ''):
-        if not self.meta.isAdmin(ctx.author):
-            return
-
-        id = member.id
-        user = self.dbConnection.findProfile({"id": id})
-
-        if user is None:
-            embed = discord.Embed(
-                title = 'Sorry, ' + member.name + ' doesn\'t have a profile yet! They can make one by using +profile.',
-                color = discord.Color.teal()
-            )
-            await ctx.send(embed = embed)
-            return
-
-        coins = user['coins']
-        coins = coins + int(amt)
-        self.dbConnection.updateProfile({"id": id}, {"$set": {"coins": coins}})
-
-        userDiscord = discord.utils.get(self.client.get_all_members(), id=id)
-
-        embed = discord.Embed(
-            title = 'You\'ve been given `' + str(amt) + '` coins!',
-            description = 'Your total: `' + str(coins) + '` coins',
-            color = discord.Color.teal()
-        )
-        if reason != '':
-            embed.add_field(name='Reason: ', value=reason)
-        embed.set_thumbnail(url = 'https://www.mariowiki.com/images/thumb/1/17/CoinMK8.png/1200px-CoinMK8.png')
-
-        try:
-            await userDiscord.send(embed = embed)
-        except:
-            print('Could not send private message.')
-
-        embed = discord.Embed(
-            title = 'Gave ' + member.name + ' ' + str(amt) + ' coins!',
-            description = member.name + '\'s coin count: ' + str(coins),
-            color = discord.Color.teal()
-        )
-        await ctx.send(embed = embed)
-
-        #finding log channel
-        guild = ctx.guild
-        for ch in guild.text_channels:
-            if ch.name.lower() == 'log':
-                log = guild.get_channel(ch.id)
-                break
-
-        msg = '**<@' + str(member.id) + '>** was given ' + str(amt) + ' coins by **' + ctx.author.name + '**.'
-        if (reason != ''):
-            msg += '\n```' + reason + '```'
-
-        await log.send(msg)
-
-
-    @commands.command(aliases=['helpedby', 'thanks'])
-    async def rep(self, ctx):
-        members = ctx.message.mentions
-        log = ctx.guild.get_channel(self.ids['REP_CHANNEL'])
-
-        for member in members:
-            if ctx.author.id == member.id and not self.meta.isBotOwner(ctx.author):
-                embed = discord.Embed(
-                    title = 'You can\'t rep yourself!',
-                    color = discord.Color.teal()
-                )
-                await ctx.send(embed = embed)
-                return
-            else:
-                id = member.id
-                user = self.meta.getProfile(member)
-
-                helped = user['helped']
-                helped = helped + 1
-                self.dbConnection.updateProfile({"id": id}, {"$set": {"helped": helped}})
-                embed = discord.Embed(
-                    title = 'Repped ' + member.name + '!',
-                    description = member.name + '\'s rep count: ' + str(helped) + ' ' + self.emojis['HelpPoint'],
-                    color = discord.Color.teal()
-                )
-                await ctx.send(embed = embed)
-
-                msg = self.emojis['Helped2'] + ' **<@' + str(member.id) + '>** was repped by <@' + str(ctx.author.id) + '>. `['+str(helped-1)+'->'+str(helped)+']` <@&'+str(self.ids['MOD_ROLE'])+'>'
-                await log.send(msg)
-
-    @commands.command(aliases=['removehelped'])
-    async def derep(self, ctx):
         if not self.meta.isMod(ctx.author):
             return
 
-        members = ctx.message.mentions
-        log = ctx.guild.get_channel(self.ids['REP_CHANNEL'])
+        total = 0
+        profile = self.meta.getProfile(member)
+        if currency in ['coin', 'coins', 'c', 'cs']:
+            currency = 'coins'
+        elif currency in ['point', 'points', 'pts', 'pt']:
+            currency = 'points'
+        elif currency in ['pie', 'pies']:
+            currency = 'pies'
+        elif currency in ['bumps', 'bump']:
+            currency = 'bumps'
+        else:
+            await ctx.send(embed=self.meta.embedOops('Invalid currency type.'))
+            return
 
-        for member in members:
-            id = member.id
-            user = self.meta.getProfile(member)
+        total = self.meta.changeCurrency(member, amt, currency)
 
-            helped = user['helped']
-            helped -= 1
-            self.dbConnection.updateProfile({"id": id}, {"$set": {"helped": helped}})
+        if not total:
+            await ctx.send(embed=self.meta.embedOops())
+            return
 
-            embed = discord.Embed(
-                title = 'Derepped ' + member.name + '!',
-                description = member.name + '\'s rep count: ' + str(helped),
-                color = discord.Color.teal()
-            )
-            await ctx.send(embed = embed)
+        embed = discord.Embed(
+            title=f"{member.name} been given `{amt}` {currency}!",
+            description=f"Total: `{total}` {currency}",
+            color=discord.Color.gold()
+        )
 
-            msg = '**<@' + str(member.id) + '>** was derepped by <@' + str(ctx.author.id) + '>. `['+str(helped+1)+'->'+str(helped)+']`'
+        if amt > 0:
+            try:
+                await member.send(embed=embed)
+            finally:
+                print('Could not send private message.')
 
-            await log.send(msg)
+        await ctx.send(embed=embed)
 
 
 def setup(client):

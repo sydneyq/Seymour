@@ -36,7 +36,6 @@ class Actions(commands.Cog):
         'https://media.tenor.com/images/f6f87118730878c578e0f188da5270fc/tenor.gif',
         'https://media2.giphy.com/media/12BGUcW8xxpPRS/giphy.gif',
         'https://i.pinimg.com/originals/ee/85/19/ee851944b03a008493b05b17c1591eac.gif',
-        'https://media0.giphy.com/media/FQiJeR3HBLZT2/giphy.gif',
         'http://forgifs.com/gallery/d/245318-2/Sneaky-cat-nose-boop.gif',
         'https://i.imgur.com/5xTll0w.gif',
         'https://i.imgur.com/dkLJLrt.gif?noredirect',
