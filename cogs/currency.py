@@ -77,11 +77,12 @@ class Currency(commands.Cog):
         profile = self.meta.getProfile(ctx.author)
 
         # check if the author has a pie
-        if profile['pies'] > 0:
-            self.meta.changeCurrency(ctx.author, -1, 'pies')
-        else:
-            await ctx.send(embed=self.meta.embedOops('Not enough pies! Buy one at the `store`.'))
-            return
+        if not self.meta.isBotOwner(ctx.author):
+            if profile['pies'] > 0:
+                self.meta.changeCurrency(ctx.author, -1, 'pies')
+            else:
+                await ctx.send(embed=self.meta.embedOops('Not enough pies! Buy one at the `store`.'))
+                return
 
         first = ['Fun-Loving', 'Groovy', 'Wavy',
                  'Partying', 'Dancing', 'Cheesy',
