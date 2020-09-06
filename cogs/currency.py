@@ -78,7 +78,7 @@ class Currency(commands.Cog):
 
         # check if the author has a pie
         if profile['pies'] > 0:
-            self.meta.changeCurrency(member, -1, 'pies')
+            self.meta.changeCurrency(ctx.author, -1, 'pies')
         else:
             await ctx.send(embed=self.meta.embedOops('Not enough pies! Buy one at the `store`.'))
             return
@@ -121,7 +121,7 @@ class Currency(commands.Cog):
             self.meta.changeCurrency(member, 1, 'pies')
             return
 
-        await ctx.send(embed=self.meta.embedDone(f"{member.name}'s nickname has been changed to {nick}."))
+        await ctx.send(embed=self.meta.embedDone(f"**{member.name}**'s nickname has been changed to **{nick}**."))
 
     @commands.command(aliases=[])
     async def gift(self, ctx, member: discord.Member):
