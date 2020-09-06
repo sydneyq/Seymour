@@ -90,7 +90,7 @@ class Currency(commands.Cog):
                  'Creamy', 'Nerdy', 'Angry',
                  'Huggable', 'Undercover', 'Cursed',
                  'Cinnamon', 'Ice Cream', 'Glitter',
-                 'Sparkly', 'Disco'
+                 'Sparkly', 'Disco', 'Fuzzy'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
@@ -129,7 +129,7 @@ class Currency(commands.Cog):
 
         # check author has gift
         if profile['gifts'] > 0:
-            self.meta.changeCurrency(member, -1, 'gifts')
+            self.meta.changeCurrency(ctx.author, -1, 'gifts')
         else:
             await ctx.send(embed=self.meta.embedOops('You don\'t have enough gifts! Buy one at the `store`.'))
             return
@@ -144,7 +144,22 @@ class Currency(commands.Cog):
 
     @commands.command(aliases=[])
     async def buy(self, ctx, item: str):
-        pass
+        found = self.dbConnection.findStoreItem({"id": item})
+        if found is None:
+            await ctx.send(embed=self.meta.embedOops("I couldn't find the item."))
+            return
+
+        profile = self.meta.getProfile(ctx.author)
+        if profile['coins'] >= found['price']:
+            if self.meta.changeCurrency(ctx.author, 1, item):
+                coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
+                await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
+            else:
+                await ctx.send(embed=self.meta.embedOops("Something went wrong when adding the item."))
+                return
+        else:
+            await ctx.send(embed=self.meta.embedOops("You don't have enough coins."))
+            return
 
     @commands.command(aliases=['store'])
     async def shop(self, ctx):

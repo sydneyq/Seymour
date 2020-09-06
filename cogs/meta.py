@@ -383,12 +383,19 @@ class Meta:
         return abs(minutes - 1440)
 
     def changeCurrency(self, member: discord.Member, val: int, currency: str):
-        user = self.getProfile(member)
-        if currency not in ['coins', 'bumps', 'pts', 'points', 'pies']:
+        currency = currency.lower()
+
+        if currency not in ['coins', 'bumps', 'pts', 'points', 'pies', 'gift', 'gifts', 'pie', 'pies']:
             return False
+
         if currency == 'points':
             currency = 'pts'
+        elif currency == 'pie':
+            currency = 'pies'
+        elif currency == 'gift':
+            currency = 'gifts'
 
+        user = self.getProfile(member)
         total = user[currency]
         total += val
 
