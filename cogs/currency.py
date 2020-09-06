@@ -86,7 +86,7 @@ class Currency(commands.Cog):
 
         first = ['Fun-Loving', 'Groovy', 'Wavy',
                  'Partying', 'Dancing', 'Cheesy',
-                 'Bubbly', 'Gravy', 'Pizza',
+                 'Bubble', 'Gravy', 'Pizza',
                  'Pie', 'Sleepy', 'Vibing',
                  'Creamy', 'Nerdy', 'Angry',
                  'Huggable', 'Undercover', 'Cursed',
@@ -94,7 +94,7 @@ class Currency(commands.Cog):
                  'Sparkly', 'Disco', 'Fuzzy',
                  'Potato Salad', 'Lovable', 'Friendly',
                  'Beloved', 'Hypnotized', 'Surfing',
-                 'Sweet and Sour'
+                 'Sweet and Sour', 'Fluffy', 'Rainbow'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
@@ -109,9 +109,12 @@ class Currency(commands.Cog):
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',
-                 '🥖', '🧜', '🙆', '🥧', '💥',
-                 '🌈', '⛄️', '🐸', '🐨', '🐷',
-                 '🍗', '🍤', '🍬', '🧡', '💚'
+                 '🥓', '🧜', '🙆', '🥧', '💥',
+                 '🌈', '⛄️', '🐸', '🐨', '😳',
+                 '🍗', '🍤', '🍬', '🧡', '💚',
+                 '🍄', '🦄', '🐙', '🐱', '🤟',
+                 '✌️', '👍', '🙌', '🖖', '💪',
+                 '😘', '😉', '😏'
                  ]
 
         nick = f'{random.choice(first)} {random.choice(last)} {random.choice(emoji)}'
