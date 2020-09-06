@@ -98,10 +98,11 @@ class Currency(commands.Cog):
                 'Dolphin', 'Pillow', 'Bear',
                 'Bunny', 'President', 'Swimmer',
                 'Pie', 'Boss', 'Challenger',
-                'Unicorn', 'Rock Star', 'Mathematician',
+                'Unicorn', 'Rock Star', 'Dancer',
                 'Robot', 'Lunch', 'Pumpkin',
                 'Chef', 'Mango', 'Penguin',
-                'Bill Nye', 'Pudding'
+                'Bill Nye', 'Pudding',
+                'Overlord', 'Cupcake', 'Pastry'
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',
@@ -173,7 +174,7 @@ class Currency(commands.Cog):
         :return:
         """
 
-        embed = discord.Embed(color=discord.Color.orange(), title="Store", description="Buy something with `buy <item>`")
+        embed = discord.Embed(color=discord.Color.orange(), title="Store", description="Buy something with `buy <item>`.")
 
         items = self.dbConnection.findStoreItems({})
         for item in items:
