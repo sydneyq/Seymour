@@ -113,9 +113,12 @@ class Meta:
         )
         return embed
 
-    def embedDone(self):
+    def embedDone(self, desc=None):
+        if desc is None:
+            desc = 'Consider it done ✅'
         embed = discord.Embed(
-            title='Consider it done! ✅',
+            title='Gotcha!',
+            description=desc,
             color=discord.Color.teal()
         )
         return embed

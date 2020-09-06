@@ -127,6 +127,22 @@ class Database:
     def removeServer(self, toRemove):
         self.db.server.remove(toRemove)
 
+    # store
+    def findStoreItems(self, findCriteria):
+        return self.db.store.find(findCriteria)
+
+    def findStoreItem(self, findCriteria):
+        return self.db.store.find_one(findCriteria)
+
+    def updateStoreItem(self, updateCritera, change):
+        self.db.store.update(updateCritera, change)
+
+    def insertStoreItem(self, toInsert):
+        self.db.store.insert(toInsert)
+
+    def removeStoreItem(self, toRemove):
+        self.db.store.remove(toRemove)
+
     # db
     def makeColumn(self, title, value):
         self.db.profile.update({}, {"$set": {title: value}}, upsert=False, multi=True)
