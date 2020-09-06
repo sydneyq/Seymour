@@ -17,6 +17,44 @@ class Currency(commands.Cog):
         self.dbConnection = database
         self.meta = meta
 
+    @commands.command(aliases=['pt', 'rep'])
+    async def point(self, ctx, member: discord.Member, amt: int = 1):
+        """
+        give someone points with 50c/each
+        :param amt:
+        :param ctx:
+        :param member:
+        :return:
+        """
+        if not self.meta.isMod(ctx.author):
+            return
+
+        profile = self.meta.getProfile(member)
+        og_pts = profile['pts']
+        og_coins = profile['coins']
+
+        add_coins = amt * 50
+        total = self.meta.changeCurrency(member, amt, 'pts')
+        coins = self.meta.changeCurrency(member, add_coins, 'coins')
+
+        desc = f"**{member.name}** has been given `{amt}` points and `50` coins for each point (`{add_coins}`)!"
+        desc += f"\n**Points:** `{og_pts}` -> `{total}`"
+        desc += f"\n**Coins:** `{og_coins}` -> `{coins}`"
+
+        embed = discord.Embed(
+            title=f"{member.name} has been given `{amt}` points!",
+            description=f"Total: `{total}` points",
+            color=discord.Color.gold()
+        )
+
+        if amt > 0:
+            try:
+                await member.send(embed=embed)
+            except:
+                print('Could not send private message.')
+
+        await ctx.send(embed=embed)
+
     @commands.command(aliases=['take'])
     async def give(self, ctx, member: discord.Member, amt: int, currency: str):
         """
@@ -109,7 +147,7 @@ class Currency(commands.Cog):
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',
-                 '🥓', '🧜', '🙆', '🥧', '💥',
+                 '🥓', '🧜', '🧐', '🥧', '💥',
                  '🌈', '⛄️', '🐸', '🐨', '😳',
                  '🍗', '🍤', '🍬', '🧡', '💚',
                  '🍄', '🦄', '🐙', '🐱', '🤟',
