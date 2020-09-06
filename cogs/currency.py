@@ -90,7 +90,9 @@ class Currency(commands.Cog):
                  'Creamy', 'Nerdy', 'Angry',
                  'Huggable', 'Undercover', 'Cursed',
                  'Cinnamon', 'Ice Cream', 'Glitter',
-                 'Sparkly', 'Disco', 'Fuzzy'
+                 'Sparkly', 'Disco', 'Fuzzy',
+                 'Potato Salad', 'Lovable', 'Friendly',
+                 'Beloved', 'Hypnotized'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
@@ -102,8 +104,8 @@ class Currency(commands.Cog):
                 'Bill Nye', 'Pudding'
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
-                 '🤯', '🥴', '🤖', '👻', '👁',
-                 '🧠', '🧜', '🙆', '🥧', '💥',
+                 '🤯', '🥴', '🤖', '👻', '🦌',
+                 '🥖', '🧜', '🙆', '🥧', '💥',
                  '🌈', '⛄️', '🐸', '🐨', '🐷',
                  '🍗', '🍤', '🍬', '🧡', '💚'
                  ]
@@ -161,7 +163,7 @@ class Currency(commands.Cog):
             await ctx.send(embed=self.meta.embedOops("You don't have enough coins."))
             return
 
-    @commands.command(aliases=['store'])
+    @commands.command(aliases=['store', 's'])
     async def shop(self, ctx):
         """
         pies: 200 (?)c
@@ -171,11 +173,11 @@ class Currency(commands.Cog):
         :return:
         """
 
-        embed = discord.Embed(color=discord.Color.orange())
+        embed = discord.Embed(color=discord.Color.orange(), title="Store", description="Buy something with `buy <item>`")
 
         items = self.dbConnection.findStoreItems({})
         for item in items:
-            embed.add_field(name=f"{item['price']}: {item['id']}", value=item['desc'], inline=False)
+            embed.add_field(name=f"{item['price']}c: {item['id']}", value=item['desc'], inline=False)
 
         await ctx.send(embed=embed)
 
