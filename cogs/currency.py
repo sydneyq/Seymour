@@ -37,13 +37,12 @@ class Currency(commands.Cog):
         total = self.meta.changeCurrency(member, amt, 'pts')
         coins = self.meta.changeCurrency(member, add_coins, 'coins')
 
-        desc = f"**{member.name}** has been given `{amt}` points and `50` coins for each point (`{add_coins}`)!"
-        desc += f"\n**Points:** `{og_pts}` -> `{total}`"
+        desc = f"\n**Points:** `{og_pts}` -> `{total}`"
         desc += f"\n**Coins:** `{og_coins}` -> `{coins}`"
 
         embed = discord.Embed(
-            title=f"{member.name} has been given `{amt}` points!",
-            description=f"Total: `{total}` points",
+            title=f"**{member.name}** has been given `{amt}` points and `50` coins for each point (`{add_coins}`)!",
+            description=desc,
             color=discord.Color.gold()
         )
 
