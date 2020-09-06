@@ -59,7 +59,7 @@ class Currency(commands.Cog):
             return
 
         embed = discord.Embed(
-            title=f"{member.name} been given `{amt}` {currency}!",
+            title=f"{member.name} has been given `{amt}` {currency}!",
             description=f"Total: `{total}` {currency}",
             color=discord.Color.gold()
         )
