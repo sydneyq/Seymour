@@ -93,7 +93,8 @@ class Currency(commands.Cog):
                  'Cinnamon', 'Ice Cream', 'Glitter',
                  'Sparkly', 'Disco', 'Fuzzy',
                  'Potato Salad', 'Lovable', 'Friendly',
-                 'Beloved', 'Hypnotized'
+                 'Beloved', 'Hypnotized', 'Surfing',
+                 'Sweet and Sour'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
@@ -103,7 +104,8 @@ class Currency(commands.Cog):
                 'Robot', 'Lunch', 'Pumpkin',
                 'Chef', 'Mango', 'Penguin',
                 'Bill Nye', 'Pudding',
-                'Overlord', 'Cupcake', 'Pastry'
+                'Overlord', 'Cupcake', 'Pastry',
+                'Bee'
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',
@@ -122,7 +124,7 @@ class Currency(commands.Cog):
             # safety: add 1 pie back
             print('Edit nickname failed.')
             await ctx.send(embed=self.meta.embedOops('Edit nickname failed.'))
-            self.meta.changeCurrency(member, 1, 'pies')
+            self.meta.changeCurrency(ctx.author, 1, 'pies')
             return
 
         await ctx.send(embed=self.meta.embedDone(f"**{member.name}**'s nickname has been changed to **{nick}**."))
