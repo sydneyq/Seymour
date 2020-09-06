@@ -100,7 +100,6 @@ class Actions(commands.Cog):
         'https://media2.giphy.com/media/3oEduV4SOS9mmmIOkw/source.gif',
         'https://i.kym-cdn.com/photos/images/original/001/243/126/c3f.gif',
         'https://i.pinimg.com/originals/5d/ef/be/5defbe81dc43fe590cd2d6d9a9284ae4.gif',
-        'http://i2.asntown.net/h4/13/funny-gif/3/32/epic-high-five-pokemon-ash-dawn.gif',
         'https://static.fjcdn.com/gifs/High+five_000cd3_5489107.gif',
         'https://media1.tenor.com/images/1d9b884cf8e3fbb2b86c29e3387b5c0a/tenor.gif?itemid=13496809',
         'https://media1.tenor.com/images/19e2d653676ce30584b9f0f58245d245/tenor.gif?itemid=9330808',
