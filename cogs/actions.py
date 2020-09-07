@@ -15,7 +15,7 @@ class Actions(commands.Cog):
             embed = discord.Embed(
                 title=f"{action_undone}!",
                 description=f"{', '.join(mention.mention for mention in mentions)}, "
-                            f"you've just been {action_done} by {author.name}!'",
+                            f"you've just been {action_done} by {author.mention}!",
                 color=discord.Color.teal()
             )
             embed.set_thumbnail(url=gif)
