@@ -10,15 +10,12 @@ class Actions(commands.Cog):
 
     def action(self, author, msg, gif, action_done, action_undone):
         mentions = msg.mentions
-        names = ''
 
-        for mention in mentions:
-            names += mention.name + ', '
-
-        if names != '':
+        if len(mentions) > 0:
             embed = discord.Embed(
                 title=f"{action_undone}!",
-                description=f"{', '.join(mentions)}, you've just been {action_done} by {author.name}!'",
+                description=f"{', '.join(mention.mention for mention in mentions)}, "
+                            f"you've just been {action_done} by {author.name}!'",
                 color=discord.Color.teal()
             )
             embed.set_thumbnail(url=gif)
