@@ -131,7 +131,8 @@ class Currency(commands.Cog):
                  'Sparkly', 'Disco', 'Fuzzy',
                  'Potato Salad', 'Lovable', 'Friendly',
                  'Beloved', 'Hypnotized', 'Surfing',
-                 'Sweet and Sour', 'Fluffy', 'Rainbow'
+                 'Sweet and Sour', 'Fluffy', 'Rainbow',
+                 'Bubblegum', 'Sparkle', 'Confetti'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
@@ -142,7 +143,7 @@ class Currency(commands.Cog):
                 'Chef', 'Mango', 'Penguin',
                 'Bill Nye', 'Pudding',
                 'Overlord', 'Cupcake', 'Pastry',
-                'Bee'
+                'Bee', 'Musician'
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',

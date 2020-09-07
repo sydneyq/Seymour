@@ -19,14 +19,14 @@ class Actions(commands.Cog):
                 title = names + 'you\'ve just been ' + action_done + '!',
                 color = discord.Color.teal()
             )
-            embed.set_image(url = gif)
+            embed.set_thumbnail(url = gif)
             return embed
         else:
             embed = discord.Embed(
                 title = action_undone + '!',
                 color = discord.Color.teal()
             )
-            embed.set_image(url = gif)
+            embed.set_thumbnail(url = gif)
             return embed
 
 
