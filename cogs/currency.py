@@ -114,10 +114,11 @@ class Currency(commands.Cog):
         profile = self.meta.getProfile(ctx.author)
 
         # check if the author has a pie
-        if not self.meta.isBotOwner(ctx.author):
-            if profile['pies'] > 0:
-                self.meta.changeCurrency(ctx.author, -1, 'pies')
-            else:
+
+        if profile['pies'] > 0:
+            self.meta.changeCurrency(ctx.author, -1, 'pies')
+        else:
+            if not self.meta.isBotOwner(ctx.author):
                 await ctx.send(embed=self.meta.embedOops('Not enough pies! Buy one at the `store`.'))
                 return
 
@@ -132,18 +133,19 @@ class Currency(commands.Cog):
                  'Potato Salad', 'Lovable', 'Friendly',
                  'Beloved', 'Hypnotized', 'Surfing',
                  'Sweet and Sour', 'Fluffy', 'Rainbow',
-                 'Bubblegum', 'Sparkle', 'Confetti'
+                 'Bubblegum', 'Sparkle', 'Confetti',
+                 'Delicious', 'Cherry'
                  ]
         last = ['Pirate', 'Dinosaur', 'Plant',
                 'Dolphin', 'Pillow', 'Bear',
-                'Bunny', 'President', 'Swimmer',
+                'Bunny', 'Spy', 'Swimmer',
                 'Pie', 'Boss', 'Challenger',
                 'Unicorn', 'Rock Star', 'Dancer',
                 'Robot', 'Lunch', 'Pumpkin',
                 'Chef', 'Mango', 'Penguin',
                 'Bill Nye', 'Pudding',
                 'Overlord', 'Cupcake', 'Pastry',
-                'Bee', 'Musician'
+                'Bee', 'Painter'
                 ]
         emoji = ['😍', '😇', '🥳', '😎', '🤓',
                  '🤯', '🥴', '🤖', '👻', '🦌',
