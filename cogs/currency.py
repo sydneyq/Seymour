@@ -64,20 +64,25 @@ class Currency(commands.Cog):
         await msg.add_reaction('✅')
         await msg.add_reaction('⛔')
 
+        emoji = ''
+
         def check(react, responder):
+            nonlocal emoji
+            emoji = str(react.emoji)
+
             if self.meta.isMod(responder):
                 if str(react.emoji) == '⛔' or str(react.emoji) == '✅':
-                    return str(react.emoji)
+                    return True
             elif responder in mentions:
                 confirmed[responder.id] = True
                 if str(react.emoji) == '⛔':
-                    return '⛔'
+                    return False
                 if len(confirmed) >= minimum:
-                    return '✅'
+                    return True
                 return False
 
         try:
-            emoji = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
+            react, reacter = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Action timed out."))
             return
