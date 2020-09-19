@@ -64,23 +64,20 @@ class Currency(commands.Cog):
         await msg.add_reaction('✅')
         await msg.add_reaction('⛔')
 
-        emoji = ''
-
         def check(react, responder):
-            nonlocal emoji
-            emoji = str(react.emoji)
-
             if self.meta.isMod(responder):
-                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
+                if str(react.emoji) == '⛔' or str(react.emoji) == '✅':
+                    return str(react.emoji)
             elif responder in mentions:
                 confirmed[responder.id] = True
                 if str(react.emoji) == '⛔':
-                    return True
+                    return '⛔'
                 if len(confirmed) >= minimum:
-                    return True
+                    return '✅'
+                return False
 
         try:
-            reaction, responder = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
+            emoji = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Action timed out."))
             return
@@ -88,18 +85,18 @@ class Currency(commands.Cog):
             if emoji == '⛔':
                 await msg.edit(embed=self.meta.embedOops("Action cancelled."))
                 return
+            elif emoji == '✅':
+                # add point & 50c to every member & host
+                await self.point(ctx.author)
+                desc = [f'**{ctx.author.mention}**']
+                for member in mentions:
+                    await self.point(member)
+                    desc.append(member.mention)
 
-            # add point & 50c to every member & host
-            await self.point(ctx.author)
-            desc = [f'**{ctx.author.mention}**']
-            for member in mentions:
-                await self.point(member)
-                desc.append(member.mention)
-
-            desc = f"*Everyone gets one point and 50 coins for participating!*" \
-                   f"\n{', '.join(desc)}"
-            await msg.edit(embed=self.meta.embedDone(desc))
-            return
+                desc = f"*Everyone gets one point and 50 coins for participating!*" \
+                       f"\n{', '.join(desc)}"
+                await msg.edit(embed=self.meta.embedDone(desc))
+                return
 
     @commands.command(aliases=['derep', 'dept'])
     async def depoint(self, ctx, member: discord.Member):
