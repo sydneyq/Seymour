@@ -42,7 +42,13 @@ class Currency(commands.Cog):
             await ctx.send(embed=self.meta.embedOops("You haven't tagged any participants!"))
             return
 
-        minimum = math.ceil(len(ctx.message.mentions)/2)
+        # check if any mentions are bots or self
+        for member in mentions:
+            if member.bot or member == ctx.author:
+                await ctx.send(embed=self.meta.embedOops())
+                return
+
+        minimum = math.ceil(len(ctx.message.mentions) / 2)
         confirmed = dd(lambda: True)
 
         desc = "Please have at least half all of the participants confirm by check mark reacting to this message."
@@ -96,16 +102,21 @@ class Currency(commands.Cog):
             return
 
     @commands.command(aliases=['derep', 'dept'])
-    async def depoint(self, ctx):
+    async def depoint(self, ctx, member: discord.Member):
         """
         remove a point & 50 coins from everyone mentioned
+        :param member:
         :param ctx:
         :return:
         """
 
         if not self.meta.isMod(ctx.author):
             return
-        pass
+
+        total = self.meta.changeCurrency(member, -1, 'pts')
+        coins = self.meta.changeCurrency(member, -50, 'coins')
+        await ctx.send(embed=self.meta.embedDone())
+        return
 
     @commands.command(aliases=['pt', 'rep'])
     async def point(self, ctx, member: discord.Member, amt: int = 1):
