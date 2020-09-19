@@ -48,11 +48,8 @@ class Currency(commands.Cog):
                 await ctx.send(embed=self.meta.embedOops())
                 return
 
-        minimum = math.ceil(len(ctx.message.mentions) / 2)
-        confirmed = dd(lambda: True)
-
-        desc = "Please have at least half all of the participants confirm by check mark reacting to this message."
-        desc += "\nThis confirmation will time out in 10 minutes."
+        desc = "Please have at least one of the participants confirm by check mark reacting to this message."
+        desc += "\nThis confirmation will time out in 1 minute."
 
         embed = discord.Embed(
             title="Event Confirmation",
@@ -71,36 +68,30 @@ class Currency(commands.Cog):
             emoji = str(react.emoji)
 
             if self.meta.isMod(responder):
-                if str(react.emoji) == '⛔' or str(react.emoji) == '✅':
-                    return True
+                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
             elif responder in mentions:
-                confirmed[responder.id] = True
-                if str(react.emoji) == '⛔':
-                    return False
-                if len(confirmed) >= minimum:
-                    return True
-            return False
+                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
 
         try:
-            react, reacter = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
+            react, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Action timed out."))
             return
         else:
-            if emoji == '⛔':
-                await msg.edit(embed=self.meta.embedOops("Action cancelled."))
-                return
-            elif emoji == '✅':
+            if emoji == '✅':
                 # add point & 50c to every member & host
                 await self.point(ctx.author)
-                desc = [f'**{ctx.author.mention}**']
+                desc = [f'*{ctx.author.mention}*']
                 for member in mentions:
                     await self.point(member)
                     desc.append(member.mention)
 
-                desc = f"*Everyone gets one point and 50 coins for participating!*" \
+                desc = f"**__Everyone gets one point and 50 coins for participating!__**" \
                        f"\n{', '.join(desc)}"
                 await msg.edit(embed=self.meta.embedDone(desc))
+                return
+            else:
+                await msg.edit(embed=self.meta.embedOops("Action cancelled."))
                 return
 
     @commands.command(aliases=['derep', 'dept'])
