@@ -67,10 +67,12 @@ class Currency(commands.Cog):
             nonlocal emoji
             emoji = str(react.emoji)
 
-            if self.meta.isMod(responder):
-                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
-            elif responder in mentions:
-                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
+            if not responder.bot:
+                if self.meta.isMod(responder):
+                    return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
+                elif responder in mentions:
+                    return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
+            return False
 
         try:
             react, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
