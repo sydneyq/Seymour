@@ -41,7 +41,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'booped', 'boop'))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['pet', '*pet*', '*pat*'])
     async def pat(self, ctx):
         responses = ['https://cdn.discordapp.com/attachments/257751892241809408/597979644725166097/unknown.gif',
                      'https://i.gifer.com/7A80.gif',
@@ -55,7 +55,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'patted', 'patpat'))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['*hug*', 'huggle', 'snuggle', 'cuddle', 'snug'])
     async def hug(self, ctx):
         responses = ['https://media1.giphy.com/media/Lb3vIJjaSIQWA/source.gif',
                      'https://treasuredscriptcom.files.wordpress.com/2018/09/hiro-hugging-baymax1.gif',

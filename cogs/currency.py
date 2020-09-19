@@ -8,6 +8,8 @@ import os
 import asyncio
 from numpy.random import choice
 import secret
+from collections import defaultdict as dd
+import math
 
 
 class Currency(commands.Cog):
@@ -16,6 +18,94 @@ class Currency(commands.Cog):
         self.client = client
         self.dbConnection = database
         self.meta = meta
+
+    def buy(self):
+        pass
+
+    def point(self, member: discord.Member, amt: int = 1):
+        add_coins = amt * 50
+        points = self.meta.changeCurrency(member, amt, 'pts')
+        coins = self.meta.changeCurrency(member, add_coins, 'coins')
+
+        return points, coins
+
+    @commands.command(aliases=['host', 'hosted', 'session'])
+    async def event(self, ctx):
+        """
+        author hosts an event
+        host & all mentions get a point & 50c
+        must have all members confirm, 1 mod
+        :return:
+        """
+        mentions = ctx.message.mentions
+        if len(mentions) <= 0:
+            await ctx.send(embed=self.meta.embedOops("You haven't tagged any participants!"))
+            return
+
+        minimum = math.ceil(len(ctx.message.mentions)/2)
+        confirmed = dd(lambda: True)
+
+        desc = "Please have at least half all of the participants confirm by check mark reacting to this message."
+        desc += "\nThis confirmation will time out in 10 minutes."
+
+        embed = discord.Embed(
+            title="Event Confirmation",
+            description=desc,
+            color=discord.Color.gold()
+        )
+
+        msg = await ctx.send(embed=embed)
+        await msg.add_reaction('✅')
+        await msg.add_reaction('⛔')
+
+        emoji = ''
+
+        def check(react, responder):
+            nonlocal emoji
+            emoji = str(react.emoji)
+
+            if self.meta.isMod(responder):
+                return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
+            elif responder in mentions:
+                confirmed[responder.id] = True
+                if str(react.emoji) == '⛔':
+                    return True
+                if len(confirmed) >= minimum:
+                    return True
+
+        try:
+            reaction, responder = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
+        except asyncio.TimeoutError:
+            await msg.edit(embed=self.meta.embedOops("Action timed out."))
+            return
+        else:
+            if emoji == '⛔':
+                await msg.edit(embed=self.meta.embedOops("Action cancelled."))
+                return
+
+            # add point & 50c to every member & host
+            await self.point(ctx.author)
+            desc = [f'**{ctx.author.mention}**']
+            for member in mentions:
+                await self.point(member)
+                desc.append(member.mention)
+
+            desc = f"*Everyone gets one point and 50 coins for participating!*" \
+                   f"\n{', '.join(desc)}"
+            await msg.edit(embed=self.meta.embedDone(desc))
+            return
+
+    @commands.command(aliases=['derep', 'dept'])
+    async def depoint(self, ctx):
+        """
+        remove a point & 50 coins from everyone mentioned
+        :param ctx:
+        :return:
+        """
+
+        if not self.meta.isMod(ctx.author):
+            return
+        pass
 
     @commands.command(aliases=['pt', 'rep'])
     async def point(self, ctx, member: discord.Member, amt: int = 1):
@@ -119,17 +209,25 @@ class Currency(commands.Cog):
             self.meta.changeCurrency(ctx.author, -1, 'pies')
         else:
             if not self.meta.isBotOwner(ctx.author):
-                await ctx.send(embed=self.meta.embedOops('Not enough pies! Buy one at the `store`.'))
+                # check if the author can buy a pie
+                profile = self.meta.getProfile(ctx.author)
+
+                price = self.dbConnection.findStoreItem({"id": "pie"})['price']
+                if profile['coins'] >= price:
+                    self.meta.changeCurrency(ctx.author, -1 * price, 'coins')
+
+                await ctx.send(embed=self.meta.embedOops(f'Not enough pies or coins to buy one! A pie costs `{price}` '
+                                                         f'coins.'))
                 return
 
         first = ['Fun-Loving', 'Groovy', 'Wavy',
                  'Partying', 'Dancing', 'Cheesy',
                  'Bubble', 'Gravy', 'Pizza',
                  'Pie', 'Sleepy', 'Vibing',
-                 'Creamy', 'Nerdy', 'Angry',
-                 'Huggable', 'Undercover', 'Cursed',
+                 'Chocolate', 'Fruity', 'Angry',
+                 'Huggable', 'Undercover', 'Fancy',
                  'Cinnamon', 'Ice Cream', 'Glitter',
-                 'Sparkly', 'Disco', 'Fuzzy',
+                 'Sparkly', 'Disco', 'Pink',
                  'Potato Salad', 'Lovable', 'Friendly',
                  'Beloved', 'Hypnotized', 'Surfing',
                  'Sweet and Sour', 'Fluffy', 'Rainbow',
@@ -220,13 +318,15 @@ class Currency(commands.Cog):
         :return:
         """
 
-        embed = discord.Embed(color=discord.Color.orange(), title="Store", description="Buy something with `buy <item>`.")
+        embed = discord.Embed(color=discord.Color.orange(), title="Store",
+                              description="Buy something with `buy <item>`.")
 
         items = self.dbConnection.findStoreItems({})
         for item in items:
             embed.add_field(name=f"{item['price']}c: {item['id']}", value=item['desc'], inline=False)
 
         await ctx.send(embed=embed)
+
 
 def setup(client):
     database_connection = Database()
