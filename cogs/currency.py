@@ -79,7 +79,7 @@ class Currency(commands.Cog):
                     return False
                 if len(confirmed) >= minimum:
                     return True
-                return False
+            return False
 
         try:
             react, reacter = await self.client.wait_for('reaction_add', timeout=600.0, check=check)
