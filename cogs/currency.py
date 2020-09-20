@@ -43,7 +43,7 @@ class Currency(commands.Cog):
 
         desc = "*Please have at least one of the participants confirm by check mark reacting to this message."
         desc += " This confirmation will time out in 1 minute.*"
-        desc += f"\n`Host:` {ctx.author.mention} \n`Participants:` {', '.join(ctx.message.mentions)}"
+        desc += f"\n`Host:` {ctx.author.mention} \n`Participants:` {', '.join(mention.mention for mention in ctx.message.mentions)} "
 
         embed = discord.Embed(
             title="Event Confirmation",
