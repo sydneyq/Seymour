@@ -56,10 +56,13 @@ class Currency(commands.Cog):
         await msg.add_reaction('⛔')
 
         emoji = ''
+        confirmer = ''
 
         def check(react, responder):
             nonlocal emoji
             emoji = str(react.emoji)
+            nonlocal confirmer
+            confirmer = responder
 
             if not responder.bot:
                 if self.meta.isMod(responder):
@@ -90,6 +93,7 @@ class Currency(commands.Cog):
                     point(member)
                     desc.append(member.mention)
 
+                desc += f"\n`Host:` {ctx.author.mention} | `Confirmer:` {confirmer.mention} "
                 desc = f"**__Everyone gets one point and 50 coins for participating!__**" \
                        f"\n{', '.join(desc)}"
                 await msg.edit(embed=self.meta.embedDone(desc))
