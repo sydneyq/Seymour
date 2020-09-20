@@ -93,8 +93,8 @@ class Currency(commands.Cog):
                     point(member)
                     desc.append(member.mention)
 
-                desc += f"\n`Host:` {ctx.author.mention} | `Confirmer:` {confirmer.mention} "
-                desc = f"**__Everyone gets one point and 50 coins for participating!__**" \
+                desc = f"\n`Host:` {ctx.author.mention} | `Confirmer:` {confirmer.mention} " \
+                       f"**__Everyone gets one point and 50 coins for participating!__**" \
                        f"\n{', '.join(desc)}"
                 await msg.edit(embed=self.meta.embedDone(desc))
                 return
