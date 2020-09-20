@@ -22,13 +22,6 @@ class Currency(commands.Cog):
     def buy(self):
         pass
 
-    def point(self, member: discord.Member, amt: int = 1):
-        add_coins = amt * 50
-        points = self.meta.changeCurrency(member, amt, 'pts')
-        coins = self.meta.changeCurrency(member, add_coins, 'coins')
-
-        return points, coins
-
     @commands.command(aliases=['host', 'hosted', 'session'])
     async def event(self, ctx):
         """
@@ -81,11 +74,19 @@ class Currency(commands.Cog):
             return
         else:
             if emoji == '✅':
+
+                def point(m: discord.Member, amt: int = 1):
+                    add_coins = amt * 50
+                    points = self.meta.changeCurrency(m, amt, 'pts')
+                    coins = self.meta.changeCurrency(m, add_coins, 'coins')
+
+                    return points, coins
+
                 # add point & 50c to every member & host
-                await self.point(self, ctx.author)
+                point(ctx.author)
                 desc = [f'*{ctx.author.mention}*']
                 for member in mentions:
-                    await self.point(member)
+                    point(member)
                     desc.append(member.mention)
 
                 desc = f"**__Everyone gets one point and 50 coins for participating!__**" \
