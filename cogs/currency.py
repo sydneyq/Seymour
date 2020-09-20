@@ -41,8 +41,9 @@ class Currency(commands.Cog):
                 await ctx.send(embed=self.meta.embedOops())
                 return
 
-        desc = "Please have at least one of the participants confirm by check mark reacting to this message."
-        desc += "\nThis confirmation will time out in 1 minute."
+        desc = "*Please have at least one of the participants confirm by check mark reacting to this message."
+        desc += " This confirmation will time out in 1 minute.*"
+        desc += f"\n`Host:` {ctx.author.mention} \n`Participants:` {', '.join(ctx.message.mentions)}"
 
         embed = discord.Embed(
             title="Event Confirmation",
