@@ -82,7 +82,7 @@ class Currency(commands.Cog):
         else:
             if emoji == '✅':
                 # add point & 50c to every member & host
-                await self.point(ctx.author)
+                await self.point(self, ctx.author)
                 desc = [f'*{ctx.author.mention}*']
                 for member in mentions:
                     await self.point(member)
