@@ -65,9 +65,7 @@ class Currency(commands.Cog):
             confirmer = responder
 
             if not responder.bot:
-                if self.meta.isMod(responder):
-                    return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
-                elif responder in mentions:
+                if self.meta.isMod(responder) or responder in mentions:
                     return str(react.emoji) == '✅' or str(react.emoji) == '⛔'
             return False
 
@@ -94,7 +92,7 @@ class Currency(commands.Cog):
                     desc.append(member.mention)
 
                 desc = f"`Host:` {ctx.author.mention} | `Confirmer:` {confirmer.mention} " \
-                       f"\n**__Everyone gets one point and 50 coins for participating!__**" \
+                       f"\n**__Everyone gets `1` point and `50` coins for participating!__**" \
                        f"\n{', '.join(desc)}"
                 await msg.edit(embed=self.meta.embedDone(desc))
                 return
@@ -227,10 +225,10 @@ class Currency(commands.Cog):
                 price = self.dbConnection.findStoreItem({"id": "pie"})['price']
                 if profile['coins'] >= price:
                     self.meta.changeCurrency(ctx.author, -1 * price, 'coins')
-
-                await ctx.send(embed=self.meta.embedOops(f'Not enough pies or coins to buy one! A pie costs `{price}` '
-                                                         f'coins.'))
-                return
+                else:
+                    await ctx.send(embed=self.meta.embedOops(f'Not enough pies or coins to buy one! '
+                                                             f'A pie costs `{price}` coins.'))
+                    return
 
         first = ['Fun-Loving', 'Groovy', 'Wavy',
                  'Partying', 'Dancing', 'Cheesy',
@@ -290,8 +288,16 @@ class Currency(commands.Cog):
         if profile['gifts'] > 0:
             self.meta.changeCurrency(ctx.author, -1, 'gifts')
         else:
-            await ctx.send(embed=self.meta.embedOops('You don\'t have enough gifts! Buy one at the `store`.'))
-            return
+            # check if they can afford a gift
+            profile = self.meta.getProfile(ctx.author)
+
+            price = self.dbConnection.findStoreItem({"id": "gift"})['price']
+            if profile['coins'] >= price:
+                self.meta.changeCurrency(ctx.author, -1 * price, 'coins')
+            else:
+                await ctx.send(embed=self.meta.embedOops(f'Not enough gifts or coins to buy one! '
+                                                         f'A gift costs `{price}` coins.'))
+                return
 
         # randomize amt & give to member
         amt = random.choice([50, 75, 100])

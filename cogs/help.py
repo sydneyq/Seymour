@@ -47,7 +47,7 @@ class Help(commands.Cog):
         `punch [@user]` - Punch someone!
         `high5 [@user]` - AKA `highfive`, `hi5`. Highfive someone!
         `boop [@user]` - Boop someone!
-        `blep` - Blep!"""
+        `pat [@user]` - Pat someone!"""
         embed.add_field(name='Actions', value=actions)
 
         await ctx.send(embed=embed)
