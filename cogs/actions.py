@@ -126,8 +126,6 @@ class Actions(commands.Cog):
     @commands.command()
     async def salute(self, ctx):
         responses = ['https://media0.giphy.com/media/3o7qE5ceqLBHRR0C64/source.gif',
-                     'https://media.tenor.co/videos/d114042b809a8804ed3b19b999173595/mp4',
-                     'https://media.tenor.co/videos/e63e1f0e1851142a19af9181bee2f7bb/mp4',
                      'https://i.pinimg.com/originals/74/37/ad/7437ade393b61b4993fe79b3bb94c3dc.gif',
                      'https://media3.giphy.com/media/26DNfpeNpx1hSQf1C/giphy.gif',
                      'https://i.gifer.com/AYoH.gif',
