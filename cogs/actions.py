@@ -131,7 +131,12 @@ class Actions(commands.Cog):
                      'https://i.pinimg.com/originals/74/37/ad/7437ade393b61b4993fe79b3bb94c3dc.gif',
                      'https://media3.giphy.com/media/26DNfpeNpx1hSQf1C/giphy.gif',
                      'https://i.gifer.com/AYoH.gif',
-                     'https://media.tenor.com/images/8dcf457f157a440d92d59362d1dc83e1/tenor.gif']
+                     'https://media.tenor.com/images/8dcf457f157a440d92d59362d1dc83e1/tenor.gif',
+                     'https://media1.tenor.com/images/30523d002f276f8436dbcd1e5289ff96/tenor.gif',
+                     'https://media1.giphy.com/media/VG1jCySAPvTD2JNyi8/giphy.gif',
+                     'https://media.tenor.com/images/b24a29cfbaed590c3632fd7fe3be6a18/tenor.gif',
+                     'https://derpicdn.net/img/2017/4/16/1413545/large.gif',
+                     'https://3.bp.blogspot.com/-mgQDV6p-2-Q/W1kpETxpe9I/AAAAAAALjeI/-T9g_ash1ZoagB1ICvofpfuD34ONmlR0ACLcBGAs/s1600/AS0004244_04.gif']
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'saluted', 'salute'))
 
 
