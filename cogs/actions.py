@@ -1,12 +1,16 @@
 import discord
 import random
 from discord.ext import commands
+from database import Database
+from .meta import Meta
 
 
 class Actions(commands.Cog):
 
-    def __init__(self, client):
+    def __init__(self, client, database, meta):
         self.client = client
+        self.dbConnection = database
+        self.meta = meta
 
     def action(self, author, msg, gif, action_done, action_undone):
         mentions = msg.mentions
@@ -28,8 +32,15 @@ class Actions(commands.Cog):
             embed.set_thumbnail(url=gif)
             return embed
 
-    @commands.command(pass_context=True)
+    def has_action(self, member: discord.Member, action: str):
+        return False
+
+    @commands.command(pass_context=True, aliases=['*boop*', 'bop', '*bop*'])
     async def boop(self, ctx):
+        if not self.has_action(ctx.author, 'boop'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
         responses = ['https://media1.tenor.com/images/083ccb85ea107a76b5030cbcb43cbf36/tenor.gif?itemid=7296714',
                      'https://media.tenor.com/images/f6f87118730878c578e0f188da5270fc/tenor.gif',
                      'https://media2.giphy.com/media/12BGUcW8xxpPRS/giphy.gif',
@@ -66,12 +77,17 @@ class Actions(commands.Cog):
                      'https://media3.giphy.com/media/hdOrhnBB6Enuw/source.gif',
                      'https://i.pinimg.com/originals/f3/48/a9/f348a9ffee1943fbe248fa2dc7eb3f19.gif',
                      'https://66.media.tumblr.com/51a12abd75d1f8f6f9a3846e6d2bd528/tumblr_inline_nmm9z1X2sS1s8zbfz_500.gif',
-                     'https://66.media.tumblr.com/c27d1adbe7410191d24c8f62a68695a9/tumblr_inline_nmmazxORzb1s8zbfz_500.gif']
+                     'https://66.media.tumblr.com/c27d1adbe7410191d24c8f62a68695a9/tumblr_inline_nmmazxORzb1s8zbfz_500.gif',
+                     'https://media.discordapp.net/attachments/728736226709864549/757723733623570612/tenor.gif']
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'hugged', 'hug'))
 
     @commands.command(aliases=['hit'])
     async def punch(self, ctx):
+        if not self.has_action(ctx.author, 'punch'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
         responses = ['https://media1.tenor.com/images/e27431e7f3ae7f5e2e8fc4fe4f399754/tenor.gif',
                      'https://media.giphy.com/media/A9sF6v36DEoF2/giphy.gif',
                      'https://media1.tenor.com/images/023ab6036cecc5f2950fb5cada385e2c/tenor.gif',
@@ -107,6 +123,19 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'highfived', 'highfive'))
 
+    @commands.command()
+    async def salute(self, ctx):
+        responses = ['https://media0.giphy.com/media/3o7qE5ceqLBHRR0C64/source.gif',
+                     'https://media.tenor.co/videos/d114042b809a8804ed3b19b999173595/mp4',
+                     'https://media.tenor.co/videos/e63e1f0e1851142a19af9181bee2f7bb/mp4',
+                     'https://i.pinimg.com/originals/74/37/ad/7437ade393b61b4993fe79b3bb94c3dc.gif',
+                     'https://media3.giphy.com/media/26DNfpeNpx1hSQf1C/giphy.gif',
+                     'https://i.gifer.com/AYoH.gif',
+                     'https://media.tenor.com/images/8dcf457f157a440d92d59362d1dc83e1/tenor.gif']
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'saluted', 'salute'))
+
 
 def setup(client):
-    client.add_cog(Actions(client))
+    database_connection = Database()
+    meta_class = Meta(database_connection)
+    client.add_cog(Actions(client, database_connection, meta_class))

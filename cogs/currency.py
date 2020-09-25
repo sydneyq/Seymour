@@ -231,7 +231,7 @@ class Currency(commands.Cog):
                     return
 
         first = ['Fun-Loving', 'Groovy', 'Wavy',
-                 'Partying', 'Dancing', 'Cheesy',
+                 'Party', 'Dancing', 'Cheesy',
                  'Bubble', 'Gravy', 'Pizza',
                  'Pie', 'Sleepy', 'Vibing',
                  'Chocolate', 'Fruity', 'Angry',
