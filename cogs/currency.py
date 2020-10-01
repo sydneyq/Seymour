@@ -166,7 +166,7 @@ class Currency(commands.Cog):
         :return:
         """
 
-        if not self.meta.isMod(ctx.author):
+        if not self.meta.isBotOwner(ctx.author):
             return
 
         total = 0

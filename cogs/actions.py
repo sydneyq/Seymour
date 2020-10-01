@@ -134,7 +134,8 @@ class Actions(commands.Cog):
                      'https://media1.giphy.com/media/VG1jCySAPvTD2JNyi8/giphy.gif',
                      'https://media.tenor.com/images/b24a29cfbaed590c3632fd7fe3be6a18/tenor.gif',
                      'https://derpicdn.net/img/2017/4/16/1413545/large.gif',
-                     'https://3.bp.blogspot.com/-mgQDV6p-2-Q/W1kpETxpe9I/AAAAAAALjeI/-T9g_ash1ZoagB1ICvofpfuD34ONmlR0ACLcBGAs/s1600/AS0004244_04.gif']
+                     'https://3.bp.blogspot.com/-mgQDV6p-2-Q/W1kpETxpe9I/AAAAAAALjeI/-T9g_ash1ZoagB1ICvofpfuD34ONmlR0ACLcBGAs/s1600/AS0004244_04.gif',
+                     'https://img1.wikia.nocookie.net/__cb20130812070618/gfaqsff/images/5/5a/Metal_Gear_-_Big_Boss_Salute_(Metal_Gear_Solid_3_Snake_Eater).gif']
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'saluted', 'salute'))
 
 
