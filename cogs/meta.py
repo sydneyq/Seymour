@@ -506,7 +506,7 @@ class Global(commands.Cog):
             await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command()
-    async def edit(self, ctx, msg_id: int, msg_edited: str):
+    async def edit(self, ctx, msg_id: int, *, msg_edited: str):
         if not self.meta.isMod(ctx.author):
             return
 
