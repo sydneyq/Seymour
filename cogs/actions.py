@@ -120,7 +120,8 @@ class Actions(commands.Cog):
                      'https://media1.tenor.com/images/19e2d653676ce30584b9f0f58245d245/tenor.gif?itemid=9330808',
                      'https://thumbs.gfycat.com/OrnateSaneGerbil-size_restricted.gif',
                      'https://media2.giphy.com/media/3oEjHV0z8S7WM4MwnK/giphy.gif',
-                     'https://i.pinimg.com/originals/fc/b1/44/fcb1446b74166b0860ace50ed8b33686.gif']
+                     'https://i.pinimg.com/originals/fc/b1/44/fcb1446b74166b0860ace50ed8b33686.gif',
+                     'https://64.media.tumblr.com/5cab62f5534ac50163e58a8a903c5d7f/8f3392d531f58926-9b/s540x810/9b8412963f502611ceb4d671cadff465ddf697cf.gifv']
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'highfived', 'highfive'))
 
@@ -137,7 +138,45 @@ class Actions(commands.Cog):
                      'https://derpicdn.net/img/2017/4/16/1413545/large.gif',
                      'https://3.bp.blogspot.com/-mgQDV6p-2-Q/W1kpETxpe9I/AAAAAAALjeI/-T9g_ash1ZoagB1ICvofpfuD34ONmlR0ACLcBGAs/s1600/AS0004244_04.gif',
                      'https://img1.wikia.nocookie.net/__cb20130812070618/gfaqsff/images/5/5a/Metal_Gear_-_Big_Boss_Salute_(Metal_Gear_Solid_3_Snake_Eater).gif']
+
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'saluted', 'salute'))
+
+    @commands.command(aliases=['pokes'])
+    async def poke(self, ctx):
+        if not self.has_action(ctx.author, 'poke'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
+        responses = ["https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7b174d50628543.58d507961af0d.gif",
+                     "https://media.tenor.com/images/f38a60fe4557787213f7bf64ed248ca0/tenor.gif",
+                     "https://i.pinimg.com/originals/ef/52/d4/ef52d4c16ad755d0da9c00d2c9318eaf.gif",
+                     "https://media1.tenor.com/images/4a19444c15196e240067e8498c5bf5d9/tenor.gif",
+                     "https://i.imgur.com/H7Ok5tn.gif",
+                     "https://media1.giphy.com/media/39ool02vlPXFY4iMT8/giphy.gif",
+                     "https://i.pinimg.com/originals/5b/05/d5/5b05d5d5b0f6b116dfefec5641984f3d.gif",
+                     "https://25.media.tumblr.com/a5ca5fcd9295bdbef4d78ddd0ecd42a1/tumblr_msk55wmNLi1ssbvp5o1_500.gif",
+                     "https://25.media.tumblr.com/8dabd44fad1a6ffbffb73d6ddb9f141f/tumblr_ml2rzndeN01ri4xg9o1_500.gif",
+                     "https://media1.tenor.com/images/11bc3bf7d1b62d64c879eef5591e737e/tenor.gif"]
+
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'poked', 'poke'))
+
+    @commands.command(aliases=['fishslap'])
+    async def fish(self, ctx):
+        if not self.has_action(ctx.author, 'poke'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
+        responses = ["https://38.media.tumblr.com/dbea872ff063bf090ac90263733f574b/tumblr_n8vcx4mPUc1srq92go1_r1_500.gif",
+                     "https://media1.tenor.com/images/c185006d58cdd39e7525e045af12caa0/tenor.gif?itemid=17687816",
+                     "https://64.media.tumblr.com/7f4117e92bed5b2cde593581fe2efcc7/tumblr_ojw26msKoB1vl7ueco3_500.gifv",
+                     "https://i.imgur.com/MWba0y9.gif?1",
+                     "https://media1.tenor.com/images/f5edd9bee3c17dad8cd5b8c040fe610a/tenor.gif",
+                     "https://media.tenor.com/images/8a74e54261e25579d40579b75d0d6612/tenor.gif",
+                     "https://media.tenor.com/images/13f32100ce1b34ff337745e6a093d64b/tenor.gif",
+                     "https://i.imgur.com/hAHJSVD.gif",
+                     "https://thumbs.gfycat.com/SilverSkinnyBassethound-size_restricted.gif"]
+
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'fish slapped', 'fish'))
 
     @commands.command(aliases=['bun', 'bunnie', 'bunnies', 'rabbit', 'bunbun'])
     async def bunny(self, ctx):
@@ -179,6 +218,8 @@ class Actions(commands.Cog):
         await ctx.send(embed=embed)
         pass
 
+
+"""broken
     @commands.command(aliases=['pride'])
     async def gay(self, ctx, member: discord.Member = None):
         if member is None:
@@ -195,6 +236,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=embed)
         pass
+"""
 
 
 def setup(client):

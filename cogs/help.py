@@ -65,6 +65,17 @@ class Help(commands.Cog):
         await ctx.send(embed=self.meta.embed('Badges', desc))
         return
 
+    @commands.command()
+    async def roleinfo(self, ctx, *, role_name):
+        role_name = role_name.lower()
+        for role in ctx.guild.roles:
+            if role.name.lower() == role_name or role.id == role_name:
+                title = role.name
+                desc = f"{role.mention}\nID: `{role.id}`\n`{len(role.members)}` members with this role."
+                await ctx.send(embed=self.meta.embed(title, desc))
+                return
+        await ctx.send(embed=self.meta.embedOops("I couldn't find a role with that name."))
+        return
 
 def setup(client):
     database_connection = Database()
