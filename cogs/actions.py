@@ -3,6 +3,7 @@ import random
 from discord.ext import commands
 from database import Database
 from .meta import Meta
+import requests
 
 
 class Actions(commands.Cog):
@@ -35,7 +36,7 @@ class Actions(commands.Cog):
     def has_action(self, member: discord.Member, action: str):
         return False
 
-    @commands.command(pass_context=True, aliases=['*boop*', 'bop', '*bop*'])
+    @commands.command(pass_context=True, aliases=['*boop*', 'bop', '*bop*', 'boops'])
     async def boop(self, ctx):
         if not self.has_action(ctx.author, 'boop'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
@@ -52,7 +53,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'booped', 'boop'))
 
-    @commands.command(pass_context=True, aliases=['pet', '*pet*', '*pat*'])
+    @commands.command(pass_context=True, aliases=['pet', '*pet*', '*pat*', 'pats', 'pets'])
     async def pat(self, ctx):
         responses = ['https://cdn.discordapp.com/attachments/257751892241809408/597979644725166097/unknown.gif',
                      'https://i.gifer.com/7A80.gif',
@@ -66,7 +67,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'patted', 'patpat'))
 
-    @commands.command(pass_context=True, aliases=['*hug*', 'huggle', 'snuggle', 'cuddle', 'snug'])
+    @commands.command(pass_context=True, aliases=['*hug*', 'huggle', 'snuggle', 'cuddle', 'snug', 'hugs'])
     async def hug(self, ctx):
         responses = ['https://media1.giphy.com/media/Lb3vIJjaSIQWA/source.gif',
                      'https://treasuredscriptcom.files.wordpress.com/2018/09/hiro-hugging-baymax1.gif',
@@ -82,7 +83,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'hugged', 'hug'))
 
-    @commands.command(aliases=['hit'])
+    @commands.command(aliases=['hit', 'punches', 'hits'])
     async def punch(self, ctx):
         if not self.has_action(ctx.author, 'punch'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
@@ -108,7 +109,7 @@ class Actions(commands.Cog):
                      'https://media1.tenor.com/images/d43dbf172a5a795134e54f01ea71e791/tenor.gif']
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'punched', 'punch'))
 
-    @commands.command(aliases=['highfive', 'hi5', 'hifive'])
+    @commands.command(aliases=['highfive', 'hi5', 'hifive', 'highfives', 'hi5s', 'hifives'])
     async def high5(self, ctx):
         responses = ['http://25.media.tumblr.com/f958003a5b13cd0470afc736373ab519/tumblr_n0os0yvKQw1tnvwmho1_500.gif',
                      'https://media2.giphy.com/media/3oEduV4SOS9mmmIOkw/source.gif',
@@ -123,7 +124,7 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'highfived', 'highfive'))
 
-    @commands.command()
+    @commands.command(aliases=['salutes'])
     async def salute(self, ctx):
         responses = ['https://media0.giphy.com/media/3o7qE5ceqLBHRR0C64/source.gif',
                      'https://i.pinimg.com/originals/74/37/ad/7437ade393b61b4993fe79b3bb94c3dc.gif',
@@ -137,6 +138,62 @@ class Actions(commands.Cog):
                      'https://3.bp.blogspot.com/-mgQDV6p-2-Q/W1kpETxpe9I/AAAAAAALjeI/-T9g_ash1ZoagB1ICvofpfuD34ONmlR0ACLcBGAs/s1600/AS0004244_04.gif',
                      'https://img1.wikia.nocookie.net/__cb20130812070618/gfaqsff/images/5/5a/Metal_Gear_-_Big_Boss_Salute_(Metal_Gear_Solid_3_Snake_Eater).gif']
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'saluted', 'salute'))
+
+    @commands.command(aliases=['bun', 'bunnie', 'bunnies', 'rabbit', 'bunbun'])
+    async def bunny(self, ctx):
+        responses = ["https://media3.giphy.com/media/13GfvBS8musG4w/200.gif",
+                     "https://i.gifer.com/V65P.gif",
+                     "https://i.pinimg.com/originals/d0/8d/20/d08d20604def5892bb543b5647517e18.gif",
+                     "https://rabbit.org/articles/wp-content/uploads/2011/07/bunnyletteropener.gif",
+                     "https://media.tenor.com/images/6d3eb2ec6257c308ef85b4385da585fe/tenor.gif",
+                     "https://24.media.tumblr.com/tumblr_m4fvkuBzBc1rskiduo1_250.gif",
+                     "https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/03/bunny-dancing.gif",
+                     "https://thumbs.gfycat.com/AcclaimedTeemingGardensnake-max-1mb.gif",
+                     "https://i.gifer.com/5IEj.gif",
+                     "https://thumbs.gfycat.com/BountifulCourteousCalf-max-1mb.gif",
+                     "https://i.pinimg.com/originals/91/8f/1b/918f1b2c568be3d77a7c29d682be874c.gif",
+                     "https://i.gifer.com/Irpq.gif",
+                     "https://thumbs.gfycat.com/AngelicCleanHyracotherium-max-14mb.gif",
+                     "https://i.pinimg.com/originals/38/96/7e/38967ec3c63d978ef14c7b5e1f9318d6.gif",
+                     "https://media.tenor.com/images/345f29c985190a12402d8d65914fec5a/tenor.gif"]
+
+        embed = discord.Embed(
+            title=f"Here's your bunny, {ctx.author.name}!",
+            color=discord.Color.teal()
+        )
+        embed.set_thumbnail(url=random.choice(responses))
+
+        await ctx.send(embed)
+        pass
+
+    @commands.command(aliases=['pika'])
+    async def pikachu(self, ctx):
+        response = requests.get("https://some-random-api.ml/img/pikachu")
+
+        embed = discord.Embed(
+            title=f"Here's your pikachu, {ctx.author.name}!",
+            color=discord.Color.teal()
+        )
+        embed.set_thumbnail(url=response.json()['link'])
+
+        await ctx.send(embed)
+        pass
+
+    @commands.command(aliases=['pride'])
+    async def gay(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
+
+        response = requests.get("https://some-random-api.ml/canvas/gay", params={"avatar": ctx.member.avatar_url})
+
+        embed = discord.Embed(
+            title=f"#Pride!",
+            color=discord.Color.teal()
+        )
+        embed.set_thumbnail(url=response.json()['link'])
+
+        await ctx.send(embed)
+        pass
 
 
 def setup(client):
