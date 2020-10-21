@@ -32,6 +32,9 @@ class Bump(commands.Cog):
                     mention = content['description'].split(',')[0]
                     id = int(mention[2:-1])
                     member = message.guild.get_member(id)
+                    if member is None:
+                        await message.channel.send(self.meta.embedOops(f"Something went wrong. Please tag the Dev.\nID: `{id}`"))
+                        return
 
                     profile = self.meta.getProfile(member)
                     bumps = profile['bumps']
