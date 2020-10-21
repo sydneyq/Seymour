@@ -184,7 +184,8 @@ class Actions(commands.Cog):
         if member is None:
             member = ctx.author
 
-        response = requests.get("https://some-random-api.ml/canvas/gay", params={"avatar": member.avatar_url})
+        response = requests.get("https://some-random-api.ml/canvas/:overlay",
+                                params={"overlay": "gay", "avatar": member.avatar_url})
 
         embed = discord.Embed(
             title=f"#Pride!",
