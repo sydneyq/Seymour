@@ -163,7 +163,7 @@ class Actions(commands.Cog):
         )
         embed.set_thumbnail(url=random.choice(responses))
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
         pass
 
     @commands.command(aliases=['pika'])
@@ -176,7 +176,7 @@ class Actions(commands.Cog):
         )
         embed.set_thumbnail(url=response.json()['link'])
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
         pass
 
     @commands.command(aliases=['pride'])
@@ -192,7 +192,7 @@ class Actions(commands.Cog):
         )
         embed.set_thumbnail(url=response.json()['link'])
 
-        await ctx.send(embed)
+        await ctx.send(embed=embed)
         pass
 
 
