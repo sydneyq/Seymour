@@ -20,7 +20,7 @@ class Help(commands.Cog):
         embed = discord.Embed(
             title='Seymour the Bear Bot Help',
             description=f"Created by <@{str(secret.OLIVE_ID)}> {self.meta.getBadge('dev')} on Sept 2, 2020."
-            + '\n`[]` = optional, `<>` = required',
+                        + '\n`[]` = optional, `<>` = required',
             color=discord.Color.teal()
         )
 
@@ -69,13 +69,24 @@ class Help(commands.Cog):
     async def roleinfo(self, ctx, *, role_name):
         role_name = role_name.lower()
         for role in ctx.guild.roles:
-            if role.name.lower() == role_name or role.id == role_name:
+            if role.name.lower() == role_name:
                 title = role.name
                 desc = f"{role.mention}\nID: `{role.id}`\n`{len(role.members)}` members with this role."
                 await ctx.send(embed=self.meta.embed(title, desc))
                 return
         await ctx.send(embed=self.meta.embedOops("I couldn't find a role with that name."))
         return
+
+    @commands.command()
+    async def edit(self, ctx, msg_id: int, msg_edited: str):
+        if not self.meta.isMod(ctx.author):
+            return
+
+        msg = await ctx.channel.fetch_message(msg_id)
+        await msg.edit(content=msg_edited)
+
+        await ctx.message.delete()
+
 
 def setup(client):
     database_connection = Database()

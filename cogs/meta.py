@@ -493,7 +493,7 @@ class Global(commands.Cog):
             )
 
             await channel.send(embed=embed)
-            await ctx.send(embed=self.meta.embedDone())
+            await ctx.message.delete()
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
