@@ -506,12 +506,28 @@ class Global(commands.Cog):
             await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command()
-    async def edit(self, ctx, msg_id: int, *, msg_edited: str):
+    async def edit(self, ctx, msg_id: int, *, msg_edited: str = None):
         if not self.meta.isMod(ctx.author):
             return
 
         msg = await ctx.channel.fetch_message(msg_id)
         await msg.edit(content=msg_edited)
+
+        await ctx.message.delete()
+
+    @commands.command()
+    async def editembed(self, ctx, msg_id: int, *, msg_edited: str = None):
+        if not self.meta.isMod(ctx.author):
+            return
+
+        if msg_edited is not None:
+            msg_edited = discord.Embed(
+                description=msg_edited,
+                color=discord.Color.teal()
+            )
+
+        msg = await ctx.channel.fetch_message(msg_id)
+        await msg.edit(embed=msg_edited)
 
         await ctx.message.delete()
 
