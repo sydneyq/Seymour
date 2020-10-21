@@ -483,16 +483,16 @@ class Global(commands.Cog):
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command(aliases=['echoembed'])
-    async def sayembed(self, ctx, channel: discord.TextChannel, *, message):
+    @commands.command(aliases=['echo'])
+    async def say(self, ctx, channel: discord.TextChannel, *, message):
         if self.meta.isMod(ctx.author):
             await channel.send(message)
             await ctx.message.delete()
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command(aliases=['echo'])
-    async def say(self, ctx, channel: discord.TextChannel, *, message):
+    @commands.command(aliases=['echoembed'])
+    async def sayembed(self, ctx, channel: discord.TextChannel, *, message):
         if self.meta.isMod(ctx.author):
 
             embed = discord.Embed(
