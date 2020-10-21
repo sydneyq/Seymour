@@ -77,16 +77,6 @@ class Help(commands.Cog):
         await ctx.send(embed=self.meta.embedOops("I couldn't find a role with that name."))
         return
 
-    @commands.command()
-    async def edit(self, ctx, msg_id: int, msg_edited: str):
-        if not self.meta.isMod(ctx.author):
-            return
-
-        msg = await ctx.channel.fetch_message(msg_id)
-        await msg.edit(content=msg_edited)
-
-        await ctx.message.delete()
-
 
 def setup(client):
     database_connection = Database()

@@ -483,7 +483,15 @@ class Global(commands.Cog):
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command()
+    @commands.command(aliases=['echoembed'])
+    async def sayembed(self, ctx, channel: discord.TextChannel, *, message):
+        if self.meta.isMod(ctx.author):
+            await channel.send(message)
+            await ctx.message.delete()
+        else:
+            await ctx.send(embed=self.meta.embedNoAccess())
+
+    @commands.command(aliases=['echo'])
     async def say(self, ctx, channel: discord.TextChannel, *, message):
         if self.meta.isMod(ctx.author):
 
@@ -496,6 +504,16 @@ class Global(commands.Cog):
             await ctx.message.delete()
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
+
+    @commands.command()
+    async def edit(self, ctx, msg_id: int, msg_edited: str):
+        if not self.meta.isMod(ctx.author):
+            return
+
+        msg = await ctx.channel.fetch_message(msg_id)
+        await msg.edit(content=msg_edited)
+
+        await ctx.message.delete()
 
 
 def setup(client):
