@@ -457,7 +457,7 @@ class Meta:
         # (id-1 / 2), swap(first 2 numbers, last 2 numbers), + E
         user_id = (self - 1)/2
         user_id = str(user_id)[-2:] + str(user_id)[2:-2] + str(user_id)[:2]
-        user_id = self + ord('E')
+        user_id = int(user_id) + ord('E')
         return user_id
 
 
@@ -556,11 +556,11 @@ class Global(commands.Cog):
         if not self.meta.isMod(ctx.author):
             return
 
-        unhashed = hashed = Meta.unhash_ID(user_id)
+        unhashed = Meta.unhash_ID(user_id)
 
         embed = discord.Embed(
             title='Unhash',
-            description=f"`{id}` -> `{unhashed}`",
+            description=f"`{user_id}` -> `{unhashed}`",
             color=discord.Color.teal()
         )
 
