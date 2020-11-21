@@ -215,6 +215,13 @@ class Currency(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["resetnick", "nickname"])
+    async def nick(self, ctx, member: discord.Member, *, nick: str = ""):
+        if self.meta.isMod(ctx.author):
+            await member.edit(nick=nick)
+            await ctx.message.delete()
+        return
+
     @commands.command(aliases=[])
     async def pie(self, ctx, member: discord.Member):
         profile = self.meta.getProfile(ctx.author)
