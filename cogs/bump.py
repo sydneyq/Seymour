@@ -36,7 +36,7 @@ class Bump(commands.Cog):
                         #await message.channel.send(embed=self.meta.embedOops(f"Something went wrong. Please tag the "
                         #                                               f"Dev.\nMention: {mention}\nID: `{id}`"))
                         #return
-                        member = message.guild.get_member(mention[2:-1])
+                        member = message.guild.get_member(int(mention[2:-1]))
                         if member is None:
                             return
 

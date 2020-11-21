@@ -515,7 +515,8 @@ class Global(commands.Cog):
                 color=discord.Color.teal()
             )
 
-            embed.set_footer(text=f"Sent by a Staff Member * [{Meta.hash_ID(ctx.author.id)}]")
+            hashed = Meta.hash_ID(ctx.author.id)
+            embed.set_footer(text=f"Sent by a Staff Member * [{hashed}]")
 
             await channel.send(embed=embed)
             await ctx.message.delete()
@@ -542,7 +543,8 @@ class Global(commands.Cog):
                 description=msg_edited,
                 color=discord.Color.teal()
             )
-            msg_edited.set_footer(text=f"Edited by a Staff Member * [{Meta.hash_ID(ctx.author.id)}]")
+            hashed = Meta.hash_ID(ctx.author.id)
+            msg_edited.set_footer(text=f"Edited by a Staff Member * [{hashed}]")
 
         msg = await ctx.channel.fetch_message(msg_id)
         await msg.edit(embed=msg_edited)
@@ -550,13 +552,15 @@ class Global(commands.Cog):
         await ctx.message.delete()
 
     @commands.command(aliases=[])
-    async def unhash(self, ctx, id: int):
+    async def unhash(self, ctx, _id: int):
         if not self.meta.isMod(ctx.author):
             return
 
+        unhashed = hashed = Meta.unhash_ID(_id)
+
         embed = discord.Embed(
             title='Unhash',
-            description=f"`{id}` -> `{Meta.unhash_ID(id)}`",
+            description=f"`{id}` -> `{unhashed}`",
             color=discord.Color.teal()
         )
 
