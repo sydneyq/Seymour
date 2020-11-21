@@ -449,14 +449,14 @@ class Meta:
     def hash_ID(self: int):
         # (id - E, swap(first 2 numbers, last 2 numbers), * 2) + 1
         user_id = self - ord('E')
-        user_id = str(user_id)[-2:] + str(id)[2:-2] + str(user_id)[:2]
+        user_id = str(user_id)[-2:] + str(user_id)[2:-2] + str(user_id)[:2]
         user_id = (int(user_id) * 2) + 1
         return user_id
 
     def unhash_ID(self: int):
         # (id-1 / 2), swap(first 2 numbers, last 2 numbers), + E
         user_id = (self - 1)/2
-        user_id = str(user_id)[-2:] + str(id)[2:-2] + str(user_id)[:2]
+        user_id = str(user_id)[-2:] + str(user_id)[2:-2] + str(user_id)[:2]
         user_id = self + ord('E')
         return user_id
 
