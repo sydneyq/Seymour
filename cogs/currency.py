@@ -155,10 +155,11 @@ class Currency(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['take'])
-    async def give(self, ctx, member: discord.Member, amt: int, currency: str):
+    async def give(self, ctx, member: discord.Member, amt: int, currency: str, silent: str = ""):
         """
         as in 'give @member 50 coins'
         take into account plural/single
+        :param silent:
         :param ctx:
         :param member:
         :param amt:
@@ -201,11 +202,16 @@ class Currency(commands.Cog):
             color=discord.Color.gold()
         )
 
-        if amt > 0:
+        embed.set_footer(text=f"Server: {ctx.guild.name}")
+
+        if amt > 0 and not silent:
             try:
                 await member.send(embed=embed)
+                embed.set_author(name="Seymour, Your Bear Bot Friend (DM Sent)")
             except:
-                print('Could not send private message.')
+                await ctx.send(embed=self.meta.embedOops('Could not send private message.'))
+        else:
+            embed.set_author(name="Sneaky Ninja Bear Bot Seymour (No DM)")
 
         await ctx.send(embed=embed)
 
