@@ -115,13 +115,11 @@ class Actions(commands.Cog):
                      'https://media2.giphy.com/media/3oEduV4SOS9mmmIOkw/source.gif',
                      'https://i.kym-cdn.com/photos/images/original/001/243/126/c3f.gif',
                      'https://i.pinimg.com/originals/5d/ef/be/5defbe81dc43fe590cd2d6d9a9284ae4.gif',
-                     'https://static.fjcdn.com/gifs/High+five_000cd3_5489107.gif',
                      'https://media1.tenor.com/images/1d9b884cf8e3fbb2b86c29e3387b5c0a/tenor.gif?itemid=13496809',
                      'https://media1.tenor.com/images/19e2d653676ce30584b9f0f58245d245/tenor.gif?itemid=9330808',
                      'https://thumbs.gfycat.com/OrnateSaneGerbil-size_restricted.gif',
                      'https://media2.giphy.com/media/3oEjHV0z8S7WM4MwnK/giphy.gif',
-                     'https://i.pinimg.com/originals/fc/b1/44/fcb1446b74166b0860ace50ed8b33686.gif',
-                     'https://64.media.tumblr.com/5cab62f5534ac50163e58a8a903c5d7f/8f3392d531f58926-9b/s540x810/9b8412963f502611ceb4d671cadff465ddf697cf.gifv']
+                     'https://i.pinimg.com/originals/fc/b1/44/fcb1446b74166b0860ace50ed8b33686.gif']
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'highfived', 'highfive'))
 

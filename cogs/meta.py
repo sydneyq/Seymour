@@ -446,6 +446,20 @@ class Meta:
     def getMemberByID(self, ctx, id: int):
         return ctx.guild.get_member(id)
 
+    def hash_ID(self: int):
+        # (id - E, swap(first 2 numbers, last 2 numbers), * 2) + 1
+        _id = self - ord('E')
+        _id = str(_id)[-2:] + str(id)[2:-2] + str(_id)[:2]
+        _id = (int(_id) * 2) + 1
+        return _id
+
+    def unhash_ID(self: int):
+        # (id-1 / 2), swap(first 2 numbers, last 2 numbers), + E
+        _id = (self - 1)/2
+        _id = str(_id)[-2:] + str(id)[2:-2] + str(_id)[:2]
+        _id = self + ord('E')
+        return _id
+
 
 class Global(commands.Cog):
 
@@ -477,7 +491,7 @@ class Global(commands.Cog):
 
     @commands.command()
     async def status(self, ctx, *, msg):
-        if self.meta.isMod(ctx.message.author):
+        if self.meta.isBotOwner(ctx.message.author):
             await self.client.change_presence(activity=discord.Game(msg))
             await ctx.send(embed=self.meta.embedDone())
         else:
@@ -485,13 +499,14 @@ class Global(commands.Cog):
 
     @commands.command(aliases=['echo'])
     async def say(self, ctx, channel: discord.TextChannel, *, message):
-        if self.meta.isMod(ctx.author):
+        if self.meta.isBotOwner(ctx.author):
             await channel.send(message)
             await ctx.message.delete()
         else:
-            await ctx.send(embed=self.meta.embedNoAccess())
+            return
+            #await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command(aliases=['echoembed'])
+    @commands.command(aliases=['echoembed', 'embedecho'])
     async def sayembed(self, ctx, channel: discord.TextChannel, *, message):
         if self.meta.isMod(ctx.author):
 
@@ -500,14 +515,16 @@ class Global(commands.Cog):
                 color=discord.Color.teal()
             )
 
+            embed.set_footer(text=f"Sent by a Staff Member * [{Meta.hash_ID(ctx.author.id)}]")
+
             await channel.send(embed=embed)
             await ctx.message.delete()
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command()
+    @commands.command(aliases=['echoedit', 'editecho'])
     async def edit(self, ctx, msg_id: int, *, msg_edited: str = None):
-        if not self.meta.isMod(ctx.author):
+        if not self.meta.isBotOwner(ctx.author):
             return
 
         msg = await ctx.channel.fetch_message(msg_id)
@@ -515,7 +532,7 @@ class Global(commands.Cog):
 
         await ctx.message.delete()
 
-    @commands.command()
+    @commands.command(aliases=['embededit'])
     async def editembed(self, ctx, msg_id: int, *, msg_edited: str = None):
         if not self.meta.isMod(ctx.author):
             return
@@ -525,11 +542,25 @@ class Global(commands.Cog):
                 description=msg_edited,
                 color=discord.Color.teal()
             )
+            msg_edited.set_footer(text=f"Edited by a Staff Member * [{Meta.hash_ID(ctx.author.id)}]")
 
         msg = await ctx.channel.fetch_message(msg_id)
         await msg.edit(embed=msg_edited)
 
         await ctx.message.delete()
+
+    @commands.command(aliases=[])
+    async def unhash(self, ctx, id: int):
+        if not self.meta.isMod(ctx.author):
+            return
+
+        embed = discord.Embed(
+            title='Unhash',
+            description=f"`{id}` -> `{Meta.unhash_ID(id)}`",
+            color=discord.Color.teal()
+        )
+
+        await ctx.send(embed=embed)
 
 
 def setup(client):
