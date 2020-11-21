@@ -451,7 +451,7 @@ class Meta:
         user_id = self - ord('E')
         user_id = str(user_id)[-2:] + str(user_id)[2:-2] + str(user_id)[:2]
         #user_id = (int(user_id) * 2) + 1
-        return user_id + 1
+        return int(user_id) + 1
 
     def unhash_ID(self: int):
         # (id-1 / 2), swap(first 2 numbers, last 2 numbers), + E
