@@ -2,12 +2,6 @@ import discord
 from discord.ext import commands
 from database import Database
 from .meta import Meta
-import random
-import json
-import os
-import asyncio
-from numpy.random import choice
-import secret
 
 
 class Bump(commands.Cog):

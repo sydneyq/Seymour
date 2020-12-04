@@ -158,8 +158,8 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'poked', 'poke'))
 
-    @commands.command(aliases=['fishslap'])
-    async def fish(self, ctx):
+    @commands.command(aliases=[])
+    async def fishslap(self, ctx):
         if not self.has_action(ctx.author, 'poke'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
