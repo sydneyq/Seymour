@@ -54,7 +54,7 @@ class Welcome(commands.Cog):
 
         # Ask if 18+ and read the rules.
         title = f"{ctx.author.name}'s Verification"
-        desc = f"**Hi {ctx.author.mention}!**\n\nPlease react with a ✅ to confirm you're at least 18 years of age and " \
+        desc = f"Hi {ctx.author.mention}!\n\nPlease react with a ✅ to confirm you're at least 18 years of age and " \
                f"have read over and accept all of our server rules!\n\nThis will time out in 2 minutes. "
 
         msg = await ctx.send(embed=self.meta.embed(title, desc, 'gold'))
@@ -78,8 +78,8 @@ class Welcome(commands.Cog):
         general_id = 728736226709864549
         general = ctx.guild.get_channel(general_id)
         msg = f"🌟 **__Let's all welcome {ctx.author.mention} to {ctx.guild.name}!__** 🎉"
-        title = f"It's great to have you here, {ctx.author.mention}."
-        desc = f"Be sure to ask a moderator if you need any help. Why not start with introducing yourself in #introductions?"
+        title = f"It's great to have you here, {ctx.author.name}."
+        desc = f"Be sure to ask a moderator if you need any help. \nWhy not start with introducing yourself in #introductions?"
         embed = discord.Embed(
             title=title,
             description=desc,
