@@ -17,9 +17,9 @@ class Welcome(commands.Cog):
     async def on_message(self, message):
         if not message.channel.id == 784389266574409788:
             return
-        if self.meta.isSelf(message.author): # or self.meta.isMod(message.author):
+        if self.meta.isSelf(message.author) or self.meta.isMod(message.author):
             return
-        if message.content.lower() == self.dbConnection.findServer({"id": 720977242968293376})['password']:
+        if self.dbConnection.findServer({"id": 720977242968293376})['password'] in message.content.lower():
             await message.delete()
             roles = message.author.roles
             hypnosis_flag = False
@@ -49,17 +49,17 @@ class Welcome(commands.Cog):
             if not hypnosis_flag:
                 msg = await message.channel.send(
                     embed=self.meta.embedOops("You're missing a Hypnosis role. Please get one in #getroles."))
-                await msg.delete(delay=120)
+                await msg.delete(delay=60)
                 return
             if not pronoun_flag:
                 msg = await message.channel.send(
                     embed=self.meta.embedOops("You're missing a Pronoun role. Please get one in #getroles."))
-                await msg.delete(delay=120)
+                await msg.delete(delay=60)
                 return
             if not dm_flag:
                 msg = await message.channel.send(
                     embed=self.meta.embedOops("You're missing a DM role. Please get one in #getroles."))
-                await msg.delete(delay=120)
+                await msg.delete(delay=60)
                 return
 
             # Ask if 18+ and read the rules.
@@ -106,8 +106,8 @@ class Welcome(commands.Cog):
         else:
             msg = await message.channel.send(embed=self.meta.embedOops("Something's not right. Try checking the "
                                                                        "instructions again or your spelling."))
-            await msg.delete(delay=120)
-            message.delete(delay=120)
+            await msg.delete(delay=60)
+            message.delete(delay=60)
 
 
 def setup(client):
