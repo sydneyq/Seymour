@@ -54,8 +54,8 @@ class Welcome(commands.Cog):
 
         # Ask if 18+ and read the rules.
         title = f"{ctx.author.name}'s Verification"
-        desc = f"Hi {ctx.author.mention}!\n\nPlease react with a ✅ to confirm you're at least 18 years of age and " \
-               f"have read over and accept all of our server rules!\n\nThis will time out in 2 minutes. "
+        desc = f"Hi {ctx.author.mention}!\n\nPlease react with a ✅ to confirm you're **at least 18 years of age** and " \
+               f"have **read over and accept all of our server rules!**\n\nThis will time out in 2 minutes. "
 
         msg = await ctx.send(embed=self.meta.embed(title, desc, 'gold'))
         await msg.add_reaction('✅')
@@ -66,7 +66,6 @@ class Welcome(commands.Cog):
         try:
             react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check)
         except asyncio.TimeoutError:
-            await msg.edit(embed=self.meta.embedOops("Action timed out."))
             await msg.delete()
             return
         else:
@@ -79,13 +78,16 @@ class Welcome(commands.Cog):
         general = ctx.guild.get_channel(general_id)
         msg = f"🌟 **__Let's all welcome {ctx.author.mention} to {ctx.guild.name}!__** 🎉"
         title = f"It's great to have you here, {ctx.author.name}."
-        desc = f"Be sure to ask a moderator if you need any help. \nWhy not start with introducing yourself in #introductions?"
+        desc = f"Be sure to ask a moderator if you need any help. \nWhy not start with introducing yourself in " \
+               f"#introductions? "
         embed = discord.Embed(
             title=title,
             description=desc,
             color=discord.Color.gold()
         )
-        embed.set_footer(text="Seymour, Your Bear Bot Friend", icon_url="https://media.discordapp.net/attachments/388576512359530499/784404037709725716/bear.png")
+        embed.set_footer(text="Seymour, Your Bear Bot Friend", icon_url="https://media.discordapp.net/attachments"
+                                                                        "/388576512359530499/784404037709725716/bear"
+                                                                        ".png")
         embed.set_thumbnail(url=ctx.author.avatar_url)
 
         await general.send(content=msg, embed=embed)
