@@ -17,7 +17,7 @@ class Welcome(commands.Cog):
     async def on_message(self, message):
         if not message.channel.id == 784389266574409788:
             return
-        if self.meta.bot(message.author): # or self.meta.isMod(message.author):
+        if self.meta.isSelf(message.author): # or self.meta.isMod(message.author):
             return
         if message.content.lower() == self.dbConnection.findServer({"id": 720977242968293376})['password']:
             await message.delete()
