@@ -36,7 +36,7 @@ class Welcome(commands.Cog):
                 return
             # Check over for required roles
             if id in hypnosis:
-                hypnosis = True
+                hypnosis_flag = True
             elif id in pronoun:
                 pronoun_flag = True
             elif id in dm:
