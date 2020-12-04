@@ -36,7 +36,8 @@ class Welcome(commands.Cog):
                 id = role.id
                 # Check if already verified
                 if id == verified_id:
-                    await message.channel.send(embed=self.meta.embedOops("You're already verified!"))
+                    msg = await message.channel.send(embed=self.meta.embedOops("You're already verified!"))
+                    await msg.delete(delay=60)
                     return
                 # Check over for required roles
                 if id in hypnosis:
