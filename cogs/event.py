@@ -112,6 +112,7 @@ class Event(commands.Cog):
             return
 
         channel = server['general_channel']
+        channel = message.guild.get_channel(channel)
 
         # auto-highfive
         if random.random() < .05:
