@@ -22,7 +22,7 @@ async def on_ready():
 
 @client.command()
 async def reload(ctx, extension):
-    member = ctx.member
+    member = ctx.author
     if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.unload_extension(f'cogs.{extension}')
         client.load_extension(f'cogs.{extension}')
@@ -32,7 +32,7 @@ async def reload(ctx, extension):
 
 @client.command()
 async def load(ctx, extension):
-    member = ctx.member
+    member = ctx.author
     if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.load_extension(f'cogs.{extension}')
         await ctx.send('Cog loaded!')
@@ -41,7 +41,7 @@ async def load(ctx, extension):
 
 @client.command()
 async def unload(ctx, extension):
-    member = ctx.member
+    member = ctx.author
     if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.unload_extension(f'cogs.{extension}')
         await ctx.send('Cog unloaded!')
