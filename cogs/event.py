@@ -109,10 +109,12 @@ class Event(commands.Cog):
 
         server = self.dbConnection.findServer({'id': str(message.guild.id)})
         if server is None:
+            print(f"SERVER: {server}")
             return
-
-        channel = server['general_channel']
-        channel = message.guild.get_channel(channel)
+        channel = message.guild.get_channel(server['general_channel'])
+        if channel is None:
+            print(f"SERVER: [{server}] | CHANNEL: [{server['general_channel']}]")
+            return
 
         # auto-highfive
         if random.random() < .05:
@@ -153,7 +155,7 @@ class Event(commands.Cog):
                 return
 
         # auto-typeracer
-        if random.random() < .1:
+        elif random.random() < .1:
             # check timestamp
             past_timestamp = server['typeracer']
             if past_timestamp == '' or self.meta.hasBeenMinutes(40, past_timestamp, self.meta.getDateTime()):

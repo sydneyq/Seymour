@@ -22,7 +22,8 @@ async def on_ready():
 
 @client.command()
 async def reload(ctx, extension):
-    if Meta.isBotOwner(None, ctx.author):
+    member = ctx.member
+    if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.unload_extension(f'cogs.{extension}')
         client.load_extension(f'cogs.{extension}')
         await ctx.send('Cog reloaded!')
@@ -31,7 +32,8 @@ async def reload(ctx, extension):
 
 @client.command()
 async def load(ctx, extension):
-    if Meta.isBotOwner(ctx.author):
+    member = ctx.member
+    if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.load_extension(f'cogs.{extension}')
         await ctx.send('Cog loaded!')
     else:
@@ -39,7 +41,8 @@ async def load(ctx, extension):
 
 @client.command()
 async def unload(ctx, extension):
-    if Meta.isBotOwner(ctx.author):
+    member = ctx.member
+    if member.id == secret.OLIVE_ID or member.id == secret.SYD_ID:
         client.unload_extension(f'cogs.{extension}')
         await ctx.send('Cog unloaded!')
     else:
