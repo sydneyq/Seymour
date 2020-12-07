@@ -113,7 +113,8 @@ class Profile(commands.Cog):
 
         # Profile Details
         # Team
-        embed.add_field(name="Squad", value=user['team'], inline=False)
+        team = self.meta.teams[str(user['team'])]
+        embed.add_field(name="Squad", value=team, inline=False)
 
         # Pieable?
         embed.add_field(name="Pieable", value=user['pieable'], inline=False)
