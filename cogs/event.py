@@ -190,7 +190,7 @@ class Event(commands.Cog):
                 desc = f"Total: `{str(coins)}` coins"
 
                 await msg.edit(embed=self.meta.embed(title, desc))
-                self.dbConnection.updateMeta({'id': str(message.guild.id)},
+                self.dbConnection.updateServer({'id': str(message.guild.id)},
                                              {'$set': {'typeracer': self.meta.getDateTime()}})
                 return
             else:
