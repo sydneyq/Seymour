@@ -16,7 +16,7 @@ class Profile(commands.Cog):
         self.dbConnection = database
         self.meta = meta
 
-    @commands.command(aliases=['disablepie', 'unpieable', 'nopie'])
+    @commands.command(aliases=['disablepie', 'unpieable', 'nopie', 'enablepie'])
     async def pieable(self, ctx):
         profile = self.meta.getProfile(ctx.author)
         self.dbConnection.updateProfile({"id": ctx.author.id, "server": str(ctx.guild.id)}, {"$set": {"pieable": not profile['pieable']}})
