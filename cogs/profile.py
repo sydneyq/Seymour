@@ -19,7 +19,7 @@ class Profile(commands.Cog):
     @commands.command(aliases=['disablepie', 'unpieable', 'nopie'])
     async def pieable(self, ctx):
         profile = self.meta.getProfile(ctx.author)
-        self.dbConnection.updateProfile({"id": ctx.author.id}, {"$set": {"pieable": not profile['pieable']}})
+        self.dbConnection.updateProfile({"id": ctx.author.id, "server": str(ctx.guild.id)}, {"$set": {"pieable": not profile['pieable']}})
         await ctx.send(embed=self.meta.embedDone())
 
     def getBadges(self, member: discord.Member):

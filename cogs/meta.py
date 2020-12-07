@@ -20,7 +20,7 @@ class Meta:
         teams = self.dbConnection.findMeta({'id': 'teams'})
 
     def change_team(self, member: discord.Member, team):
-        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"team": team}})
+        self.dbConnection.updateProfile({"id": member.id, "server": member.guild.id}, {"$set": {"team": team}})
 
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
@@ -468,7 +468,7 @@ class Meta:
         return user_id
 
     def edit_actions(self, member: discord.Member, actions: list):
-        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"actions": actions}})
+        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"actions": actions}})
 
     def get_actions(self, member: discord.Member):
         profile = self.getProfile(member)
@@ -605,7 +605,7 @@ class Global(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=[])
+    @commands.command(aliases=["editteam", "changeteam"])
     async def team(self, ctx, member: discord.Member, team: int):
         if not self.meta.isBotOwner(ctx.author):
             return
