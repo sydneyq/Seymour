@@ -39,7 +39,7 @@ class Event(commands.Cog):
         # auto-highfive
         if random.random() < .05:
             past_timestamp = server['highfive']
-            if past_timestamp == '' or self.meta.hasBeenMinutes(20, past_timestamp, self.meta.getDateTime()):
+            if past_timestamp == '' or self.meta.hasBeenMinutes(15, past_timestamp, self.meta.getDateTime()):
                 self.dbConnection.updateServer({'id': str(message.guild.id)},
                                                {'$set': {'highfive': self.meta.getDateTime()}})
                 amt = 25
