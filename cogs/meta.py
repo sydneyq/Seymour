@@ -10,6 +10,7 @@ import asyncio
 
 
 class Meta:
+    teams = {}
 
     def __init__(self, database):
         self.dbConnection = database
@@ -615,7 +616,14 @@ class Global(commands.Cog):
     @commands.command(aliases=[])
     async def teamnums(self, ctx):
         await ctx.send(self.meta.teams)
-        return
+
+    @commands.command(aliases=[])
+    async def refreshteams(self, ctx):
+        if not self.meta.isBotOwner(ctx.author):
+            return
+
+        self.meta.refresh_teams()
+        await ctx.send(embed=self.meta.embedDone())
 
 
 def setup(client):
