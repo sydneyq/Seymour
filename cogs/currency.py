@@ -322,6 +322,7 @@ class Currency(commands.Cog):
 
     @commands.command(aliases=[])
     async def buy(self, ctx, item: str):
+        item = item.lower()
         found = self.dbConnection.findStoreItem({"id": item})
         if found is None:
             await ctx.send(embed=self.meta.embedOops("I couldn't find the item."))
@@ -329,9 +330,19 @@ class Currency(commands.Cog):
 
         profile = self.meta.getProfile(ctx.author)
         if profile['coins'] >= found['price']:
-            if self.meta.changeCurrency(ctx.author, 1, item):
-                coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
-                await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
+            if found['type'] == 'item':
+                if self.meta.changeCurrency(ctx.author, 1, item):
+                    coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
+                    await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
+            if found['type'] == 'action':
+                profile = self.meta.getProfile(ctx.author)
+                actions = profile['actions']
+                if self.meta.add_action(ctx.author, item):
+                    coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
+                    await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
+                else:
+                    await ctx.send(embed=self.meta.embedOops('You already have that action!'))
+                    return
             else:
                 await ctx.send(embed=self.meta.embedOops("Something went wrong when adding the item."))
                 return

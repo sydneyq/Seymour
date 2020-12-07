@@ -94,17 +94,33 @@ class Profile(commands.Cog):
         else:
             member = other
 
+        # Embed Details
         user = self.meta.getProfile(member)
         pic = member.avatar_url
         name = member.name
-
-        # Basics
         embed = discord.Embed(color=member.color)
+        embed.set_thumbnail(url=pic)
+        embed.set_author(name=name)
+        embed.set_footer(text='Seymour, Your Bear Bot Friend', icon_url='https://cdn.discordapp.com/attachments'
+                                                                        '/388576512359530499/784404037709725716/bear'
+                                                                        '.png')
+
+        # Profile Details
+        # Team
+        embed.add_field(name="Squad", value=user['team'], inline=False)
+
+        # Pieable?
+        embed.add_field(name="Pieable", value=user['pieable'], inline=False)
+
+        # Items
         embed.add_field(name="Coins", value=user['coins'], inline=True)
-        embed.add_field(name="Points", value=user['pts'], inline=True)
-        embed.add_field(name="Bumps", value=user['bumps'], inline=True)
+        #embed.add_field(name="Points", value=user['pts'], inline=True)
+        #embed.add_field(name="Bumps", value=user['bumps'], inline=True)
         embed.add_field(name="Gifts", value=user['gifts'], inline=True)
         embed.add_field(name="Pies", value=user['pies'], inline=True)
+
+        # Actions
+        embed.add_field(name="Actions", value=", ".join(user['actions']), inline=False)
 
         # Acknowledgements
         badges = self.getBadges(member)
@@ -115,9 +131,7 @@ class Profile(commands.Cog):
 
         embed.add_field(name="Badges (`" + str(len(badges)) + "`)", value=v, inline=False)
 
-        embed.set_thumbnail(url=pic)
-        embed.set_author(name=name)
-        embed.set_footer(text='Seymour, Your Bear Bot Friend')
+
         await ctx.send(embed=embed)
 
 

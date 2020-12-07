@@ -33,12 +33,9 @@ class Actions(commands.Cog):
             embed.set_thumbnail(url=gif)
             return embed
 
-    def has_action(self, member: discord.Member, action: str):
-        return False
-
     @commands.command(pass_context=True, aliases=['*boop*', 'bop', '*bop*', 'boops'])
     async def boop(self, ctx):
-        if not self.has_action(ctx.author, 'boop'):
+        if not self.meta.has_action(ctx.author, 'boop'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
 
@@ -85,7 +82,7 @@ class Actions(commands.Cog):
 
     @commands.command(aliases=['hit', 'punches', 'hits'])
     async def punch(self, ctx):
-        if not self.has_action(ctx.author, 'punch'):
+        if not self.meta.has_action(ctx.author, 'punch'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
 
@@ -141,7 +138,7 @@ class Actions(commands.Cog):
 
     @commands.command(aliases=['pokes'])
     async def poke(self, ctx):
-        if not self.has_action(ctx.author, 'poke'):
+        if not self.meta.has_action(ctx.author, 'poke'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
 
@@ -160,7 +157,7 @@ class Actions(commands.Cog):
 
     @commands.command(aliases=[])
     async def fishslap(self, ctx):
-        if not self.has_action(ctx.author, 'poke'):
+        if not self.meta.has_action(ctx.author, 'poke'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
 

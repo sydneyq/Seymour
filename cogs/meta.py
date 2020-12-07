@@ -13,8 +13,10 @@ class Meta:
 
     def __init__(self, database):
         self.dbConnection = database
+        teams = self.dbConnection.findMeta({'id': 'teams'})
 
-        dirname = os.path.dirname(__file__)
+    def refresh_teams(self):
+        teams = self.dbConnection.findMeta({'id': 'teams'})
 
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
@@ -461,6 +463,33 @@ class Meta:
         user_id = int(user_id) + ord('E')
         return user_id
 
+    def edit_actions(self, member: discord.Member, actions):
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"actions": actions}})
+
+    def get_actions(self, member: discord.Member):
+        profile = self.getProfile(member)
+        actions = profile['actions']
+        return actions
+
+    def has_action(self, member: discord.Member, action):
+        return action in self.get_actions(member)
+
+    def add_action(self, member: discord.Member, action):
+        if self.has_action(member, action):
+            return False
+        actions = self.get_actions(member)
+        actions.append(action)
+        self.edit_actions(member, actions)
+        return True
+
+    def remove_action(self, member: discord.Member, action):
+        if not self.has_action(member, action):
+            return False
+        actions = self.get_actions(member)
+        actions.remove(action)
+        self.edit_actions(member, actions)
+        return True
+
 
 class Global(commands.Cog):
 
@@ -474,7 +503,9 @@ class Global(commands.Cog):
         if self.meta.isBotOwner(ctx.author):
             # guild = ctx.guild
             # self.dbConnection.renameColumn("companions", "dex")
-            # self.dbConnection.makeColumn("redeemed", [])
+            self.dbConnection.makeColumn("actions", [])
+            self.dbConnection.makeColumn("pieable", True)
+            self.dbConnection.makeColumn("team", -1)
             # self.dbConnection.removeColumn("cakes")
             '''
             profiles = self.dbConnection.findProfiles({})
@@ -487,7 +518,7 @@ class Global(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        if (self.meta.isMod(ctx.message.author)):
+        if (self.meta.isBotOwner(ctx.message.author)):
             await ctx.send(f'Pong! `{round(self.client.latency * 1000)}ms`')
 
     @commands.command()
