@@ -163,7 +163,6 @@ class Actions(commands.Cog):
 
         responses = ["https://38.media.tumblr.com/dbea872ff063bf090ac90263733f574b/tumblr_n8vcx4mPUc1srq92go1_r1_500.gif",
                      "https://media1.tenor.com/images/c185006d58cdd39e7525e045af12caa0/tenor.gif?itemid=17687816",
-                     "https://64.media.tumblr.com/7f4117e92bed5b2cde593581fe2efcc7/tumblr_ojw26msKoB1vl7ueco3_500.gifv",
                      "https://i.imgur.com/MWba0y9.gif?1",
                      "https://media1.tenor.com/images/f5edd9bee3c17dad8cd5b8c040fe610a/tenor.gif",
                      "https://media.tenor.com/images/8a74e54261e25579d40579b75d0d6612/tenor.gif",
