@@ -14,9 +14,11 @@ class Meta:
 
     def __init__(self, database):
         self.dbConnection = database
+        global teams
         teams = self.dbConnection.findMeta({'id': 'teams'})
 
     def refresh_teams(self):
+        global teams
         teams = self.dbConnection.findMeta({'id': 'teams'})
 
     def change_team(self, member: discord.Member, team):
