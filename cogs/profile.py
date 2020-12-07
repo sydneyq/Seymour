@@ -113,11 +113,15 @@ class Profile(commands.Cog):
 
         # Profile Details
         # Team
-        team = self.meta.teams[str(user['team'])]
+        team = user['team']
+        if team == -1:
+            team = "No team yet."
+        else:
+            team = self.meta.teams[str(team)]
         embed.add_field(name="Squad", value=team, inline=False)
 
         # Pieable?
-        embed.add_field(name="Pieable", value=user['pieable'], inline=False)
+        embed.add_field(name="Pieable", value=user['pieable'], inline=True)
 
         # Items
         embed.add_field(name="Coins", value=user['coins'], inline=True)
