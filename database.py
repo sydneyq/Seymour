@@ -118,6 +118,9 @@ class Database:
     def findServer(self, findCriteria):
         return self.db.server.find_one(findCriteria)
 
+    def findMeta(self, findCriteria):
+        return self.db.server.find_one(findCriteria)
+
     def updateServer(self, updateCritera, change):
         self.db.server.update(updateCritera, change)
 
