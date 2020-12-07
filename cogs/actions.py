@@ -157,7 +157,7 @@ class Actions(commands.Cog):
 
     @commands.command(aliases=[])
     async def fishslap(self, ctx):
-        if not self.meta.has_action(ctx.author, 'poke'):
+        if not self.meta.has_action(ctx.author, 'fishslap'):
             await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
             return
 
