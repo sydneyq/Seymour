@@ -111,7 +111,7 @@ class Event(commands.Cog):
         if server is None:
             print(f"SERVER: {server}")
             return
-        channel = message.guild.get_channel(server['general_channel'])
+        channel = message.guild.get_channel(int(server['general_channel']))
         if channel is None:
             print(f"SERVER: [{server}] | CHANNEL: [{server['general_channel']}]")
             return
