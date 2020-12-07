@@ -108,6 +108,9 @@ class Event(commands.Cog):
             return
 
         server = self.dbConnection.findServer({'id': str(message.guild.id)})
+        if server is None:
+            return
+
         channel = server['general_channel']
 
         # auto-highfive

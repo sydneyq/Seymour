@@ -19,7 +19,7 @@ class Welcome(commands.Cog):
             return
         if self.meta.isSelf(message.author) or self.meta.isMod(message.author):
             return
-        if self.dbConnection.findServer({"id": 720977242968293376})['password'] in message.content.lower():
+        if self.dbConnection.findServer({"id": str(message.guild.id)})['password'] in message.content.lower():
             await message.delete()
             roles = message.author.roles
             hypnosis_flag = False
