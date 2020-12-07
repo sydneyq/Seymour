@@ -467,7 +467,7 @@ class Meta:
         user_id = int(user_id) + ord('E')
         return user_id
 
-    def edit_actions(self, member: discord.Member, actions):
+    def edit_actions(self, member: discord.Member, actions: list):
         self.dbConnection.updateProfile({"id": member.id}, {"$set": {"actions": actions}})
 
     def get_actions(self, member: discord.Member):
@@ -475,10 +475,10 @@ class Meta:
         actions = profile['actions']
         return actions
 
-    def has_action(self, member: discord.Member, action):
+    def has_action(self, member: discord.Member, action: str):
         return action in self.get_actions(member)
 
-    def add_action(self, member: discord.Member, action):
+    def add_action(self, member: discord.Member, action: str):
         if self.has_action(member, action):
             return False
         actions = self.get_actions(member)
@@ -486,7 +486,7 @@ class Meta:
         self.edit_actions(member, actions)
         return True
 
-    def remove_action(self, member: discord.Member, action):
+    def remove_action(self, member: discord.Member, action: str):
         if not self.has_action(member, action):
             return False
         actions = self.get_actions(member)

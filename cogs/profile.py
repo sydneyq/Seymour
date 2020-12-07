@@ -118,7 +118,7 @@ class Profile(commands.Cog):
             team = "No team yet."
         else:
             team = self.meta.teams[str(team)]
-        embed.add_field(name="Squad", value=team, inline=False)
+        embed.add_field(name="Squad", value=team, inline=True)
 
         # Pieable?
         embed.add_field(name="Pieable", value=user['pieable'], inline=True)
@@ -132,6 +132,8 @@ class Profile(commands.Cog):
 
         # Actions
         actions = ", ".join(user['actions'])
+        print(f"ACTIONS: [{user['actions']}]")
+        print(f"USER: [{user}]")
         if actions == '':
             actions = 'No special actions yet.'
         embed.add_field(name="Actions", value=actions, inline=False)

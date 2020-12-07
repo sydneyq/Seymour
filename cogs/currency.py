@@ -339,8 +339,6 @@ class Currency(commands.Cog):
                     coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
                     await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
             if found['type'] == 'action':
-                profile = self.meta.getProfile(ctx.author)
-                actions = profile['actions']
                 if self.meta.add_action(ctx.author, item):
                     coins = self.meta.changeCurrency(ctx.author, (found['price'] * -1), 'coins')
                     await ctx.send(embed=self.meta.embedDone(f"Done! You now have `{coins}` coins."))
