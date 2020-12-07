@@ -120,13 +120,16 @@ class Profile(commands.Cog):
 
         # Items
         embed.add_field(name="Coins", value=user['coins'], inline=True)
-        #embed.add_field(name="Points", value=user['pts'], inline=True)
-        #embed.add_field(name="Bumps", value=user['bumps'], inline=True)
+        # embed.add_field(name="Points", value=user['pts'], inline=True)
+        # embed.add_field(name="Bumps", value=user['bumps'], inline=True)
         embed.add_field(name="Gifts", value=user['gifts'], inline=True)
         embed.add_field(name="Pies", value=user['pies'], inline=True)
 
         # Actions
-        embed.add_field(name="Actions", value=", ".join(user['actions']), inline=False)
+        actions = ", ".join(user['actions'])
+        if actions == '':
+            actions = 'No special actions yet.'
+        embed.add_field(name="Actions", value=actions, inline=False)
 
         # Acknowledgements
         badges = self.getBadges(member)
@@ -136,7 +139,6 @@ class Profile(commands.Cog):
             v = " ".join(badges)
 
         embed.add_field(name="Badges (`" + str(len(badges)) + "`)", value=v, inline=False)
-
 
         await ctx.send(embed=embed)
 
