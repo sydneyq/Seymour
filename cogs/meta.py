@@ -18,6 +18,9 @@ class Meta:
     def refresh_teams(self):
         teams = self.dbConnection.findMeta({'id': 'teams'})
 
+    def change_team(self, member: discord.Member, team):
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"team": team}})
+
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
             msg = 'Are you sure?'
@@ -601,6 +604,12 @@ class Global(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=[])
+    async def team(self, ctx, member: discord.Member, team: int):
+        if not self.meta.isBotOwner(ctx.author):
+            return
+
+        self.meta.change_team(member, team)
 
 def setup(client):
     database_connection = Database()
