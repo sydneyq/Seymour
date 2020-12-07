@@ -20,7 +20,7 @@ class Meta:
         teams = self.dbConnection.findMeta({'id': 'teams'})
 
     def change_team(self, member: discord.Member, team):
-        self.dbConnection.updateProfile({"id": member.id, "server": member.guild.id}, {"$set": {"team": team}})
+        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"team": team}})
 
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
