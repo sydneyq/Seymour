@@ -104,7 +104,7 @@ class Event(commands.Cog):
             return
         if isinstance(message.channel, discord.DMChannel):
             return
-        if message.channel != 728736226709864549:
+        if message.channel.id != 728736226709864549:
             return
 
         server = self.dbConnection.findServer({'id': str(message.guild.id)})
