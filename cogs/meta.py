@@ -16,10 +16,13 @@ class Meta:
         self.dbConnection = database
         global teams
         teams = self.dbConnection.findMeta({'id': 'teams'})
+        print(f"INITIAL Teams: {teams}")
 
-    def refresh_teams(self):
+    @staticmethod
+    def refresh_teams(dbConnection):
         global teams
-        teams = self.dbConnection.findMeta({'id': 'teams'})
+        teams = dbConnection.findMeta({'id': 'teams'})
+        print(f"REFRESH Teams: {teams}")
 
     def change_team(self, member: discord.Member, team):
         self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"team": team}})
@@ -617,14 +620,14 @@ class Global(commands.Cog):
 
     @commands.command(aliases=["printteams", "teams"])
     async def teamnums(self, ctx):
-        await ctx.send(self.meta.teams)
+        await ctx.send(Meta.teams)
 
     @commands.command(aliases=[])
     async def refreshteams(self, ctx):
         if not self.meta.isBotOwner(ctx.author):
             return
 
-        self.meta.refresh_teams()
+        Meta.refresh_teams(self.dbConnection)
         await ctx.send(embed=self.meta.embedDone())
 
 
