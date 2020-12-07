@@ -117,7 +117,7 @@ class Profile(commands.Cog):
         if team == -1:
             team = "No team yet."
         else:
-            team = self.meta.teams[str(team)]
+            team = Meta.teams[str(team)]
         embed.add_field(name="Squad", value=team, inline=False)
 
         # Pieable?

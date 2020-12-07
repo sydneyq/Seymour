@@ -615,7 +615,7 @@ class Global(commands.Cog):
         self.meta.change_team(member, team)
         await ctx.send(embed=self.meta.embedDone())
 
-    @commands.command(aliases=[])
+    @commands.command(aliases=["printteams", "teams"])
     async def teamnums(self, ctx):
         await ctx.send(self.meta.teams)
 
