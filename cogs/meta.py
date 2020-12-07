@@ -161,7 +161,7 @@ class Meta:
         if profile is None:
             profile = {'id': id, 'server': str(member.guild.id),
                        'pts': 0, 'coins': 0, 'gifts': 0,
-                       'pies': 0, 'bumps': 0, 'badges': []}
+                       'pies': 0, 'bumps': 0, 'badges': [], 'actions': [], 'pieable': True, 'team': -1}
             self.dbConnection.insertProfile(profile)
 
         return profile
@@ -509,9 +509,9 @@ class Global(commands.Cog):
         if self.meta.isBotOwner(ctx.author):
             # guild = ctx.guild
             # self.dbConnection.renameColumn("companions", "dex")
-            self.dbConnection.makeColumn("actions", [])
-            self.dbConnection.makeColumn("pieable", True)
-            self.dbConnection.makeColumn("team", -1)
+            #self.dbConnection.makeColumn("actions", [])
+            #self.dbConnection.makeColumn("pieable", True)
+            #self.dbConnection.makeColumn("team", -1)
             # self.dbConnection.removeColumn("cakes")
             '''
             profiles = self.dbConnection.findProfiles({})
