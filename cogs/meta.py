@@ -10,22 +10,10 @@ import asyncio
 
 
 class Meta:
-    teams = {}
 
     def __init__(self, database):
         self.dbConnection = database
-        global teams
-        teams = self.dbConnection.findMeta({'id': 'teams'})
-        print(f"INITIAL Teams: {teams}")
-
-    @staticmethod
-    def refresh_teams(dbConnection):
-        global teams
-        teams = dbConnection.findMeta({'id': 'teams'})
-        print(f"REFRESH Teams: {teams}")
-
-    def change_team(self, member: discord.Member, team):
-        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"team": team}})
+        self.teams = self.dbConnection.findMeta({"id": "teams"})
 
     async def confirm(self, context, client, responder: discord.Member, msg=None):
         if msg is None:
@@ -502,6 +490,12 @@ class Meta:
     def is_pieable(self, member: discord.Member):
         return self.getProfile(member)['pieable']
 
+    def change_team(self, member: discord.Member, team):
+        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"team": team}})
+
+    def refresh_teams(self):
+        return self.dbConnection.findMeta({"id": "teams"})
+
 
 class Global(commands.Cog):
 
@@ -618,17 +612,15 @@ class Global(commands.Cog):
         self.meta.change_team(member, team)
         await ctx.send(embed=self.meta.embedDone())
 
-    @commands.command(aliases=["printteams", "teams"])
-    async def teamnums(self, ctx):
-        await ctx.send(Meta.teams)
-
-    @commands.command(aliases=[])
+    @commands.command()
     async def refreshteams(self, ctx):
-        if not self.meta.isBotOwner(ctx.author):
-            return
-
-        Meta.refresh_teams(self.dbConnection)
+        self.meta.refresh_teams()
         await ctx.send(embed=self.meta.embedDone())
+
+    @commands.command(aliases=["printteams", "teamnums"])
+    async def teams(self, ctx):
+        teams = self.meta.teams
+        await ctx.send(embed=self.meta.embed("Teams", f"`{0}`: {teams['0']}\n`{1}`: {teams['1']}\n`{2}`: {teams['2']}"))
 
 
 def setup(client):
