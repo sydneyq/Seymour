@@ -224,6 +224,10 @@ class Currency(commands.Cog):
 
     @commands.command(aliases=[])
     async def pie(self, ctx, member: discord.Member):
+        if not self.meta.is_pieable(member):
+            await ctx.send(embed=self.meta.embedOops("Sorry! This user has asked not to be pied."))
+            return
+
         profile = self.meta.getProfile(ctx.author)
 
         # check if the author has a pie

@@ -490,6 +490,9 @@ class Meta:
         self.edit_actions(member, actions)
         return True
 
+    def is_pieable(self, member: discord.Member):
+        return self.getProfile(member)['pieable']
+
 
 class Global(commands.Cog):
 
