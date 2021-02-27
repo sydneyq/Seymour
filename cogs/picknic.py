@@ -72,7 +72,7 @@ class Picknic(commands.Cog):
     def get_picknic_embed_from_id(self, _id):
         return get_picknic_embed(self.get_picknic_by_id(_id))
 
-    def get_picknic_embed_from_member(self, member:discord.Member):
+    def get_picknic_embed_from_member(self, member: discord.Member):
         return get_picknic_embed(self.get_picknic(member))
 
     @commands.command()
@@ -92,14 +92,17 @@ class Picknic(commands.Cog):
             await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command(aliases=['pn'])
-    async def getpicknic(self, ctx, member: discord.Member):
-        if self.meta.isBotOwner(ctx.message.author):
-            await ctx.send(embed=self.get_picknic_embed_from_member(member))
-        else:
-            await ctx.send(embed=self.meta.embedNoAccess())
+    async def picknic(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
 
-    @commands.command()
-    async def picknic(self, ctx):
+        if not self.picknic_does_exist(member):
+            await ctx.send(embed=self.meta.embedOops('This user has not yet set up a Picknic Profile.'))
+            return
+        await ctx.send(embed=self.get_picknic_embed_from_member(member))
+
+    @commands.command(aliases=['spn'])
+    async def startpicknic(self, ctx):
         # for now, limit to testers
         if not self.meta.isBotOwner(ctx.author):
             return
