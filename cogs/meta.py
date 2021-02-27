@@ -151,15 +151,18 @@ class Meta:
         """
         pass
 
-    def getProfile(self, member: discord.Member = None):
-        if member is None:
-            return False
+    def update_profile(self, member: discord.Member, key, value):
+        p = self.getProfile(member)
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {key: value}})
+        p = self.getProfile(member)
+        return p
 
+    def getProfile(self, member: discord.Member):
         id = member.id
 
-        profile = self.dbConnection.findProfile({"id": id, "server": str(member.guild.id)})
+        profile = self.dbConnection.findProfile({"id": id})
         if profile is None:
-            profile = {'id': id, 'server': str(member.guild.id),
+            profile = {'id': id,
                        'pts': 0, 'coins': 0, 'gifts': 0,
                        'pies': 0, 'bumps': 0, 'badges': [], 'actions': [], 'pieable': True, 'team': -1}
             self.dbConnection.insertProfile(profile)
@@ -384,7 +387,7 @@ class Meta:
         total = user[currency]
         total += val
 
-        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {currency: total}})
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {currency: total}})
         return total
 
     def addBumps(self, member: discord.Member, val: int):
@@ -461,7 +464,7 @@ class Meta:
         return user_id
 
     def edit_actions(self, member: discord.Member, actions: list):
-        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"actions": actions}})
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"actions": actions}})
 
     def get_actions(self, member: discord.Member):
         profile = self.getProfile(member)
@@ -491,7 +494,7 @@ class Meta:
         return self.getProfile(member)['pieable']
 
     def change_team(self, member: discord.Member, team):
-        self.dbConnection.updateProfile({"id": member.id, "server": str(member.guild.id)}, {"$set": {"team": team}})
+        self.dbConnection.updateProfile({"id": member.id}, {"$set": {"team": team}})
 
     def refresh_teams(self):
         return self.dbConnection.findMeta({"id": "teams"})

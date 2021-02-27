@@ -33,6 +33,36 @@ class Actions(commands.Cog):
             embed.set_thumbnail(url=gif)
             return embed
 
+    @commands.command(pass_context=True, aliases=['*finalsmash*', 'smash'])
+    async def finalsmash(self, ctx):
+        if not self.meta.has_action(ctx.author, 'finalsmash'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
+        responses = ['']
+
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'finalsmashed', 'GAME!'))
+
+    @commands.command(pass_context=True, aliases=['*fryingpan*', 'pan', '*pan*', 'bong', 'bonk', '*bonk*', '*bong*'])
+    async def fryingpan(self, ctx):
+        if not self.meta.has_action(ctx.author, 'fryingpan'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
+        responses = ['']
+
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'fryingpanned', 'bonked!!'))
+
+    @commands.command(pass_context=True, aliases=['*fingerguns*', 'fingerguns', '*pewpew*', 'pewpew', 'pew'])
+    async def fingergun(self, ctx):
+        if not self.meta.has_action(ctx.author, 'fingerguns'):
+            await ctx.send(embed=self.meta.embedOops("You need to buy this action to use it!"))
+            return
+
+        responses = ['']
+
+        await ctx.send(embed=self.action(ctx.author, ctx.message, random.choice(responses), 'fingergunned', 'pewpew!'))
+
     @commands.command(pass_context=True, aliases=['*boop*', 'bop', '*bop*', 'boops'])
     async def boop(self, ctx):
         if not self.meta.has_action(ctx.author, 'boop'):
@@ -211,26 +241,6 @@ class Actions(commands.Cog):
 
         await ctx.send(embed=embed)
         pass
-
-
-"""broken
-    @commands.command(aliases=['pride'])
-    async def gay(self, ctx, member: discord.Member = None):
-        if member is None:
-            member = ctx.author
-
-        response = requests.get("https://some-random-api.ml/canvas/gay",
-                                params={"overlay": "gay", "avatar": member.avatar_url})
-
-        embed = discord.Embed(
-            title=f"#Pride!",
-            color=discord.Color.teal()
-        )
-        embed.set_thumbnail(url=response.json()['link'])
-
-        await ctx.send(embed=embed)
-        pass
-"""
 
 
 def setup(client):

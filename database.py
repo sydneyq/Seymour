@@ -34,72 +34,24 @@ class Database:
     def countProfiles(self, findCriteria):
         return self.db.profile.count(findCriteria)
 
-    # soulmate
-    def insertSoulmatePair(self, toInsert):
-        self.db.soulmate.insert(toInsert)
+    # picknic
+    def insertPicknic(self, toInsert):
+        self.db.profile.insert(toInsert)
 
-    def findSoulmatePair(self, findCriteria):
-        return self.db.soulmate.find_one(findCriteria)
+    def findPicknic(self, findCriteria):
+        return self.db.profile.find_one(findCriteria)
 
-    def findSoulmatePairs(self, findCriteria):
-        return self.db.soulmate.find(findCriteria)
+    def findPicknics(self, findCriteria):
+        return self.db.profile.find(findCriteria)
 
-    def updateSoulmatePair(self, updateCritera, change):
-        self.db.soulmate.update(updateCritera, change)
+    def updatePicknic(self, updateCritera, change):
+        self.db.profile.update(updateCritera, change)
 
-    def removeSoulmatePair(self, toRemove):
-        self.db.soulmate.remove(toRemove)
+    def removePicknic(self, toRemove):
+        self.db.profile.remove(toRemove)
 
-    def countSoulmatePairs(self, findCriteria):
-        return self.db.soulmate.count(findCriteria)
-
-    # quote
-    def insertQuote(self, toInsert):
-        self.db.quote.insert(toInsert)
-
-    def findQuotes(self, findCriteria):
-        return self.db.quote.find(findCriteria)
-
-    def findQuote(self, findCriteria):
-        return self.db.quote.find_one(findCriteria)
-
-    def removeQuote(self, toRemove):
-        self.db.quote.remove(toRemove)
-
-    def countQuotes(self, findCriteria):
-        return self.db.quote.count(findCriteria)
-
-    # modlog
-    def insertModLog(self, toInsert):
-        self.db.modlog.insert(toInsert)
-
-    def findModLogs(self, findCriteria):
-        return self.db.modlog.find(findCriteria)
-
-    def findModLog(self, findCriteria):
-        return self.db.modlog.find_one(findCriteria)
-
-    def removeModLog(self, toRemove):
-        self.db.modlog.remove(toRemove)
-
-    def countModLogs(self, findCriteria):
-        return self.db.modlog.count(findCriteria)
-
-    def updateModLog(self, updateCritera, change):
-        self.db.modlog.update(updateCritera, change)
-
-    # modprofile
-    def insertModProfile(self, toInsert):
-        self.db.modprofile.insert(toInsert)
-
-    def findModProfile(self, findCriteria):
-        return self.db.modprofile.find_one(findCriteria)
-
-    def removeModProfile(self, toRemove):
-        self.db.modprofile.remove(toRemove)
-
-    def updateModProfile(self, updateCritera, change):
-        self.db.modprofile.update(updateCritera, change)
+    def countPicknic(self, findCriteria):
+        return self.db.profile.count(findCriteria)
 
     # badges
     def findBadge(self, findCriteria):
@@ -121,8 +73,8 @@ class Database:
     def findMeta(self, findCriteria):
         return self.db.server.find_one(findCriteria)
 
-    def updateServer(self, updateCritera, change):
-        self.db.server.update(updateCritera, change)
+    def updateServer(self, updateCriteria, change):
+        self.db.server.update(updateCriteria, change)
 
     def insertServer(self, toInsert):
         self.db.server.insert(toInsert)
@@ -137,8 +89,8 @@ class Database:
     def findStoreItem(self, findCriteria):
         return self.db.store.find_one(findCriteria)
 
-    def updateStoreItem(self, updateCritera, change):
-        self.db.store.update(updateCritera, change)
+    def updateStoreItem(self, updateCriteria, change):
+        self.db.store.update(updateCriteria, change)
 
     def insertStoreItem(self, toInsert):
         self.db.store.insert(toInsert)
