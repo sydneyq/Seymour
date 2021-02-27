@@ -129,7 +129,7 @@ class Picknic(commands.Cog):
             return
         await ctx.send(embed=self.get_picknic_embed_from_member(member))
 
-    @commands.command(aliases=['spn', 'picknicmenu'])
+    @commands.command(aliases=['spn', 'picknicmenu', 'pnm'])
     async def startpicknic(self, ctx):
         # for now, limit to testers
         if not self.meta.isBotOwner(ctx.author):
@@ -137,11 +137,11 @@ class Picknic(commands.Cog):
 
         # menu
         title = 'Welcome to Picknic!'
-        desc = "What would you like to do today?" \
-               "[🏕] **Setup** a Picknic Profile" \
-               "[♻️] **Edit** your Picknic Profile" \
-               "[⚠️] **Report** a Picknic Profile" \
-               "[🍐] **Reset** Picknic Swipe history" \
+        desc = "__What would you like to do today?__\n" \
+               "[🏕] **Setup** a Picknic Profile\n" \
+               "[♻️] **Edit** your Picknic Profile\n" \
+               "[⚠️] **Report** a Picknic Profile\n" \
+               "[🍐] **Reset** Picknic Swipe history\n" \
                "[🛰] **Search** through Picknic Matches"
         msg = await ctx.send(embed=self.meta.embed(title, desc))
         options = ['🏕', '♻', '⚠', '🍐', '🛰']
@@ -161,9 +161,10 @@ class Picknic(commands.Cog):
             return
 
         await msg.clear_reactions()
+        print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
 
         # create profile
-        if emoji == '🏕':
+        if emoji.emoji == '🏕':
             if self.picknic_does_exist(ctx.author().id):
                 await msg.edit(embed=self.meta.embedOops('You already have a Picknic profile! '
                                                          'Try going back to the menu and editing it.'))
