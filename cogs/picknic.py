@@ -5,6 +5,40 @@ from .meta import Meta
 import asyncio
 
 
+def get_picknic_embed(profile):
+    title = profile['name']
+    if profile['sfw']:
+        title = title + ' (SFW)'
+    else:
+        title = title + ' (NSFW)'
+    if profile['active']:
+        title = title + ' - ACTIVE'
+    else:
+        title = title + ' - DEACTIVATED'
+
+    embed = discord.Embed(color=discord.Color.magenta(), title=title)
+
+    embed.add_field(name="Gender(s), Pronoun(s) | LF (Looking For) ",
+                    value=", ".join(profile['gender'] + ", " +
+                                    profile['pronouns']) +
+                          " `| LF` " +
+                          ", ".join(profile['lf-gender']), inline=False)
+
+    embed.add_field(name="Role(s) | LF (Looking For)",
+                    value=", ".join(profile['role']) +
+                          ' `| LF` ' +
+                          ", ".join(profile['lf-role']), inline=False)
+
+    embed.add_field(name="Medium(s)", value=", ".join(profile['medium']), inline=True)
+    embed.add_field(name="Looking For Term(s)", value=", ".join(profile['lf-term']), inline=True)
+    embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
+    embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
+    embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
+
+    embed.set_footer(text=str(profile['id']))
+    return embed
+
+
 class Picknic(commands.Cog):
 
     def __init__(self, client, database, meta):
@@ -13,8 +47,9 @@ class Picknic(commands.Cog):
         self.meta = meta
 
     def get_picknic(self, member: discord.Member):
-        _id = str(member.id)
+        return self.get_picknic_by_id(str(member.id))
 
+    def get_picknic_by_id(self, _id):
         profile = self.dbConnection.findPicknic({"id": _id})
         if profile is None:
             profile = {'id': _id,
@@ -34,39 +69,11 @@ class Picknic(commands.Cog):
         else:
             return True
 
-    def get_picknic_embed(self, member: discord.Member):
-        profile = self.get_picknic(member)
-        title = profile['name']
-        if profile['sfw']:
-            title = title + ' (SFW)'
-        else:
-            title = title + ' (NSFW)'
-        if profile['active']:
-            title = title + ' - ACTIVE'
-        else:
-            title = title + ' - DEACTIVATED'
+    def get_picknic_embed_from_id(self, _id):
+        return get_picknic_embed(self.get_picknic_by_id(_id))
 
-        embed = discord.Embed(color=discord.Color.magenta(), title=title)
-
-        embed.add_field(name="Gender(s), Pronoun(s) | LF (Looking For) ",
-                        value=", ".join(profile['gender'] + ", " +
-                                        profile['pronouns']) +
-                              " `| LF` " +
-                              ", ".join(profile['lf-gender']), inline=False)
-
-        embed.add_field(name="Role(s) | LF (Looking For)",
-                        value=", ".join(profile['role']) +
-                              ' `| LF` ' +
-                              ", ".join(profile['lf-role']), inline=False)
-
-        embed.add_field(name="Medium(s)", value=", ".join(profile['medium']), inline=True)
-        embed.add_field(name="Looking For Term(s)", value=", ".join(profile['lf-term']), inline=True)
-        embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
-        embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
-        embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
-
-        embed.set_footer(text=str(member.id))
-        return embed
+    def get_picknic_embed_from_member(self, member:discord.Member):
+        return get_picknic_embed(self.get_picknic(member))
 
     @commands.command()
     async def removepicknic(self, ctx, _id):
@@ -77,16 +84,22 @@ class Picknic(commands.Cog):
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
-    @commands.command()
-    async def getpicknic(self, ctx, _id):
+    @commands.command(aliases=['pnid'])
+    async def getpicknicbyid(self, ctx, _id):
         if self.meta.isBotOwner(ctx.message.author):
-            pass
-            await ctx.send(embed=self.meta.embedDone())
+            await ctx.send(embed=self.get_picknic_embed_from_id(_id))
+        else:
+            await ctx.send(embed=self.meta.embedNoAccess())
+
+    @commands.command(aliases=['pn'])
+    async def getpicknic(self, ctx, member: discord.Member):
+        if self.meta.isBotOwner(ctx.message.author):
+            await ctx.send(embed=self.get_picknic_embed_from_member(member))
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
     @commands.command()
-    async def picknic(self, ctx, _id):
+    async def picknic(self, ctx):
         # for now, limit to testers
         if not self.meta.isBotOwner(ctx.author):
             return
