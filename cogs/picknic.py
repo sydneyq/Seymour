@@ -165,7 +165,7 @@ class Picknic(commands.Cog):
 
         # create profile
         if emoji.emoji == '🏕':
-            if self.picknic_does_exist(ctx.author().id):
+            if self.picknic_does_exist(ctx.author.id):
                 await msg.edit(embed=self.meta.embedOops('You already have a Picknic profile! '
                                                          'Try going back to the menu and editing it.'))
                 return
