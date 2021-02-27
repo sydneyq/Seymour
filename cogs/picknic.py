@@ -172,7 +172,7 @@ class Picknic(commands.Cog):
             else:
                 await msg.edit(embed=self.meta.embed('First, are you over 18 years of age? ',
                                                      'Users who are found or suspected to be '
-                                                     'underage will be banned from the system.'
+                                                     'underage will be banned from the system. '
                                                      'By using our platform and space, you agree to '
                                                      'follow our rules, including following Discord ToS.'))
                 options = ['✅', '⛔']
@@ -188,7 +188,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embed("Thanks for being honest. We hope you take care!"))
                     return
 
-                await msg.edit(embed=self.meta.embed('What are your pronouns?'))
+                await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
                 try:
                     pronouns, user = await self.client.wait_for('message', timeout=120.0, check=check_msg)
                 except asyncio.TimeoutError:
