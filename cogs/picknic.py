@@ -411,7 +411,7 @@ class Picknic(commands.Cog):
                                     lf_roles, lf_gender, interests, limits, details)
                 return
         # edit profile
-        elif emoji == '♻️':
+        elif emoji == '♻' or emoji == '♻️':
             # check that the user has a profile to edit
             if not self.picknic_does_exist(ctx.author.id):
                 await msg.edit(embed=self.meta.embedOops("You don't have a Picknic profile yet! "
@@ -515,7 +515,7 @@ class Picknic(commands.Cog):
 
             return
         # report profile
-        elif emoji == '⚠️':
+        elif emoji == '️⚠' or emoji == '⚠️':
             # temp until report is implemented
             await msg.edit(embed=self.meta.embed("Report a Profile",
                                                  "Please ModMail in to a Pig Pen moderator "
