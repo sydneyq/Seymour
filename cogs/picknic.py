@@ -387,8 +387,9 @@ class Picknic(commands.Cog):
                 details = reply.content
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed("And we're done!",
-                                                     "Feel free to check out your profile using the `;pn` command.\n"
+                await msg.edit(embed=self.meta.embed(f"And we're done, {ctx.author.name}!",
+                                                     f"{ctx.author.mention}, "
+                                                     f"feel free to check out your profile using the `;pn` command.\n"
                                                      "Leaving all servers with Seymour will deactivate your profile."))
 
                 self.create_picknic(ctx.author.id, gender, pronouns, role, sfw, mediums, terms,

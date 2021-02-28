@@ -36,22 +36,22 @@ class Database:
 
     # picknic
     def insertPicknic(self, toInsert):
-        self.db.profile.insert(toInsert)
+        self.db.picknic.insert(toInsert)
 
     def findPicknic(self, findCriteria):
-        return self.db.profile.find_one(findCriteria)
+        return self.db.picknic.find_one(findCriteria)
 
     def findPicknics(self, findCriteria):
-        return self.db.profile.find(findCriteria)
+        return self.db.picknic.find(findCriteria)
 
     def updatePicknic(self, updateCritera, change):
-        self.db.profile.update(updateCritera, change)
+        self.db.picknic.update(updateCritera, change)
 
     def removePicknic(self, toRemove):
-        self.db.profile.remove(toRemove)
+        self.db.picknic.remove(toRemove)
 
     def countPicknic(self, findCriteria):
-        return self.db.profile.count(findCriteria)
+        return self.db.picknic.count(findCriteria)
 
     # badges
     def findBadge(self, findCriteria):
