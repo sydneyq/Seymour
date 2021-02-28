@@ -29,8 +29,8 @@ class Picknic(commands.Cog):
         embed = discord.Embed(color=discord.Color.magenta(), title=title)
 
         embed.add_field(name="Gender(s), Pronoun(s) | LF (Looking For) ",
-                        value=", ".join(profile['gender'] + ", " +
-                                        profile['pronouns']) +
+                        value=", ".join(profile['gender']) + ", " +
+                              profile['pronouns'] +
                               " `| LF` " +
                               ", ".join(profile['lf-gender']), inline=False)
 
@@ -177,7 +177,7 @@ class Picknic(commands.Cog):
             return
 
         await msg.clear_reactions()
-        #print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
+        # print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
 
         # create profile
         if emoji.emoji == '🏕':
@@ -358,7 +358,8 @@ class Picknic(commands.Cog):
                         terms.append('short-term')
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed('Are you open to NSFW partners?', 'Please react with the corresponding emoji.'))
+                await msg.edit(embed=self.meta.embed('Are you open to NSFW partners?',
+                                                     'Please react with the corresponding emoji.'))
                 options = ['✅', '⛔']
                 for option in options:
                     await msg.add_reaction(option)
