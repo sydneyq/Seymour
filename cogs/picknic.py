@@ -5,62 +5,53 @@ from .meta import Meta
 import asyncio
 
 
+def get_picknic_embed(profile):
+    title = f"{profile['name']}"
+
+    if not profile['active']:
+        desc = 'Deactivated account.\nNeed to activate it again? Use the `;pnm` command to reactivate it.'
+        embed = discord.Embed(color=discord.Color.magenta(), title=title, description=desc)
+        try:
+            embed.set_thumbnail(url=profile['avatar'])
+        finally:
+            pass
+        embed.set_footer(text=f"ID: {str(profile['id'])}")
+        return embed
+
+    if not profile['sfw']:
+        title = title + ' 🌶'
+
+    embed = discord.Embed(color=discord.Color.magenta(), title=title)
+
+    embed.add_field(name=", ".join(profile['gender']).capitalize() + ", " + profile['pronouns'],
+                    value="`LF (Looking For)` \n" +
+                          ", ".join(profile['lf-gender']).capitalize(), inline=False)
+
+    embed.add_field(name=profile['role'].capitalize(),
+                    value='`LF (Looking For)` \n' +
+                          ", ".join(profile['lf-term']).capitalize() + "\n" +
+                          ", ".join(profile['lf-role']).capitalize() + "\n" +
+                          ", ".join(profile['medium']).capitalize()
+                    , inline=False)
+
+    embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
+    embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
+    embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
+
+    try:
+        embed.set_thumbnail(url=profile['avatar'])
+    finally:
+        pass
+    embed.set_footer(text=f"ID: {str(profile['id'])}")
+    return embed
+
+
 class Picknic(commands.Cog):
 
     def __init__(self, client, database, meta):
         self.client = client
         self.dbConnection = database
         self.meta = meta
-
-    def get_picknic_embed(self, profile):
-        user = self.client.get_user(int(profile['id']))
-        if not user:
-            for m in self.client.get_guild(720977242968293426).members:
-                if str(m.id) == profile['id']:
-                    user = m
-            if not user:
-                return None
-
-        title = f"{user.name}#{user.discriminator}"
-
-        if not profile['active']:
-            desc = 'Deactivated account.\nNeed to activate it again? Use the `;pnm` command to reactivate it.'
-            embed = discord.Embed(color=discord.Color.magenta(), title=title, description=desc)
-            try:
-                if user:
-                    embed.set_thumbnail(url=user.avatar_url)
-            finally:
-                pass
-            embed.set_footer(text=f"ID: {str(profile['id'])}")
-            return embed
-
-        if not profile['sfw']:
-            title = title + ' 🌶'
-
-        embed = discord.Embed(color=discord.Color.magenta(), title=title)
-
-        embed.add_field(name=", ".join(profile['gender']).capitalize() + ", " + profile['pronouns'],
-                        value="`LF (Looking For)` \n" +
-                              ", ".join(profile['lf-gender']).capitalize(), inline=False)
-
-        embed.add_field(name=profile['role'].capitalize(),
-                        value='`LF (Looking For)` \n' +
-                              ", ".join(profile['lf-term']).capitalize() + "\n" +
-                              ", ".join(profile['lf-role']).capitalize() + "\n" +
-                              ", ".join(profile['medium']).capitalize()
-                        , inline=False)
-
-        embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
-        embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
-        embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
-
-        try:
-            if user:
-                embed.set_thumbnail(url=user.avatar_url)
-        finally:
-            pass
-        embed.set_footer(text=f"ID: {str(profile['id'])}")
-        return embed
 
     def get_picknic(self, member: discord.Member):
         return self.get_picknic_by_id(member.id)
@@ -79,7 +70,7 @@ class Picknic(commands.Cog):
         if profile is not None:
             self.dbConnection.insertPicknic(profile)
 
-    def create_picknic(self, _id, gender: list, pronouns: str, role, sfw: bool, medium: list, lf_term: list,
+    def create_picknic(self, _id, name: str, avatar, gender: list, pronouns: str, role, sfw: bool, medium: list, lf_term: list,
                        lf_role: list, lf_gender: list, interests: str, limits: str, details: str):
         p = self.dbConnection.findProfile({"id": str(_id)})
         if p is None:
@@ -98,7 +89,9 @@ class Picknic(commands.Cog):
                 'details': details,
                 'active': True,
                 'yes': [],
-                'no': []
+                'no': [],
+                'name': name,
+                'avatar': avatar
             }
             self.dbConnection.insertPicknic(p)
         else:
@@ -117,14 +110,14 @@ class Picknic(commands.Cog):
     def get_picknic_embed_from_id(self, _id):
         p = self.get_picknic_by_id(_id)
         if p is not None:
-            return self.get_picknic_embed(p)
+            return get_picknic_embed(p)
         else:
             return None
 
     def get_picknic_embed_from_member(self, member: discord.Member):
         p = self.get_picknic(member)
         if p is not None:
-            return self.get_picknic_embed(p)
+            return get_picknic_embed(p)
         else:
             return None
 
@@ -225,6 +218,16 @@ class Picknic(commands.Cog):
                     msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
                 else:
                     await msg.clear_reactions()
+
+                await msg.edit(embed=self.meta.embed('Enter your name and Discord tag', 'e.g. `Seymour (Seymour#1973)`'))
+                try:
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                name = reply.content
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
                 try:
@@ -448,7 +451,7 @@ class Picknic(commands.Cog):
                                                      f"feel free to check out your profile using the `;pn` command.\n"
                                                      "Leaving all servers with Seymour will deactivate your profile."))
 
-                self.create_picknic(ctx.author.id, gender, pronouns, role, sfw, mediums, terms,
+                self.create_picknic(ctx.author.id, name, ctx.author.avatar_url, gender, pronouns, role, sfw, mediums, terms,
                                     lf_roles, lf_gender, interests, limits, details)
                 return
         # edit profile
@@ -463,11 +466,12 @@ class Picknic(commands.Cog):
             desc = "`[1]` Enable/Disable my profile or toggle my profile as NSFW/SFW.\n" \
                    "`[2]` Change my gender(s) or the gender(s) I'm looking for.\n" \
                    "`[3]` Change my role or the role(s) I'm looking for.\n" \
-                   "`[4]` Change my pronouns, interest(s), limit(s), or detail(s).\n" \
-                   "`[5]` Change the term(s) or medium(s) I'm looking for."
+                   "`[4]` Change my name, pronouns, interest(s), limit(s), or detail(s).\n" \
+                   "`[5]` Change the term(s) or medium(s) I'm looking for.\n" \
+                   "`[6]` Update my profile picture to my current picture."
             await msg.edit(embed=self.meta.embed(title, desc))
 
-            options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+            options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣']
             for option in options:
                 await msg.add_reaction(option)
             try:
@@ -675,11 +679,12 @@ class Picknic(commands.Cog):
                     return
             # [4] Change my pronouns, interest(s), limit(s), or detail(s).
             elif choice == '4️⃣':
-                title = "Pronouns, Interests, Limits, Details"
+                title = "Name, Pronouns, Interests, Limits, Details"
                 desc = "`[1]` Change my pronouns.\n" \
                        "`[2]` Change my interest(s).\n" \
                        "`[3]` Change my limit(s).\n" \
-                       "`[4]` Change my detail(s)."
+                       "`[4]` Change my detail(s).\n" \
+                       "`[5]` Change my name and Discord tag."
                 await msg.edit(embed=self.meta.embed(title, desc))
                 options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
                 for option in options:
@@ -715,6 +720,8 @@ class Picknic(commands.Cog):
                     self.edit_picknic(ctx.author, 'limits', response)
                 elif choice == '4️⃣':
                     self.edit_picknic(ctx.author, 'details', response)
+                elif choice == '5️⃣':
+                    self.edit_picknic(ctx.author, 'name', response)
                 await msg.edit(embed=self.meta.embedDone())
                 return
             # [5] Change the term(s) or medium(s) I'm looking for.
@@ -786,7 +793,9 @@ class Picknic(commands.Cog):
                     self.edit_picknic(ctx.author, 'medium', mediums)
                     await msg.edit(embed=self.meta.embedDone())
                     return
-
+            elif choice == '6️⃣':
+                self.edit_picknic(ctx.author, 'avatar', ctx.author.avatar_url)
+                await msg.edit(embed=self.meta.embedDone())
             return
         # report profile
         elif emoji == '️🧨':
@@ -848,7 +857,7 @@ class Picknic(commands.Cog):
                     continue
                 if not any(check in p['role'] for check in profile['lf-role']):
                     continue
-                embed = self.get_picknic_embed(p)
+                embed = get_picknic_embed(p)
                 if embed is None:
                     print(p)
                     continue
