@@ -17,14 +17,17 @@ class Picknic(commands.Cog):
         if not user:
             return None
         title = f"{user.name}#{user.discriminator}"
+        
+        if not profile['active']:
+            desc = 'Deactivated account.\n' \
+                   'Need to activate it again? Use the `;pnm` command to reactivate it.'
+            embed = discord.Embed(color=discord.Color.magenta(), title=title, desc=desc)
+            return
+
         if profile['sfw']:
             title = title + ' (SFW)'
         else:
             title = title + ' (NSFW)'
-        if profile['active']:
-            title = title + ' - ACTIVE'
-        else:
-            title = title + ' - DEACTIVATED'
 
         embed = discord.Embed(color=discord.Color.magenta(), title=title)
 
@@ -172,7 +175,7 @@ class Picknic(commands.Cog):
         emoji = emoji.emoji
 
         await msg.clear_reactions()
-        # print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
+        print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
 
         # create profile
         if emoji == '🏕':
