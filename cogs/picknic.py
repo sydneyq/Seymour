@@ -157,6 +157,7 @@ class Picknic(commands.Cog):
 
     @commands.command(aliases=['spn', 'picknicmenu', 'pnm'])
     async def startpicknic(self, ctx):
+        isDM = isinstance(ctx.channel, discord.DMChannel)
         # menu
         title = 'Welcome to Picknic!'
         desc = "__What would you like to do today?__\n" \
@@ -183,7 +184,11 @@ class Picknic(commands.Cog):
             return
         emoji = emoji.emoji
 
-        await msg.clear_reactions()
+        if isDM:
+            await msg.delete()
+            msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+        else:
+            await msg.clear_reactions()
         print(f"emoji: [{emoji}]")  # \temoji.emoji: [{emoji.emoji}]")
 
         # create profile
@@ -206,10 +211,15 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
                 if react.emoji == '⛔':
                     await msg.edit(embed=self.meta.embed("Thanks for being honest.", "We hope you take care!"))
                     return
+
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
 
                 await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
                 try:
@@ -293,7 +303,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 role = role.emoji
                 if role == '1️⃣':
                     role = 'hypnotist'
@@ -375,7 +389,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 if react.emoji == '⛔':
                     sfw = True
                 else:
@@ -443,7 +461,11 @@ class Picknic(commands.Cog):
             except asyncio.TimeoutError:
                 await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                 return
-            await msg.clear_reactions()
+            if isDM:
+                await msg.delete()
+                msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+            else:
+                await msg.clear_reactions()
             choice = choice.emoji
             # [1] Enable/Disable my profile or toggle my profile as NSFW/SFW.
             if choice == '1️⃣':
@@ -461,7 +483,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 choice = choice.emoji
                 if choice == '1️⃣':
                     self.edit_picknic(ctx.author, 'active', True)
@@ -487,7 +513,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
                                                          'Please type the numbers separated by commas.',
@@ -568,7 +598,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What primary role do you best fit? (Choose one.) '
                                                          'Please react with the corresponding emoji.',
@@ -583,7 +617,11 @@ class Picknic(commands.Cog):
                     except asyncio.TimeoutError:
                         await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                         return
-                    await msg.clear_reactions()
+                    if isDM:
+                        await msg.delete()
+                        msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                    else:
+                        await msg.clear_reactions()
                     role = role.emoji
                     if role == '1️⃣':
                         role = 'hypnotist'
@@ -634,7 +672,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
 
                 title = "What would you like to change it to?"
                 desc = "Type it out!"
@@ -671,7 +713,11 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
+                if isDM:
+                    await msg.delete()
+                    msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                else:
+                    await msg.clear_reactions()
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
                                                          'Please type the numbers separated by commas.',
@@ -750,8 +796,8 @@ class Picknic(commands.Cog):
         # flip through profile
         elif emoji == '🛰':
             # check that it's in dms
-            if not isinstance(ctx.channel, discord.DMChannel):
-                await ctx.send(embed=self.meta.embedOops('Try using this command in a private message to me!'))
+            if not isDM:
+                await msg.edit(embed=self.meta.embedOops('Try using this command in a private message to me!'))
                 return
             # check that the requesting user has a profile themselves first
             if not self.picknic_does_exist(ctx.author):
@@ -763,23 +809,25 @@ class Picknic(commands.Cog):
                 await ctx.send(
                     embed=self.meta.embedOops('Your profile is deactivated! It needs to be active to search.'))
                 return
+            await msg.delete()
             picknics = self.dbConnection.findPicknics({'active': True, 'sfw': profile['sfw']})
             yes = profile['yes']
             no = profile['no']
             for p in picknics:
-                if p['id'] == str(ctx.author.id):
-                    continue
-                if p['id'] in profile['no'] or profile['id'] in p['no']:
-                    continue
-                if p['id'] in profile['yes']:
-                    continue
-                if not any(check in p['gender'] for check in profile['lf-gender']):
-                    continue
-                if not any(check in p['medium'] for check in profile['medium']):
-                    continue
-                if not any(check in p['role'] for check in profile['lf-role']):
-                    continue
-                await msg.edit(embed=self.get_picknic_embed(p))
+                await self.client.send_typing(ctx.channel):
+                    if p['id'] == str(ctx.author.id):
+                        continue
+                    if p['id'] in profile['no'] or profile['id'] in p['no']:
+                        continue
+                    if p['id'] in profile['yes']:
+                        continue
+                    if not any(check in p['gender'] for check in profile['lf-gender']):
+                        continue
+                    if not any(check in p['medium'] for check in profile['medium']):
+                        continue
+                    if not any(check in p['role'] for check in profile['lf-role']):
+                        continue
+                msg = await ctx.send(embed=self.get_picknic_embed(p))
                 options = ['👍', '👎', '🧨', '🛑', '➡️']
                 for option in options:
                     await msg.add_reaction(option)
@@ -788,7 +836,6 @@ class Picknic(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
-                await msg.clear_reactions()
                 if choice == '👍':
                     if profile['id'] in p['yes']:
                         match = self.client.get_user(int(profile['id']))
@@ -796,9 +843,11 @@ class Picknic(commands.Cog):
                                                              f"{ctx.author.mention}, you matched with {match.mention}!"))
                     yes.append(profile['id'])
                     self.edit_picknic(ctx.author, 'yes', yes)
+                    await msg.delete()
                 elif choice == '👎':
                     no.append(profile['id'])
                     self.edit_picknic(ctx.author, 'no', no)
+                    await msg.delete()
                 elif choice == '🧨':
                     reportee = self.client.get_user(int(profile['id']))
                     report_msg = await ctx.send(embed=self.meta.embed('Report Confirmation',
@@ -816,7 +865,11 @@ class Picknic(commands.Cog):
                         await report_msg.edit(embed=self.meta.embedOops("Picknic menu timed out. "
                                                                         "You took too long to reply!"))
                         return
-                    await msg.clear_reactions()
+                    if isDM:
+                        await msg.delete()
+                        msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
+                    else:
+                        await msg.clear_reactions()
                     if react.emoji == '⛔':
                         await report_msg.delete()
                         continue
@@ -827,7 +880,9 @@ class Picknic(commands.Cog):
                         await report_msg.delete()
                         no.append(profile['id'])
                         self.edit_picknic(ctx.author, 'no', no)
+                        await msg.delete()
                 elif choice == '➡️':
+                    await msg.delete()
                     continue
                 elif choice == '🛑':
                     await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
