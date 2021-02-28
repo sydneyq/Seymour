@@ -30,13 +30,13 @@ class Picknic(commands.Cog):
 
         embed.add_field(name=", ".join(profile['gender']).capitalize() + ", " + profile['pronouns'],
                         value="`LF (Looking For)` \n" +
-                              ", ".join(profile['lf-gender']), inline=False)
+                              ", ".join(profile['lf-gender']).capitalize(), inline=False)
 
         embed.add_field(name=profile['role'].capitalize(),
                         value='`LF (Looking For)` \n' +
-                              ", ".join(profile['lf-term']) + "\n" +
-                              ", ".join(profile['lf-role']) + "\n" +
-                              ", ".join(profile['medium'])
+                              ", ".join(profile['lf-term']).capitalize() + "\n" +
+                              ", ".join(profile['lf-role']).capitalize() + "\n" +
+                              ", ".join(profile['medium']).capitalize()
                         , inline=False)
 
         embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
@@ -145,10 +145,6 @@ class Picknic(commands.Cog):
 
     @commands.command(aliases=['spn', 'picknicmenu', 'pnm'])
     async def startpicknic(self, ctx):
-        # for now, limit to testers
-        if not self.meta.isBotOwner(ctx.author):
-            return
-
         # menu
         title = 'Welcome to Picknic!'
         desc = "__What would you like to do today?__\n" \
@@ -418,23 +414,109 @@ class Picknic(commands.Cog):
                                                          "Try going back to the menu to create one."))
                 return
 
-            title = "What would you like to edit?"
-            desc = "`[1]` Enable/Disable my profile." \
-                   "`[2]` Change my name." \
-                   "`[3]` Change my gender(s)." \
-                   "`[4]` Change my pronoun(s)." \
-                   "`[5]` Change my role(s)." \
-                   "`[6]` Change my medium(s)." \
-                   "`[7]` Toggle my profile as NSFW/SFW." \
-                   "`[8]` Change the gender(s) I'm looking for." \
-                   "`[9]` Change the role(s) I'm looking for." \
-                   "`[10]` Change my interest(s)." \
-                   "`[11]` Change my limit(s)." \
-                   "`[12]` Change my detail(s)." \
-                   "`[13]` Change the term(s) I'm looking for."
+            title = "What would you like to edit?\n"
+            desc = "`[1]` Enable/Disable my profile or toggle my profile as NSFW/SFW.\n" \
+                   "`[2]` Change my gender(s) or the gender(s) I'm looking for.\n" \
+                   "`[3]` Change my role or the role(s) I'm looking for.\n" \
+                   "`[4]` Change my pronouns, interest(s), limit(s), or detail(s).\n" \
+                   "`[5]` Change the term(s) or medium(s) I'm looking for."
+            await msg.edit(embed=self.meta.embed(title, desc))
+
+            options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+            for option in options:
+                await msg.add_reaction(option)
+            try:
+                choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+            except asyncio.TimeoutError:
+                await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                return
+            await msg.clear_reactions()
+            choice = choice.emoji
+            # [1] Enable/Disable my profile or toggle my profile as NSFW/SFW.
+            if choice == '1️⃣':
+                title = "Enable/Disable and NSFW/SFW"
+                desc = "`[1]` Enable my profile.\n" \
+                       "`[2]` Disable my profile.\n" \
+                       "`[3]` Make my profile NSFW-allowed." \
+                       "`[4]` Make my profile SFW-only."
+                await msg.edit(embed=self.meta.embed(title, desc))
+                options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+                choice = choice.emoji
+                if choice == '1️⃣':
+                    self.edit_picknic(ctx.author, 'active', True)
+                elif choice == '2️⃣':
+                    self.edit_picknic(ctx.author, 'active', False)
+                elif choice == '3️⃣':
+                    self.edit_picknic(ctx.author, 'sfw', False)
+                elif choice == '4️⃣':
+                    self.edit_picknic(ctx.author, 'sfw', True)
+                await msg.edit(embed=self.meta.embedDone())
+                return
+            # [2] Change my gender(s) or the gender(s) I'm looking for.
+            elif choice == '2️⃣':
+                pass
+            # [3] Change my role or the role(s) I'm looking for
+            elif choice == '3️⃣':
+                pass
+            # [4] Change my pronouns, interest(s), limit(s), or detail(s).
+            elif choice == '4️⃣':
+                title = "Pronouns, Interests, Limits, Details"
+                desc = "`[1]` Change my pronouns.\n" \
+                       "`[2]` Change my interest(s).\n" \
+                       "`[3]` Change my limit(s)." \
+                       "`[4]` Change my detail(s)."
+                await msg.edit(embed=self.meta.embed(title, desc))
+                options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+
+                title = "What would you like to change it to?"
+                desc = "Type it out!"
+                try:
+                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                response = reply.content
+                await reply.delete()
+
+                choice = choice.emoji
+                if choice == '1️⃣':
+                    self.edit_picknic(ctx.author, 'pronouns', response)
+                elif choice == '2️⃣':
+                    self.edit_picknic(ctx.author, 'interests', response)
+                elif choice == '3️⃣':
+                    self.edit_picknic(ctx.author, 'limits', response)
+                elif choice == '4️⃣':
+                    self.edit_picknic(ctx.author, 'details', response)
+                await msg.edit(embed=self.meta.embedDone())
+                return
+            # [5] Change the term(s) or medium(s) I'm looking for.
+            elif choice == '5️⃣':
+                pass
+
             return
         # report profile
         elif emoji == '⚠':
+            # temp until report is implemented
+            await msg.edit(embed=self.meta.embed("Report a Profile",
+                                                 "Please ModMail in to a Pig Pen moderator "
+                                                 "and provide the moderator the user's ID or username."))
+            return
             guild = 751294304764428372  # BotHub
             channel = 752069374617059438  # issues
             await ctx.send(embed=self.meta.embed("Please send the ID of the person you'd like to report."))
@@ -450,6 +532,9 @@ class Picknic(commands.Cog):
             return
         # reset swipes
         elif emoji == '🍐':
+            self.edit_picknic(ctx.author, 'no', [])
+            self.edit_picknic(ctx.author, 'yes', [])
+            await msg.edit(embed=self.meta.embedDone())
             return
         # flip through profile
         elif emoji == '🛰':
