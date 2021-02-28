@@ -175,7 +175,7 @@ class Picknic(commands.Cog):
         emoji = emoji.emoji
 
         await msg.clear_reactions()
-        print(f"emoji: [{emoji}]\temoji.emoji: [{emoji.emoji}]")
+        print(f"emoji: [{emoji}]") # \temoji.emoji: [{emoji.emoji}]")
 
         # create profile
         if emoji == '🏕':
