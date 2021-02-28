@@ -187,7 +187,7 @@ class Picknic(commands.Cog):
             msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
         else:
             await msg.clear_reactions()
-        print(f"emoji: [{emoji}]")  # \temoji.emoji: [{emoji.emoji}]")
+        #print(f"emoji: [{emoji}]")  # \temoji.emoji: [{emoji.emoji}]")
 
         # create profile
         if emoji == '🏕':
@@ -475,7 +475,7 @@ class Picknic(commands.Cog):
             for option in options:
                 await msg.add_reaction(option)
             try:
-                choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                choice, reacter = await self.client.wait_for('reaction_add', timeout=120.0, check=check_menu)
             except asyncio.TimeoutError:
                 await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                 return
@@ -767,7 +767,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedDone())
                     return
                 else:
-                    await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis?'
+                    await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis? '
                                                          'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Text\n"
                                                          "`[2]` Audio\n"
@@ -805,6 +805,7 @@ class Picknic(commands.Cog):
                    "Your ID will be saved as the reporter. By reporting another user, " \
                    "you give us permission to reach out to you for any further questions about the situation. " \
                    "Type 'cancel' to cancel."
+            await msg.edit(embed=self.meta.embed(title, desc))
             try:
                 reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
             except asyncio.TimeoutError:
@@ -816,6 +817,7 @@ class Picknic(commands.Cog):
             if response.lower() == 'cancel':
                 await msg.edit(embed=self.meta.embedDone(f"Cancelled report."))
                 return
+            self.report_picknic(ctx.author, response)
             await msg.edit(embed=self.meta.embedDone(f"Reported {response}!"))
             return
         # reset swipes
