@@ -185,7 +185,7 @@ class Picknic(commands.Cog):
                     return
                 await msg.clear_reactions()
                 if react.emoji == '⛔':
-                    await msg.edit(embed=self.meta.embed("Thanks for being honest. We hope you take care!"))
+                    await msg.edit(embed=self.meta.embed("Thanks for being honest.", "We hope you take care!"))
                     return
 
                 await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
@@ -357,7 +357,8 @@ class Picknic(commands.Cog):
                 else:
                     sfw = False
 
-                await msg.edit(embed=self.meta.embed("Type what you'd like your interests on your profile to say."))
+                await msg.edit(embed=self.meta.embed("Time for interests!",
+                                                     "Type what you'd like your interests on your profile to say."))
                 try:
                     reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
@@ -366,7 +367,8 @@ class Picknic(commands.Cog):
                 interests = reply.content
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed("Type what you'd like your limits on your profile to say."))
+                await msg.edit(embed=self.meta.embed("How about your limits?",
+                                                     "Type what you'd like your limits on your profile to say."))
                 try:
                     reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
@@ -375,7 +377,8 @@ class Picknic(commands.Cog):
                 limits = reply.content
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed("Type what you'd like your details on your profile to say."))
+                await msg.edit(embed=self.meta.embed("And lastly, any other details you'd like people to know?",
+                                                     "Type what you'd like your details on your profile to say."))
                 try:
                     reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
