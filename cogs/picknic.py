@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from database import Database
-from meta import Meta
+from .meta import Meta
 import asyncio
 
 
