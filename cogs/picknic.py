@@ -814,7 +814,7 @@ class Picknic(commands.Cog):
             yes = profile['yes']
             no = profile['no']
             for p in picknics:
-                #await self.client.send_typing(ctx.channel):
+                # await self.client.send_typing(ctx.channel):
                 if p['id'] == str(ctx.author.id):
                     continue
                 if p['id'] in profile['no'] or profile['id'] in p['no']:
@@ -887,8 +887,10 @@ class Picknic(commands.Cog):
                 elif choice == '🛑':
                     await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
                     return
-            await msg.edit(embed=self.meta.embedDone("We don't have any new Picknic profiles for you right now.",
-                                                     "Check back later!"))
+            await msg.edit(
+                embed=self.meta.embed("We don't have any new Picknic profiles for you right now.",
+                                      "Check back later!")
+            )
             return
 
 
