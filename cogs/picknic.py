@@ -15,11 +15,10 @@ class Picknic(commands.Cog):
     def get_picknic_embed(self, profile):
         user = self.client.get_user(int(profile['id']))
         if not user:
-            try:
-                for m in self.client.get_guild(720977242968293426).members:
-                    if str(m.id) == profile['id']:
-                        user = m
-            finally:
+            for m in self.client.get_guild(720977242968293426).members:
+                if str(m.id) == profile['id']:
+                    user = m
+            if not user:
                 return None
 
         title = f"{user.name}#{user.discriminator}"
