@@ -98,10 +98,18 @@ class Picknic(commands.Cog):
             return True
 
     def get_picknic_embed_from_id(self, _id):
-        return self.get_picknic_embed(self.get_picknic_by_id(_id))
+        p = self.get_picknic_by_id(_id)
+        if p is not None:
+            return self.get_picknic_embed(p)
+        else:
+            return None
 
     def get_picknic_embed_from_member(self, member: discord.Member):
-        return self.get_picknic_embed(self.get_picknic(member))
+        p = self.get_picknic(member)
+        if p is not None:
+            return self.get_picknic_embed(p)
+        else:
+            return None
 
     @commands.command()
     async def removepicknic(self, ctx, _id):
@@ -115,7 +123,11 @@ class Picknic(commands.Cog):
     @commands.command(aliases=['pnid'])
     async def getpicknicbyid(self, ctx, _id):
         if self.meta.isBotOwner(ctx.message.author):
-            await ctx.send(embed=self.get_picknic_embed_from_id(_id))
+            p = self.get_picknic_embed_from_id(_id)
+            if p is None:
+                await ctx.send(embed=self.meta.embedOops('This user has not yet set up a Picknic Profile.'))
+                return
+            await ctx.send(embed=p)
         else:
             await ctx.send(embed=self.meta.embedNoAccess())
 
@@ -124,10 +136,12 @@ class Picknic(commands.Cog):
         if member is None:
             member = ctx.author
 
-        if not self.picknic_does_exist(member):
+        p = self.get_picknic_embed_from_member(member)
+
+        if p is None:
             await ctx.send(embed=self.meta.embedOops('This user has not yet set up a Picknic Profile.'))
             return
-        await ctx.send(embed=self.get_picknic_embed_from_member(member))
+        await ctx.send(embed=p)
 
     @commands.command(aliases=['spn', 'picknicmenu', 'pnm'])
     async def startpicknic(self, ctx):
