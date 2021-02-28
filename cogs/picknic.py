@@ -19,9 +19,14 @@ class Picknic(commands.Cog):
         title = f"{user.name}#{user.discriminator}"
 
         if not profile['active']:
-            desc = 'Deactivated account.\n' \
-                   'Need to activate it again? Use the `;pnm` command to reactivate it.'
-            embed = discord.Embed(color=discord.Color.magenta(), title=title, desc=desc)
+            desc = 'Deactivated account.\nNeed to activate it again? Use the `;pnm` command to reactivate it.'
+            embed = discord.Embed(color=discord.Color.magenta(), title=title, description=desc)
+            try:
+                if user:
+                    embed.set_thumbnail(url=user.avatar_url)
+            finally:
+                pass
+            embed.set_footer(text=f"ID: {str(profile['id'])}")
             return embed
 
         if profile['sfw']:
@@ -441,7 +446,7 @@ class Picknic(commands.Cog):
                 title = "Enable/Disable and NSFW/SFW"
                 desc = "`[1]` Enable my profile.\n" \
                        "`[2]` Disable my profile.\n" \
-                       "`[3]` Make my profile NSFW-allowed." \
+                       "`[3]` Make my profile NSFW-allowed.\n" \
                        "`[4]` Make my profile SFW-only."
                 await msg.edit(embed=self.meta.embed(title, desc))
                 options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
@@ -475,7 +480,7 @@ class Picknic(commands.Cog):
                 title = "Pronouns, Interests, Limits, Details"
                 desc = "`[1]` Change my pronouns.\n" \
                        "`[2]` Change my interest(s).\n" \
-                       "`[3]` Change my limit(s)." \
+                       "`[3]` Change my limit(s).\n" \
                        "`[4]` Change my detail(s)."
                 await msg.edit(embed=self.meta.embed(title, desc))
                 options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
