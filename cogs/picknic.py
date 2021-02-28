@@ -868,6 +868,7 @@ class Picknic(commands.Cog):
                     await msg.add_reaction(option)
                 try:
                     choice, reacter = await self.client.wait_for('reaction_add', timeout=180.0, check=check_menu)
+                    choice = choice.emoji
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
