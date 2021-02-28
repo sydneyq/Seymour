@@ -814,19 +814,19 @@ class Picknic(commands.Cog):
             yes = profile['yes']
             no = profile['no']
             for p in picknics:
-                await self.client.send_typing(ctx.channel):
-                    if p['id'] == str(ctx.author.id):
-                        continue
-                    if p['id'] in profile['no'] or profile['id'] in p['no']:
-                        continue
-                    if p['id'] in profile['yes']:
-                        continue
-                    if not any(check in p['gender'] for check in profile['lf-gender']):
-                        continue
-                    if not any(check in p['medium'] for check in profile['medium']):
-                        continue
-                    if not any(check in p['role'] for check in profile['lf-role']):
-                        continue
+                #await self.client.send_typing(ctx.channel):
+                if p['id'] == str(ctx.author.id):
+                    continue
+                if p['id'] in profile['no'] or profile['id'] in p['no']:
+                    continue
+                if p['id'] in profile['yes']:
+                    continue
+                if not any(check in p['gender'] for check in profile['lf-gender']):
+                    continue
+                if not any(check in p['medium'] for check in profile['medium']):
+                    continue
+                if not any(check in p['role'] for check in profile['lf-role']):
+                    continue
                 msg = await ctx.send(embed=self.get_picknic_embed(p))
                 options = ['👍', '👎', '🧨', '🛑', '➡️']
                 for option in options:
