@@ -887,9 +887,7 @@ class Picknic(commands.Cog):
                 elif choice == '🛑':
                     await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
                     return
-            await msg.edit(
-                embed=self.meta.embed("Check back later!", "We don't have any new Picknic profiles for you right now.")
-            )
+            await msg.send(embed=self.meta.embed("Check back later!", "We don't have any new Picknic profiles for you right now."))
             return
 
 
