@@ -17,12 +17,12 @@ class Picknic(commands.Cog):
         if not user:
             return None
         title = f"{user.name}#{user.discriminator}"
-        
+
         if not profile['active']:
             desc = 'Deactivated account.\n' \
                    'Need to activate it again? Use the `;pnm` command to reactivate it.'
             embed = discord.Embed(color=discord.Color.magenta(), title=title, desc=desc)
-            return
+            return embed
 
         if profile['sfw']:
             title = title + ' (SFW)'
@@ -172,7 +172,7 @@ class Picknic(commands.Cog):
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
             return
-        emoji = emoji.emoji
+        #emoji = emoji.emoji
 
         await msg.clear_reactions()
         print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
