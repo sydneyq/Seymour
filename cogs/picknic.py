@@ -875,18 +875,19 @@ class Picknic(commands.Cog):
                 if choice == '👍':
                     if profile['id'] in p['yes']:
                         await ctx.send(embed=self.meta.embed("You got a match!",
-                                                             f"{ctx.author.mention}, you matched with {profile['name']}!"))
-                    yes.append(profile['id'])
+                                                             f"{ctx.author.mention}, you matched with {profile['name']}!\n"
+                                                             f"Go ahead and ask them if you can message them!"))
+                    yes.append(p['id'])
                     print(f"yes: {yes}")
                     self.edit_picknic(ctx.author, 'yes', yes)
                     await msg.delete()
                 elif choice == '👎':
-                    no.append(profile['id'])
+                    no.append(p['id'])
                     self.edit_picknic(ctx.author, 'no', no)
                     await msg.delete()
                 elif choice == '🧨':
                     report_msg = await ctx.send(embed=self.meta.embed('Report Confirmation',
-                                                                      f'Are you sure you want to report {profile["name"]}?\n'
+                                                                      f'Are you sure you want to report {p["name"]}?\n'
                                                                       f'Your ID will be saved as the reporter. By '
                                                                       f'reporting another user, '
                                                                       f'you give us permission to reach out to you for '
