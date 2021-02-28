@@ -231,7 +231,7 @@ class Picknic(commands.Cog):
                 await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
-                                                     'Please type the numbers separated by commas.',
+                                                     'Please type the numbers (no brackets) separated by commas.',
                                                      "`[1]` Male\n"
                                                      "`[2]` Female\n"
                                                      "`[3]` Non-binary\n"
@@ -261,7 +261,7 @@ class Picknic(commands.Cog):
                 await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) are you looking for? '
-                                                     'Please type the numbers separated by commas.',
+                                                     'Please type the numbers (no brackets) separated by commas.',
                                                      "`[1]` Male\n"
                                                      "`[2]` Female\n"
                                                      "`[3]` Non-binary\n"
@@ -317,7 +317,7 @@ class Picknic(commands.Cog):
                     role = 'subject'
 
                 await msg.edit(embed=self.meta.embed('What role(s) are you looking for (LF)? '
-                                                     'Please type the numbers separated by commas.',
+                                                     'Please type the numbers (no brackets) separated by commas.',
                                                      "`[1]` Hypnotist\n"
                                                      "`[2]` Hypnoswitch\n"
                                                      "`[3]` Subject\n"))
@@ -337,8 +337,8 @@ class Picknic(commands.Cog):
                         lf_roles.append('subject')
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis?'
-                                                     'Please type the numbers separated by commas.',
+                await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis? '
+                                                     'Please type the numbers (no brackets) separated by commas.',
                                                      "`[1]` Text\n"
                                                      "`[2]` Audio\n"
                                                      "`[3]` Video\n"
@@ -362,7 +362,7 @@ class Picknic(commands.Cog):
                 await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
-                                                     'Please type the numbers separated by commas.',
+                                                     'Please type the numbers (no brackets) separated by commas.',
                                                      "`[1]` Long-term\n"
                                                      "`[2]` Short-term"))
                 try:
@@ -402,7 +402,7 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embed("Time for interests!",
                                                      "Type what you'd like your interests on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=300.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -412,7 +412,7 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embed("How about your limits?",
                                                      "Type what you'd like your limits on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=300.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -422,7 +422,7 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embed("And lastly, any other details you'd like people to know?",
                                                      "Type what you'd like your details on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=300.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -520,7 +520,7 @@ class Picknic(commands.Cog):
                     await msg.clear_reactions()
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
-                                                         'Please type the numbers separated by commas.',
+                                                         'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Male\n"
                                                          "`[2]` Female\n"
                                                          "`[3]` Non-binary\n"
@@ -553,7 +553,7 @@ class Picknic(commands.Cog):
                     return
                 else:
                     await msg.edit(embed=self.meta.embed('What gender label(s) are you looking for? '
-                                                         'Please type the numbers separated by commas.',
+                                                         'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Male\n"
                                                          "`[2]` Female\n"
                                                          "`[3]` Non-binary\n"
@@ -634,7 +634,7 @@ class Picknic(commands.Cog):
                     return
                 else:
                     await msg.edit(embed=self.meta.embed('What role(s) are you looking for (LF)? '
-                                                         'Please type the numbers separated by commas.',
+                                                         'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Hypnotist\n"
                                                          "`[2]` Hypnoswitch\n"
                                                          "`[3]` Subject\n"))
@@ -681,7 +681,7 @@ class Picknic(commands.Cog):
                 title = "What would you like to change it to?"
                 desc = "Type it out!"
                 try:
-                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=300.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -720,7 +720,7 @@ class Picknic(commands.Cog):
                     await msg.clear_reactions()
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
-                                                         'Please type the numbers separated by commas.',
+                                                         'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Long-term\n"
                                                          "`[2]` Short-term"))
                     try:
@@ -741,7 +741,7 @@ class Picknic(commands.Cog):
                     return
                 else:
                     await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis?'
-                                                         'Please type the numbers separated by commas.',
+                                                         'Please type the numbers (no brackets) separated by commas.',
                                                          "`[1]` Text\n"
                                                          "`[2]` Audio\n"
                                                          "`[3]` Video\n"
