@@ -161,7 +161,7 @@ class Picknic(commands.Cog):
             return
 
         await msg.clear_reactions()
-        print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
+        #print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
 
         # create profile
         if emoji.emoji == '🏕':
@@ -184,18 +184,18 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 await msg.clear_reactions()
-                if react == '⛔':
+                if react.emoji == '⛔':
                     await msg.edit(embed=self.meta.embed("Thanks for being honest. We hope you take care!"))
                     return
 
                 await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 pronouns = reply.content
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
                                                      'Please type the numbers separated by commas.',
@@ -206,7 +206,7 @@ class Picknic(commands.Cog):
                                                      "`[5]` Genderfluid\n"
                                                      "`[6]` Prefer not to specify"))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -225,7 +225,7 @@ class Picknic(commands.Cog):
                         gender.append('genderfluid')
                     elif t == '6':
                         gender.append('mystery')
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) are you looking for? '
                                                      'Please type the numbers separated by commas.',
@@ -236,7 +236,7 @@ class Picknic(commands.Cog):
                                                      "`[5]` Genderfluid\n"
                                                      "`[6]` Prefer not to specify"))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -255,7 +255,7 @@ class Picknic(commands.Cog):
                         lf_gender.append('genderfluid')
                     elif t == '6':
                         lf_gender.append('mystery')
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What primary role do you best fit? (Choose one.) '
                                                      'Please react with the corresponding emoji.',
@@ -271,6 +271,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 await msg.clear_reactions()
+                role = role.emoji
                 if role == '1️⃣':
                     role = 'hypnotist'
                 elif role == '2️⃣':
@@ -284,7 +285,7 @@ class Picknic(commands.Cog):
                                                      "`[2]` Hypnoswitch\n"
                                                      "`[3]` Subject\n"))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -297,7 +298,7 @@ class Picknic(commands.Cog):
                         lf_roles.append('hypnoswitch')
                     elif t == '3':
                         lf_roles.append('subject')
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis?'
                                                      'Please type the numbers separated by commas.',
@@ -306,7 +307,7 @@ class Picknic(commands.Cog):
                                                      "`[3]` Video\n"
                                                      "`[4]` In-person"))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -321,14 +322,14 @@ class Picknic(commands.Cog):
                         mediums.append('video')
                     elif t == '4':
                         mediums.append('in-person')
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
                                                      'Please type the numbers separated by commas.',
                                                      "`[1]` Long-term\n"
                                                      "`[2]` Short-term"))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
@@ -339,9 +340,9 @@ class Picknic(commands.Cog):
                         terms.append('long-term')
                     elif t == '2':
                         terms.append('short-term')
-                reply.delete()
+                await reply.delete()
 
-                await msg.edit(embed=self.meta.embed('Are you open to NSFW partners?'))
+                await msg.edit(embed=self.meta.embed('Are you open to NSFW partners?', 'Please react with the corresponding emoji.'))
                 options = ['✅', '⛔']
                 for option in options:
                     await msg.add_reaction(option)
@@ -358,30 +359,30 @@ class Picknic(commands.Cog):
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your interests on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 interests = reply.content
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your limits on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 limits = reply.content
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your details on your profile to say."))
                 try:
-                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    reply = await self.client.wait_for('message', timeout=180.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 details = reply.content
-                reply.delete()
+                await reply.delete()
 
                 await msg.edit(embed=self.meta.embed("And we're done!",
                                                      "Feel free to check out your profile using the `;pn` command.\n"
