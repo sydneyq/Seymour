@@ -888,8 +888,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
                     return
             await msg.edit(
-                embed=self.meta.embed("We don't have any new Picknic profiles for you right now.",
-                                      "Check back later!")
+                embed=self.meta.embed("Check back later!", "We don't have any new Picknic profiles for you right now.")
             )
             return
 
