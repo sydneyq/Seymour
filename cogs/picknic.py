@@ -16,8 +16,6 @@ class Picknic(commands.Cog):
         user = self.client.get_user(int(profile['id']))
         if not user:
             try:
-                user = await self.client.fetch_user(int(profile['id']))
-            except:
                 user = self.client.get_guild(720977242968293426).get_member(int(profile['id']))
             finally:
                 return None
