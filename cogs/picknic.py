@@ -35,8 +35,7 @@ class Picknic(commands.Cog):
                               ", ".join(profile['lf-gender']), inline=False)
 
         embed.add_field(name="Role(s) | LF (Looking For)",
-                        value=", ".join(profile['role']) +
-                              ' `| LF` ' +
+                        value=profile['role'] + ' `| LF` ' +
                               ", ".join(profile['lf-role']), inline=False)
 
         embed.add_field(name="Medium(s)", value=", ".join(profile['medium']), inline=True)
@@ -369,7 +368,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 await msg.clear_reactions()
-                if react == '⛔':
+                if react.emoji == '⛔':
                     sfw = True
                 else:
                     sfw = False
