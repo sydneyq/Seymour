@@ -14,7 +14,7 @@ class Picknic(commands.Cog):
         self.meta = meta
 
     def get_picknic_embed(self, profile):
-        user = get(self.client.get_all_members(), id=profile['id'])
+        user = get(self.client.get_all_members(), id=int(profile['id']))
         if not user:
             return None
         title = f"{user.name}#{user.discriminator}"
@@ -52,7 +52,7 @@ class Picknic(commands.Cog):
         return embed
 
     def get_picknic(self, member: discord.Member):
-        return self.get_picknic_by_id(str(member.id))
+        return self.get_picknic_by_id(member.id)
 
     def get_picknic_by_id(self, _id):
         profile = self.dbConnection.findPicknic({"id": str(_id)})
@@ -67,7 +67,7 @@ class Picknic(commands.Cog):
         p = self.dbConnection.findProfile({"id": str(_id)})
         if p is None:
             p = {
-                'id': _id,
+                'id': str(_id),
                 'gender': gender,
                 'pronouns': pronouns,
                 'role': role,
