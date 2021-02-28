@@ -28,17 +28,17 @@ class Picknic(commands.Cog):
 
         embed = discord.Embed(color=discord.Color.magenta(), title=title)
 
-        embed.add_field(name=", ".join(profile['gender']) + ", " + profile['pronouns'],
-                        value="`LF (Looking For)` " +
+        embed.add_field(name=", ".join(profile['gender']).capitalize() + ", " + profile['pronouns'],
+                        value="`LF (Looking For)` \n" +
                               ", ".join(profile['lf-gender']), inline=False)
 
-        embed.add_field(name=profile['role'],
-                        value='`LF (Looking For)` ' +
+        embed.add_field(name=profile['role'].capitalize(),
+                        value='`LF (Looking For)` \n' +
                               ", ".join(profile['lf-term']) + "\n" +
                               ", ".join(profile['lf-role']) + "\n" +
                               ", ".join(profile['medium'])
                         , inline=False)
-        
+
         embed.add_field(name="Interest(s)", value=profile['interests'], inline=False)
         embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
         embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
