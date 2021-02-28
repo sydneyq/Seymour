@@ -28,14 +28,14 @@ class Picknic(commands.Cog):
 
         embed = discord.Embed(color=discord.Color.magenta(), title=title)
 
-        embed.add_field(name="Gender(s), Pronoun(s) | LF (Looking For) ",
+        embed.add_field(name="Gender(s), Pronoun(s) LF (Looking For) Gender(s)",
                         value=", ".join(profile['gender']) + ", " +
                               profile['pronouns'] +
-                              " `| LF` " +
+                              " `LF` " +
                               ", ".join(profile['lf-gender']), inline=False)
 
-        embed.add_field(name="Role(s) | LF (Looking For)",
-                        value=profile['role'] + ' `| LF` ' +
+        embed.add_field(name="Role LF (Looking For) Role(s)",
+                        value=profile['role'] + ' `LF` ' +
                               ", ".join(profile['lf-role']), inline=False)
 
         embed.add_field(name="Medium(s)", value=", ".join(profile['medium']), inline=True)
@@ -49,7 +49,7 @@ class Picknic(commands.Cog):
                 embed.set_thumbnail(url=user.avatar_url)
         finally:
             pass
-        embed.set_footer(text=str(profile['id']))
+        embed.set_footer(text=f"ID: {str(profile['id'])}")
         return embed
 
     def get_picknic(self, member: discord.Member):
