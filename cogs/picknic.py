@@ -170,7 +170,7 @@ class Picknic(commands.Cog):
                                                          'Try going back to the menu and editing it.'))
                 return
             else:
-                await msg.edit(embed=self.meta.embed('First, are you over 18 years of age? ',
+                await msg.edit(embed=self.meta.embed('First, are you at least 18 years of age? ',
                                                      'Users who are found or suspected to be '
                                                      'underage will be banned from the system. '
                                                      'By using our platform and space, you agree to '
@@ -190,10 +190,11 @@ class Picknic(commands.Cog):
 
                 await msg.edit(embed=self.meta.embed('What are your pronouns?', 'e.g. she/her, they/them, etc.'))
                 try:
-                    pronouns, user = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    pronouns = await self.client.wait_for('message', timeout=120.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
+                pronouns = pronouns.content
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
                                                      'Please type the numbers separated by commas.',
@@ -351,24 +352,27 @@ class Picknic(commands.Cog):
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your interests on your profile to say."))
                 try:
-                    interests, user = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    interests = await self.client.wait_for('message', timeout=120.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
+                interests = interests.content
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your limits on your profile to say."))
                 try:
-                    limits, user = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    limits = await self.client.wait_for('message', timeout=120.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
+                limits = limits.content
 
                 await msg.edit(embed=self.meta.embed("Type what you'd like your details on your profile to say."))
                 try:
-                    details, user = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                    details = await self.client.wait_for('message', timeout=120.0, check=check_msg)
                 except asyncio.TimeoutError:
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
+                details = details.content
 
                 await msg.edit(embed=self.meta.embed("And we're done!",
                                                      "Feel free to check out your profile using the `;pn` command.\n"
