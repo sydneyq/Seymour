@@ -799,7 +799,7 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embedDone())
             return
         # report profile
-        elif emoji == '️🧨':
+        elif emoji == '🧨':
             title = "Report A User"
             desc = "Please send the user ID of the person you're trying to report. " \
                    "Your ID will be saved as the reporter. By reporting another user, " \
