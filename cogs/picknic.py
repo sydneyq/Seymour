@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from database import Database
-from .meta import Meta
+from meta import Meta
 import asyncio
 
 
@@ -15,7 +15,11 @@ class Picknic(commands.Cog):
     def get_picknic_embed(self, profile):
         user = self.client.get_user(int(profile['id']))
         if not user:
-            return None
+            try:
+                user = self.client.fetch_user(int(profile['id']))
+            finally:
+                return None
+
         title = f"{user.name}#{user.discriminator}"
 
         if not profile['active']:
@@ -843,7 +847,11 @@ class Picknic(commands.Cog):
                     continue
                 if not any(check in p['role'] for check in profile['lf-role']):
                     continue
-                msg = await ctx.send(embed=self.get_picknic_embed(p))
+                embed = self.get_picknic_embed(p)
+                if embed is None:
+                    print(p)
+                    continue
+                msg = await ctx.send(embed=embed)
                 options = ['👍', '👎', '🧨', '🛑', '➡️']
                 for option in options:
                     await msg.add_reaction(option)
