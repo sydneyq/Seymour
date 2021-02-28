@@ -126,7 +126,7 @@ class Picknic(commands.Cog):
     @commands.command()
     async def removepicknic(self, ctx, _id):
         if self.meta.isBotOwner(ctx.message.author):
-            if self.picknic_does_exist():
+            if self.picknic_does_exist(_id):
                 self.dbConnection.removePicknic({"id": str(_id)})
             await ctx.send(embed=self.meta.embedDone())
         else:
@@ -228,7 +228,8 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 pronouns = reply.content
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
                                                      'Please type the numbers (no brackets) separated by commas.',
@@ -258,7 +259,8 @@ class Picknic(commands.Cog):
                         gender.append('genderfluid')
                     elif t == '6':
                         gender.append('mystery')
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What gender label(s) are you looking for? '
                                                      'Please type the numbers (no brackets) separated by commas.',
@@ -288,7 +290,8 @@ class Picknic(commands.Cog):
                         lf_gender.append('genderfluid')
                     elif t == '6':
                         lf_gender.append('mystery')
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What primary role do you best fit? (Choose one.) '
                                                      'Please react with the corresponding emoji.',
@@ -335,7 +338,8 @@ class Picknic(commands.Cog):
                         lf_roles.append('hypnoswitch')
                     elif t == '3':
                         lf_roles.append('subject')
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis? '
                                                      'Please type the numbers (no brackets) separated by commas.',
@@ -359,7 +363,8 @@ class Picknic(commands.Cog):
                         mediums.append('video')
                     elif t == '4':
                         mediums.append('in-person')
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
                                                      'Please type the numbers (no brackets) separated by commas.',
@@ -377,7 +382,8 @@ class Picknic(commands.Cog):
                         terms.append('long-term')
                     elif t == '2':
                         terms.append('short-term')
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed('Are you open to NSFW (🌶) partners?',
                                                      'Those who are will have a 🌶 displayed on their profile.'))
@@ -407,7 +413,8 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 interests = reply.content
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed("How about your limits?",
                                                      "Type what you'd like your limits on your profile to say."))
@@ -417,7 +424,8 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 limits = reply.content
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed("And lastly, any other details you'd like people to know?",
                                                      "Type what you'd like your details on your profile to say."))
@@ -427,7 +435,8 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 details = reply.content
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 await msg.edit(embed=self.meta.embed(f"And we're done, {ctx.author.name}!",
                                                      f"{ctx.author.mention}, "
@@ -547,7 +556,8 @@ class Picknic(commands.Cog):
                             gender.append('genderfluid')
                         elif t == '6':
                             gender.append('mystery')
-                    await reply.delete()
+                    if not isDM:
+                        await reply.delete()
                     self.edit_picknic(ctx.author, 'gender', gender)
                     await msg.edit(embed=self.meta.embedDone())
                     return
@@ -580,7 +590,8 @@ class Picknic(commands.Cog):
                             lf_gender.append('genderfluid')
                         elif t == '6':
                             lf_gender.append('mystery')
-                    await reply.delete()
+                    if not isDM:
+                        await reply.delete()
                     self.edit_picknic(ctx.author, 'lf-gender', lf_gender)
                     await msg.edit(embed=self.meta.embedDone())
                     return
@@ -652,7 +663,8 @@ class Picknic(commands.Cog):
                             lf_roles.append('hypnoswitch')
                         elif t == '3':
                             lf_roles.append('subject')
-                    await reply.delete()
+                    if not isDM:
+                        await reply.delete()
                     self.edit_picknic(ctx.author, 'lf-role', lf_roles)
                     await msg.edit(embed=self.meta.embedDone())
                     return
@@ -686,7 +698,8 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                     return
                 response = reply.content
-                await reply.delete()
+                if not isDM:
+                    await reply.delete()
 
                 choice = choice.emoji
                 if choice == '1️⃣':
@@ -735,7 +748,8 @@ class Picknic(commands.Cog):
                             terms.append('long-term')
                         elif t == '2':
                             terms.append('short-term')
-                    await reply.delete()
+                    if not isDM:
+                        await reply.delete()
                     self.edit_picknic(ctx.author, 'lf-term', terms)
                     await msg.edit(embed=self.meta.embedDone())
                     return
@@ -762,7 +776,8 @@ class Picknic(commands.Cog):
                             mediums.append('video')
                         elif t == '4':
                             mediums.append('in-person')
-                    await reply.delete()
+                    if not isDM:
+                        await reply.delete()
                     self.edit_picknic(ctx.author, 'medium', mediums)
                     await msg.edit(embed=self.meta.embedDone())
                     return
@@ -781,7 +796,8 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
                 return
             response = reply.content
-            await reply.delete()
+            if not isDM:
+                await reply.delete()
             if response.lower() == 'cancel':
                 await msg.edit(embed=self.meta.embedDone(f"Cancelled report."))
                 return
