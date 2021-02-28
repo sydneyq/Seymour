@@ -16,7 +16,9 @@ class Picknic(commands.Cog):
         user = self.client.get_user(int(profile['id']))
         if not user:
             try:
-                user = self.client.fetch_user(int(profile['id']))
+                user = await self.client.fetch_user(int(profile['id']))
+            except:
+                user = self.client.get_guild(720977242968293426).get_member(int(profile['id']))
             finally:
                 return None
 
@@ -829,7 +831,7 @@ class Picknic(commands.Cog):
                 await ctx.send(
                     embed=self.meta.embedOops('Your profile is deactivated! It needs to be active to search.'))
                 return
-            #await msg.delete()
+            # await msg.delete()
             picknics = self.dbConnection.findPicknics({'active': True, 'sfw': profile['sfw']})
             yes = profile['yes']
             no = profile['no']
@@ -911,7 +913,8 @@ class Picknic(commands.Cog):
                 elif choice == '🛑':
                     await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
                     return
-            await msg.edit(embed=self.meta.embed("Check back later!", "We don't have any new Picknic profiles for you right now."))
+            await msg.edit(
+                embed=self.meta.embed("Check back later!", "We don't have any new Picknic profiles for you right now."))
             return
 
 
