@@ -63,6 +63,7 @@ class Picknic(commands.Cog):
     def report_picknic(self, reporter_id, reportee_id):
         guild = 751294304764428372  # BotHub
         channel = 752069374617059438  # issues
+        # invalid syntax
         await self.client.get_guild(guild).get_channel(channel).send(f"New report from {reporter_id}\n{reportee_id}")
         return
 
