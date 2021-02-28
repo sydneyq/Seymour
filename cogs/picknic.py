@@ -172,10 +172,10 @@ class Picknic(commands.Cog):
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
             return
-        #emoji = emoji.emoji
+        emoji = emoji.emoji
 
         await msg.clear_reactions()
-        print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
+        print(f"emoji: [{emoji}]\temoji.emoji: [{emoji.emoji}]")
 
         # create profile
         if emoji == '🏕':
