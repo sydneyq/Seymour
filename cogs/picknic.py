@@ -55,7 +55,7 @@ class Picknic(commands.Cog):
         return self.get_picknic_by_id(str(member.id))
 
     def get_picknic_by_id(self, _id):
-        profile = self.dbConnection.findPicknic({"id": _id})
+        profile = self.dbConnection.findPicknic({"id": str(_id)})
         return profile
 
     def create_picknic_from_profile(self, profile=None):
