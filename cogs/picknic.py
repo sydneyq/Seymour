@@ -451,7 +451,7 @@ class Picknic(commands.Cog):
                                                      f"feel free to check out your profile using the `;pn` command.\n"
                                                      "Leaving all servers with Seymour will deactivate your profile."))
 
-                self.create_picknic(ctx.author.id, name, ctx.author.avatar_url, gender, pronouns, role, sfw, mediums, terms,
+                self.create_picknic(ctx.author.id, name, str(ctx.author.avatar_url), gender, pronouns, role, sfw, mediums, terms,
                                     lf_roles, lf_gender, interests, limits, details)
                 return
         # edit profile
@@ -794,7 +794,7 @@ class Picknic(commands.Cog):
                     await msg.edit(embed=self.meta.embedDone())
                     return
             elif choice == '6️⃣':
-                self.edit_picknic(ctx.author, 'avatar', ctx.author.avatar_url)
+                self.edit_picknic(ctx.author, 'avatar', str(ctx.author.avatar_url))
                 await msg.edit(embed=self.meta.embedDone())
             return
         # report profile
