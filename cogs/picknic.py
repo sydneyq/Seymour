@@ -169,12 +169,13 @@ class Picknic(commands.Cog):
         except asyncio.TimeoutError:
             await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
             return
+        emoji = emoji.emoji
 
         await msg.clear_reactions()
         # print(f"emoji: {emoji}\temoji.emoji: {emoji.emoji}")
 
         # create profile
-        if emoji.emoji == '🏕':
+        if emoji == '🏕':
             if self.picknic_does_exist(ctx.author.id):
                 await msg.edit(embed=self.meta.embedOops('You already have a Picknic profile! '
                                                          'Try going back to the menu and editing it.'))
@@ -407,7 +408,7 @@ class Picknic(commands.Cog):
                                     lf_roles, lf_gender, interests, limits, details)
                 return
         # edit profile
-        elif emoji == '♻':
+        elif emoji == '♻️':
             # check that the user has a profile to edit
             if not self.picknic_does_exist(ctx.author.id):
                 await msg.edit(embed=self.meta.embedOops("You don't have a Picknic profile yet! "
@@ -511,7 +512,7 @@ class Picknic(commands.Cog):
 
             return
         # report profile
-        elif emoji == '⚠':
+        elif emoji == '⚠️':
             # temp until report is implemented
             await msg.edit(embed=self.meta.embed("Report a Profile",
                                                  "Please ModMail in to a Pig Pen moderator "
