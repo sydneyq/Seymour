@@ -13,9 +13,9 @@ class Picknic(commands.Cog):
         self.meta = meta
 
     def get_picknic_embed(self, profile):
-        #user = await self.client.fetch_user(int(profile['id']))
-        #if not user:
-        #    return None
+        user = self.client.get_user(int(profile['id']))
+        if not user:
+            return None
         title = f"{user.name}#{user.discriminator}"
         if profile['sfw']:
             title = title + ' (SFW)'
@@ -45,11 +45,11 @@ class Picknic(commands.Cog):
         embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
         embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
 
-        #try:
-        #    if user:
-        #        embed.set_thumbnail(url=user.avatar_url)
-        #finally:
-        #    pass
+        try:
+            if user:
+                embed.set_thumbnail(url=user.avatar_url)
+        finally:
+            pass
         embed.set_footer(text=str(profile['id']))
         return embed
 
