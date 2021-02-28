@@ -98,7 +98,7 @@ class Picknic(commands.Cog):
             return False
 
     def edit_picknic(self, member: discord.Member, key, value):
-        profile = self.dbConnection.updatePicknic({"id": str(member.id)}, {"$set": {key: value}})
+        self.dbConnection.updatePicknic({"id": str(member.id)}, {"$set": {key: value}})
 
     def picknic_does_exist(self, _id):
         profile = self.dbConnection.findPicknic({"id": str(_id)})
@@ -876,6 +876,7 @@ class Picknic(commands.Cog):
                         await ctx.send(embed=self.meta.embed("You got a match!",
                                                              f"{ctx.author.mention}, you matched with {profile['name']}!"))
                     yes.append(profile['id'])
+                    print(f"yes: {yes}")
                     self.edit_picknic(ctx.author, 'yes', yes)
                     await msg.delete()
                 elif choice == '👎':
@@ -908,7 +909,7 @@ class Picknic(commands.Cog):
                         continue
                     else:
                         self.report_picknic(ctx.author.id, p['id'])
-                        await report_msg.edit(embed=self.meta.embedDone(f"Reported {reportee.mention}!"))
+                        await report_msg.edit(embed=self.meta.embedDone(f"Reported {p['name']}!"))
                         await asyncio.sleep(5)
                         await report_msg.delete()
                         no.append(profile['id'])
