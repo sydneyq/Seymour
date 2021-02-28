@@ -3,7 +3,6 @@ from discord.ext import commands
 from database import Database
 from .meta import Meta
 import asyncio
-from discord.utils import get
 
 
 class Picknic(commands.Cog):
@@ -14,7 +13,7 @@ class Picknic(commands.Cog):
         self.meta = meta
 
     def get_picknic_embed(self, profile):
-        user = get(self.client.get_all_members(), id=int(profile['id']))
+        user = await self.client.fetch_user(int(profile['id']))
         if not user:
             return None
         title = f"{user.name}#{user.discriminator}"
@@ -46,8 +45,11 @@ class Picknic(commands.Cog):
         embed.add_field(name="Limit(s)", value=profile['limits'], inline=False)
         embed.add_field(name="Detail(s)", value=profile['details'], inline=False)
 
-        if user:
-            embed.set_thumbnail(url=user.avatar_url)
+        try:
+            if user:
+                embed.set_thumbnail(url=user.avatar_url)
+        finally:
+            pass
         embed.set_footer(text=str(profile['id']))
         return embed
 
