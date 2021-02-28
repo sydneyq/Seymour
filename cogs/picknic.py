@@ -29,10 +29,8 @@ class Picknic(commands.Cog):
             embed.set_footer(text=f"ID: {str(profile['id'])}")
             return embed
 
-        if profile['sfw']:
-            title = title + ' (SFW)'
-        else:
-            title = title + ' (NSFW)'
+        if not profile['sfw']:
+            title = title + ' 🌶'
 
         embed = discord.Embed(color=discord.Color.magenta(), title=title)
 
@@ -65,6 +63,12 @@ class Picknic(commands.Cog):
     def get_picknic_by_id(self, _id):
         profile = self.dbConnection.findPicknic({"id": str(_id)})
         return profile
+
+    def report_picknic(self, reporter_id, reportee_id):
+        guild = 751294304764428372  # BotHub
+        channel = 752069374617059438  # issues
+        self.client.get_guild(guild).get_channel(channel).send(f"New report from {reporter_id}\n{reportee_id}")
+        return
 
     def create_picknic_from_profile(self, profile=None):
         if profile is not None:
@@ -180,7 +184,7 @@ class Picknic(commands.Cog):
         emoji = emoji.emoji
 
         await msg.clear_reactions()
-        print(f"emoji: [{emoji}]") # \temoji.emoji: [{emoji.emoji}]")
+        print(f"emoji: [{emoji}]")  # \temoji.emoji: [{emoji.emoji}]")
 
         # create profile
         if emoji == '🏕':
@@ -361,8 +365,8 @@ class Picknic(commands.Cog):
                         terms.append('short-term')
                 await reply.delete()
 
-                await msg.edit(embed=self.meta.embed('Are you open to NSFW partners?',
-                                                     'Please react with the corresponding emoji.'))
+                await msg.edit(embed=self.meta.embed('Are you open to NSFW (🌶) partners?',
+                                                     'Those who are will have a 🌶 displayed on their profile.'))
                 options = ['✅', '⛔']
                 for option in options:
                     await msg.add_reaction(option)
@@ -471,10 +475,149 @@ class Picknic(commands.Cog):
                 return
             # [2] Change my gender(s) or the gender(s) I'm looking for.
             elif choice == '2️⃣':
-                pass
+                title = "Genders"
+                desc = "`[1]` Change my gender(s).\n" \
+                       "`[2]` Change the gender(s) I'm looking for.\n"
+                await msg.edit(embed=self.meta.embed(title, desc))
+                options = ['1️⃣', '2️⃣']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+                if choice == '1️⃣':
+                    await msg.edit(embed=self.meta.embed('What gender label(s) fit you best? '
+                                                         'Please type the numbers separated by commas.',
+                                                         "`[1]` Male\n"
+                                                         "`[2]` Female\n"
+                                                         "`[3]` Non-binary\n"
+                                                         "`[4]` Agender\n"
+                                                         "`[5]` Genderfluid\n"
+                                                         "`[6]` Prefer not to specify"))
+                    try:
+                        reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    temp = [x.strip() for x in reply.content.split(',')]
+                    gender = []
+                    for t in temp:
+                        if t == '1':
+                            gender.append('male')
+                        elif t == '2':
+                            gender.append('female')
+                        elif t == '3':
+                            gender.append('non-binary')
+                        elif t == '4':
+                            gender.append('agender')
+                        elif t == '5':
+                            gender.append('genderfluid')
+                        elif t == '6':
+                            gender.append('mystery')
+                    await reply.delete()
+                    self.edit_picknic(ctx.author, 'gender', gender)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
+                else:
+                    await msg.edit(embed=self.meta.embed('What gender label(s) are you looking for? '
+                                                         'Please type the numbers separated by commas.',
+                                                         "`[1]` Male\n"
+                                                         "`[2]` Female\n"
+                                                         "`[3]` Non-binary\n"
+                                                         "`[4]` Agender\n"
+                                                         "`[5]` Genderfluid\n"
+                                                         "`[6]` Prefer not to specify"))
+                    try:
+                        reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    temp = [x.strip() for x in reply.content.split(',')]
+                    lf_gender = []
+                    for t in temp:
+                        if t == '1':
+                            lf_gender.append('male')
+                        elif t == '2':
+                            lf_gender.append('female')
+                        elif t == '3':
+                            lf_gender.append('non-binary')
+                        elif t == '4':
+                            lf_gender.append('agender')
+                        elif t == '5':
+                            lf_gender.append('genderfluid')
+                        elif t == '6':
+                            lf_gender.append('mystery')
+                    await reply.delete()
+                    self.edit_picknic(ctx.author, 'lf-gender', lf_gender)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
             # [3] Change my role or the role(s) I'm looking for
             elif choice == '3️⃣':
-                pass
+                title = "Roles"
+                desc = "`[1]` Change my role.\n" \
+                       "`[2]` Change the role(s) I'm looking for.\n"
+                await msg.edit(embed=self.meta.embed(title, desc))
+                options = ['1️⃣', '2️⃣']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+                if choice == '1️⃣':
+                    await msg.edit(embed=self.meta.embed('What primary role do you best fit? (Choose one.) '
+                                                         'Please react with the corresponding emoji.',
+                                                         "`[1]` Hypnotist\n"
+                                                         "`[2]` Hypnoswitch\n"
+                                                         "`[3]` Subject\n"))
+                    options = ['1️⃣', '2️⃣', '3️⃣']
+                    for option in options:
+                        await msg.add_reaction(option)
+                    try:
+                        role, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    await msg.clear_reactions()
+                    role = role.emoji
+                    if role == '1️⃣':
+                        role = 'hypnotist'
+                    elif role == '2️⃣':
+                        role = 'hypnoswitch'
+                    elif role == '3️⃣':
+                        role = 'subject'
+                    self.edit_picknic(ctx.author, 'role', role)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
+                else:
+                    await msg.edit(embed=self.meta.embed('What role(s) are you looking for (LF)? '
+                                                         'Please type the numbers separated by commas.',
+                                                         "`[1]` Hypnotist\n"
+                                                         "`[2]` Hypnoswitch\n"
+                                                         "`[3]` Subject\n"))
+                    try:
+                        reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    temp = [x.strip() for x in reply.content.split(',')]
+                    lf_roles = []
+                    for t in temp:
+                        if t == '1':
+                            lf_roles.append('hypnotist')
+                        elif t == '2':
+                            lf_roles.append('hypnoswitch')
+                        elif t == '3':
+                            lf_roles.append('subject')
+                    await reply.delete()
+                    self.edit_picknic(ctx.author, 'lf-role', lf_roles)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
             # [4] Change my pronouns, interest(s), limit(s), or detail(s).
             elif choice == '4️⃣':
                 title = "Pronouns, Interests, Limits, Details"
@@ -516,28 +659,87 @@ class Picknic(commands.Cog):
                 return
             # [5] Change the term(s) or medium(s) I'm looking for.
             elif choice == '5️⃣':
-                pass
+                title = "Terms and Mediums"
+                desc = "`[1]` Change my term(s).\n" \
+                       "`[2]` Change my medium(s).\n"
+                await msg.edit(embed=self.meta.embed(title, desc))
+                options = ['1️⃣', '2️⃣']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+                if choice == '1️⃣':
+                    await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
+                                                         'Please type the numbers separated by commas.',
+                                                         "`[1]` Long-term\n"
+                                                         "`[2]` Short-term"))
+                    try:
+                        reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    temp = [x.strip() for x in reply.content.split(',')]
+                    terms = []
+                    for t in temp:
+                        if t == '1':
+                            terms.append('long-term')
+                        elif t == '2':
+                            terms.append('short-term')
+                    await reply.delete()
+                    self.edit_picknic(ctx.author, 'lf-term', terms)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
+                else:
+                    await msg.edit(embed=self.meta.embed('What mediums do you use for hypnosis?'
+                                                         'Please type the numbers separated by commas.',
+                                                         "`[1]` Text\n"
+                                                         "`[2]` Audio\n"
+                                                         "`[3]` Video\n"
+                                                         "`[4]` In-person"))
+                    try:
+                        reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+                    except asyncio.TimeoutError:
+                        await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                        return
+                    temp = [x.strip() for x in reply.content.split(',')]
+                    mediums = []
+                    for t in temp:
+                        if t == '1':
+                            mediums.append('text')
+                        elif t == '2':
+                            mediums.append('audio')
+                        elif t == '3':
+                            mediums.append('video')
+                        elif t == '4':
+                            mediums.append('in-person')
+                    await reply.delete()
+                    self.edit_picknic(ctx.author, 'medium', mediums)
+                    await msg.edit(embed=self.meta.embedDone())
+                    return
 
             return
         # report profile
         elif emoji == '️🧨':
-            # temp until report is implemented
-            await msg.edit(embed=self.meta.embed("Report a Profile",
-                                                 "Please ModMail in to a Pig Pen moderator "
-                                                 "and provide the moderator the user's ID or username."))
-            return
-            guild = 751294304764428372  # BotHub
-            channel = 752069374617059438  # issues
-            await ctx.send(embed=self.meta.embed("Please send the ID of the person you'd like to report."))
-
-            await ctx.send(embed=self.meta.embed("Please describe what you're reporting them for."))
-
-            await ctx.send(embed=self.meta.embed("Do you have any screenshots or evidence you'd be able to link?"))
-
-            await ctx.send(embed=self.meta.embed("Would you be alright with being contacted for "
-                                                 "further queries about your report?"))
-
-            await ctx.send(embed=self.meta.embed("Thank you! Your report has been sent."))
+            title = "Report A User"
+            desc = "Please send the user ID of the person you're trying to report. " \
+                   "Your ID will be saved as the reporter. By reporting another user, " \
+                   "you give us permission to reach out to you for any further questions about the situation. " \
+                   "Type 'cancel' to cancel."
+            try:
+                reply = await self.client.wait_for('message', timeout=60.0, check=check_msg)
+            except asyncio.TimeoutError:
+                await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                return
+            response = reply.content
+            await reply.delete()
+            if response.lower() == 'cancel':
+                await msg.edit(embed=self.meta.embedDone(f"Cancelled report."))
+                return
+            await msg.edit(embed=self.meta.embedDone(f"Reported {response}!"))
             return
         # reset swipes
         elif emoji == '🍐':
@@ -547,13 +749,92 @@ class Picknic(commands.Cog):
             return
         # flip through profile
         elif emoji == '🛰':
-            # check that the requesting user has a profile themselves first
             # check that it's in dms
             if not isinstance(ctx.channel, discord.DMChannel):
                 await ctx.send(embed=self.meta.embedOops('Try using this command in a private message to me!'))
                 return
-            else:
+            # check that the requesting user has a profile themselves first
+            if not self.picknic_does_exist(ctx.author):
+                await ctx.send(embed=self.meta.embedOops('You need a Picknic profile yourself first!'))
                 return
+            # check that the requesting user's profile is active
+            profile = self.get_picknic(ctx.author)
+            if not profile['active']:
+                await ctx.send(
+                    embed=self.meta.embedOops('Your profile is deactivated! It needs to be active to search.'))
+                return
+            picknics = self.dbConnection.findPicknics({'active': True, 'sfw': profile['sfw']})
+            yes = profile['yes']
+            no = profile['no']
+            for p in picknics:
+                if p['id'] == str(ctx.author.id):
+                    continue
+                if p['id'] in profile['no'] or profile['id'] in p['no']:
+                    continue
+                if p['id'] in profile['yes']:
+                    continue
+                if not any(check in p['gender'] for check in profile['lf-gender']):
+                    continue
+                if not any(check in p['medium'] for check in profile['medium']):
+                    continue
+                if not any(check in p['role'] for check in profile['lf-role']):
+                    continue
+                await msg.edit(embed=self.get_picknic_embed(p))
+                options = ['👍', '👎', '🧨', '🛑', '➡️']
+                for option in options:
+                    await msg.add_reaction(option)
+                try:
+                    choice, reacter = await self.client.wait_for('reaction_add', timeout=180.0, check=check_menu)
+                except asyncio.TimeoutError:
+                    await msg.edit(embed=self.meta.embedOops("Picknic menu timed out. You took too long to reply!"))
+                    return
+                await msg.clear_reactions()
+                if choice == '👍':
+                    if profile['id'] in p['yes']:
+                        match = self.client.get_user(int(profile['id']))
+                        await ctx.send(embed=self.meta.embed("You got a match!",
+                                                             f"{ctx.author.mention}, you matched with {match.mention}!"))
+                    yes.append(profile['id'])
+                    self.edit_picknic(ctx.author, 'yes', yes)
+                elif choice == '👎':
+                    no.append(profile['id'])
+                    self.edit_picknic(ctx.author, 'no', no)
+                elif choice == '🧨':
+                    reportee = self.client.get_user(int(profile['id']))
+                    report_msg = await ctx.send(embed=self.meta.embed('Report Confirmation',
+                                                                      f'Are you sure you want to report {reportee.mention}?\n'
+                                                                      f'Your ID will be saved as the reporter. By '
+                                                                      f'reporting another user, '
+                                                                      f'you give us permission to reach out to you for '
+                                                                      f'any further questions about the situation.'))
+                    options = ['✅', '⛔']
+                    for option in options:
+                        await msg.add_reaction(option)
+                    try:
+                        react, reacter = await self.client.wait_for('reaction_add', timeout=60.0, check=check_menu)
+                    except asyncio.TimeoutError:
+                        await report_msg.edit(embed=self.meta.embedOops("Picknic menu timed out. "
+                                                                        "You took too long to reply!"))
+                        return
+                    await msg.clear_reactions()
+                    if react.emoji == '⛔':
+                        await report_msg.delete()
+                        continue
+                    else:
+                        self.report_picknic(ctx.author.id, p['id'])
+                        await report_msg.edit(embed=self.meta.embedDone(f"Reported {reportee.mention}!"))
+                        await asyncio.sleep(5)
+                        await report_msg.delete()
+                        no.append(profile['id'])
+                        self.edit_picknic(ctx.author, 'no', no)
+                elif choice == '➡️':
+                    continue
+                elif choice == '🛑':
+                    await msg.edit(embed=self.meta.embedDone("Thanks for using Picknic. Come back soon!"))
+                    return
+            await msg.edit(embed=self.meta.embedDone("We don't have any new Picknic profiles for you right now.",
+                                                     "Check back later!"))
+            return
 
 
 def setup(client):
