@@ -745,6 +745,7 @@ class Picknic(commands.Cog):
                     msg = await ctx.send(embed=self.meta.embed("Loading...", "Please wait."))
                 else:
                     await msg.clear_reactions()
+                choice = choice.emoji
                 if choice == '1️⃣':
                     await msg.edit(embed=self.meta.embed('What term(s) are you looking for (LF)? '
                                                          'Please type the numbers (no brackets) separated by commas.',
