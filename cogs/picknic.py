@@ -686,7 +686,7 @@ class Picknic(commands.Cog):
                        "`[4]` Change my detail(s).\n" \
                        "`[5]` Change my name and Discord tag."
                 await msg.edit(embed=self.meta.embed(title, desc))
-                options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+                options = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
                 for option in options:
                     await msg.add_reaction(option)
                 try:
@@ -702,6 +702,7 @@ class Picknic(commands.Cog):
 
                 title = "What would you like to change it to?"
                 desc = "Type it out!"
+                await msg.edit(embed=self.meta.embed(title, desc))
                 try:
                     reply = await self.client.wait_for('message', timeout=300.0, check=check_msg)
                 except asyncio.TimeoutError:
@@ -872,9 +873,8 @@ class Picknic(commands.Cog):
                     return
                 if choice == '👍':
                     if profile['id'] in p['yes']:
-                        match = self.client.get_user(int(profile['id']))
                         await ctx.send(embed=self.meta.embed("You got a match!",
-                                                             f"{ctx.author.mention}, you matched with {match.mention}!"))
+                                                             f"{ctx.author.mention}, you matched with {profile['name']}!"))
                     yes.append(profile['id'])
                     self.edit_picknic(ctx.author, 'yes', yes)
                     await msg.delete()
@@ -883,9 +883,8 @@ class Picknic(commands.Cog):
                     self.edit_picknic(ctx.author, 'no', no)
                     await msg.delete()
                 elif choice == '🧨':
-                    reportee = self.client.get_user(int(profile['id']))
                     report_msg = await ctx.send(embed=self.meta.embed('Report Confirmation',
-                                                                      f'Are you sure you want to report {reportee.mention}?\n'
+                                                                      f'Are you sure you want to report {profile["name"]}?\n'
                                                                       f'Your ID will be saved as the reporter. By '
                                                                       f'reporting another user, '
                                                                       f'you give us permission to reach out to you for '
