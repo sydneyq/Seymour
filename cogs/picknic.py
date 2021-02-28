@@ -800,7 +800,7 @@ class Picknic(commands.Cog):
                 await msg.edit(embed=self.meta.embedOops('Try using this command in a private message to me!'))
                 return
             # check that the requesting user has a profile themselves first
-            if not self.picknic_does_exist(ctx.author):
+            if not self.picknic_does_exist(ctx.author.id):
                 await ctx.send(embed=self.meta.embedOops('You need a Picknic profile yourself first!'))
                 return
             # check that the requesting user's profile is active
