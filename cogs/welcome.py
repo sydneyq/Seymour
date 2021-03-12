@@ -108,7 +108,7 @@ class Welcome(commands.Cog):
             msg = await message.channel.send(embed=self.meta.embedOops("Something's not right. Try checking the "
                                                                        "instructions again or your spelling."))
             await msg.delete(delay=60)
-            message.delete(delay=60)
+            await message.delete(delay=60)
 
 
 def setup(client):
