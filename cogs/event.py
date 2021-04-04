@@ -17,14 +17,16 @@ class Event(commands.Cog):
         self.dbConnection = database
         self.meta = meta
 
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return
         if isinstance(message.channel, discord.DMChannel):
             return
-        if message.channel.id != 728736226709864549:
+
+        pigpen = 728736226709864549
+        cloudybun = 811695521717551158
+        if message.channel.id != pigpen and message.channel.id != cloudybun:
             return
 
         server = self.dbConnection.findServer({'id': str(message.guild.id)})
@@ -73,7 +75,6 @@ class Event(commands.Cog):
 
                     await channel.send(embed=self.meta.embed(title, desc))
                 return
-
 
 
 def setup(client):

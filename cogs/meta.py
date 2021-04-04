@@ -78,11 +78,7 @@ class Meta:
 
     # isMod
     def isMod(self, member: discord.Member):
-        if self.isBotOwner(member):
-            return True
-        if member.guild_permissions.ban_members:
-            return True
-        return False
+        return self.isBotOwner(member) or member.guild_permissions.ban_members
 
     # verified
     def isVerified(self, member: discord.Member):
