@@ -522,8 +522,19 @@ class Global(commands.Cog):
             print("Done!")
 
     @commands.command()
+    async def leaveserver(self, ctx, id: int = None):
+        if self.meta.isBotOwner(ctx.author):
+            if id is None:
+                guild = ctx.guild
+            else:
+                guild = self.client.get_guild(id)
+            await guild.leave()
+            await ctx.send(embed=self.meta.embedDone("Bye!"))
+            print("Left!")
+
+    @commands.command()
     async def ping(self, ctx):
-        if (self.meta.isBotOwner(ctx.message.author)):
+        if self.meta.isBotOwner(ctx.message.author):
             await ctx.send(f'Pong! `{round(self.client.latency * 1000)}ms`')
 
     @commands.command()
