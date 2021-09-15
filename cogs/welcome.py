@@ -108,7 +108,7 @@ class Welcome(commands.Cog):
                 await msg.delete(delay=60)
                 await message.delete(delay=60)
         # 30 messages minimum requirement
-        elif str(message.guild.id) == "811695521717551154":
+        elif 'cloudy bun' in message.guild.name.lower():
             print(f"Guild: {message.guild.name}")
             if newbie_id in [role.id for role in message.author.roles]:
                 print("--- isNewbie")
