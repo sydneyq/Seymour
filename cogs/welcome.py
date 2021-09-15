@@ -14,6 +14,7 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        print(f"message.guild.id: {message.guild.id}")
         cloudybun = 828084629264531476
 
         if message.author.bot or self.meta.isSelf(message.author) or self.meta.isMod(message.author):
@@ -108,8 +109,9 @@ class Welcome(commands.Cog):
                 await message.delete(delay=60)
         # 30 messages minimum requirement
         elif message.guild.id == 811695521717551154:
+            print(f"Guild: {message.guild.name}")
             if newbie_id in [role.id for role in message.author.roles]:
-                print(f"Guild: {message.guild.name} --- isNewbie")
+                print("--- isNewbie")
                 newbie = message.guild.get_role(newbie_id)
                 profile = self.meta.getProfile(message.author)
                 print("--- Adding 1 message...")
@@ -124,6 +126,8 @@ class Welcome(commands.Cog):
                 print(f"--- Update database.")
                 self.meta.update_profile(message.author, 'message_count', message_count)
                 return
+            else:
+                print("--- Not Newbie.")
 
 
 def setup(client):
