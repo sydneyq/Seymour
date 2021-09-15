@@ -14,16 +14,18 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print(f"message.guild.id: {str(message.guild.id)}")
-        cloudybun = 828084629264531476
-
-        if message.author.bot or self.meta.isSelf(message.author) or self.meta.isMod(message.author):
+        if message.author.bot:
             return
+
         # Cloudy Bun Hypnosis
+        # Verification
         verified_id = 828063151241035817
         newbie_id = 887506236164149298
         general_id = 811695521717551158
-        if message.channel.id == cloudybun:
+        if message.channel.id == 828084629264531476:
+            if self.meta.isSelf(message.author) or self.meta.isMod(message.author):
+                return
+
             if self.dbConnection.findServer({"id": str(message.guild.id)})['password'] in message.content.lower():
                 await message.delete()
                 roles = message.author.roles
@@ -108,26 +110,18 @@ class Welcome(commands.Cog):
                 await msg.delete(delay=60)
                 await message.delete(delay=60)
         # 30 messages minimum requirement
-        elif 'cloudy bun' in message.guild.name.lower():
-            print(f"Guild: {message.guild.name}")
+        elif 811695521717551154 == message.guild.id:
             if newbie_id in [role.id for role in message.author.roles]:
-                print("--- isNewbie")
                 newbie = message.guild.get_role(newbie_id)
                 profile = self.meta.getProfile(message.author)
-                print("--- Adding 1 message...")
                 message_count = profile['message_count'] + 1
-                print(f"--- {profile['message_count']} -> {message_count}")
                 if message_count >= 30:
-                    print(f"--- More than 30. Remove Newbie role.")
                     await message.author.remove_roles(newbie)
                     general = message.guild.get_channel(general_id)
                     await general.send(f"**{message.author.mention}**, you've reached at least 30 messages and your "
                                        f"Newbie role is removed!")
-                print(f"--- Update database.")
                 self.meta.update_profile(message.author, 'message_count', message_count)
                 return
-            else:
-                print("--- Not Newbie.")
 
 
 def setup(client):
