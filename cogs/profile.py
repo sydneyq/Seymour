@@ -112,6 +112,11 @@ class Profile(commands.Cog):
                                                                         '.png')
 
         # Profile Details
+        # Newbie
+        newbie_id = 887506236164149298
+        if newbie_id in (role.id for role in member.roles):
+            message_count = user['message_count']
+            embed.add_field(name="Newbie", value=f"`{message_count}` messages", inline=False)
         # Team
         team = user['team']
         if team == -1:

@@ -518,6 +518,8 @@ class Global(commands.Cog):
                 if profile['soulmates'] is None:
                     self.dbConnection.updateProfile({"id": profile['id']}, {"$set": {"soulmates": []}})
             '''
+            self.dbConnection.makeColumn("message_count", 0)
+
             await ctx.send(embed=self.meta.embedDone())
             print("Done!")
 
@@ -528,8 +530,8 @@ class Global(commands.Cog):
                 guild = ctx.guild
             else:
                 guild = self.client.get_guild(id)
-            await guild.leave()
             await ctx.send(embed=self.meta.embedDone("Bye!"))
+            await guild.leave()
             print("Left!")
 
     @commands.command()
