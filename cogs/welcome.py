@@ -108,16 +108,15 @@ class Welcome(commands.Cog):
                 await message.delete(delay=60)
         # 30 messages minimum requirement
         elif message.guild.id == 811695521717551154:
-            if newbie_id in (role.id for role in message.author.roles):
+            if newbie_id in [role.id for role in message.author.roles]:
                 newbie = message.guild.get_role(newbie_id)
                 profile = self.meta.getProfile(message.author)
                 message_count = profile['message_count'] + 1
                 if message_count >= 30:
                     await message.author.remove_roles(newbie)
                     general = message.guild.get_channel(general_id)
-                    embed = self.meta.embedDone(f"{message.author.mention}, you've reached at least 30 messages and "
-                                                f"your Newbie role is removed!")
-                    await general.send(embed=embed)
+                    await general.send(f"**{message.author.mention}**, you've reached at least 30 messages and your "
+                                       f"Newbie role is removed!")
                 else:
                     self.meta.update_profile(message.author, 'message_count', message_count)
                 return
