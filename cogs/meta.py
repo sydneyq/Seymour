@@ -160,7 +160,8 @@ class Meta:
         if profile is None:
             profile = {'id': id,
                        'pts': 0, 'coins': 0, 'gifts': 0,
-                       'pies': 0, 'bumps': 0, 'badges': [], 'actions': [], 'pieable': True, 'team': -1}
+                       'pies': 0, 'bumps': 0, 'badges': [],
+                       'actions': [], 'pieable': True, 'team': -1, 'message_count': 0}
             self.dbConnection.insertProfile(profile)
 
         return profile
