@@ -1,24 +1,23 @@
 # Seymour
 
-Seymour is a Discord bot forked from Bean the Corgi.
+Seymour is a Discord bot forked from my previous bot, [Bean the Corgi](https://github.com/sydneyq/Bean-the-Corgi).
 
-The original description for Bean can be found below. 
+This is a bot personalized for the Discord servers that I staff. 
 
-## Bean the Corgi
+## Features
 
-Bean the Corgi is a bot made with Python 3.7 and the discord.py wrapper.
+Some features are disabled for the purposes of our servers, but they're functional.
 
-This bot was made specifically for the Mind Café server, which aims to be a mental health support space.
+* Code-word and confirmation verification.
+* Customized welcoming after verification.
+* Occasional high-five events to engage members.
+* Action commands.
+* Enable and disable Cogs.
+* Currency and badges.
+* Profiles. 
+* Matchmaking system.
+* Sending and editing mod-sent messages. 
 
-## Testing
-
-Because this bot was made for a specific server and functionality in mind, you may have to swap some IDs around for personal testing.
-
-Create your own file named `secret.py`; this should hold the hardcoded keys and IDs.
-
-## Contributing
-
-Pull requests are welcome for those who understand the already-existing code. Please be sure to thoroughly explain your changes.
 
 ## Special Thanks
 
