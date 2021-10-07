@@ -85,8 +85,9 @@ class Welcome(commands.Cog):
                     await msg.delete()
 
                 # Welcome in #general
+                welcomer_id = 892221189274103868
                 general = message.guild.get_channel(general_id)
-                msg = f"🌟 **__Let's all welcome {message.author.mention} to {message.guild.name}!__** 🎉"
+                msg = f"🌟 **__Let's all welcome {message.author.mention} to {message.guild.name}!__** 🎉 <@&{welcomer_id}>"
                 title = f"It's great to have you here, {message.author.name}."
                 desc = f"Be sure to ask a moderator if you need any help. \nWhy not start with introducing yourself in " \
                        f"#intros? \nYou'll get access to #request-session and #selfies-and-media when you reach 30 " \
