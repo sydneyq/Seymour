@@ -1,3 +1,5 @@
+import string
+
 import discord
 from discord.ext import commands
 from database import Database
@@ -62,27 +64,61 @@ class Welcome(commands.Cog):
 
                 # Ask if 18+ and read the rules.
                 title = f"{message.author.name}'s Verification"
-                desc = f"Hi {message.author.mention}!\n\nPlease react with a ✅ to confirm you're **at least 18 years of " \
-                       f"age** and " \
-                       f"have **read over and accept all of our server rules!**\n\nThis will time out in 2 minutes. "
+                desc = f"Hi {message.author.mention}!\n\nHow old are you? (for example, 20)." \
+                       f"\n\nThis will time out in 2 minutes. "
 
-                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'))
-                await msg.add_reaction('✅')
+                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'), delete_after=120)
 
-                def check(reaction, user):
-                    return str(reaction.emoji) == '✅' and user == message.author
+                def check_age(m):
+                    return m.author == message.author and m.channel == message.channel
 
                 try:
-                    react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check)
+                    reply = await self.client.wait_for('message', timeout=120.0, check=check_age)
                 except asyncio.TimeoutError:
-                    await msg.delete()
                     return
-                else:
-                    verified = message.guild.get_role(verified_id)
-                    newbie = message.guild.get_role(newbie_id)
-                    await message.author.add_roles(verified)
-                    await message.author.add_roles(newbie)
-                    await msg.delete()
+                try:
+                    age = None
+                    for item in reply.content:
+                        if item.translate(None, string.punctuation).isnumeric():
+                            age = item
+                            break
+                    age = int(age)
+                except:
+                    msg = await message.channel.send(embed=self.meta.embedOops(f"{message.author.mention}, I couldn't "
+                                                                               f"seem to read your age. Please "
+                                                                               f"restart the process."),
+                                                     delete_after=120)
+                    return
+
+                if age < 18:
+                    await message.channel.send(embed=self.meta.embedOops(f"{message.author.mention},\n"
+                                              f"`{age}` doesn't seem to be over 18. "
+                                              f"\nWe are an 18+ server. <@&828063717194727445>"))
+                    return
+
+                # SFW
+                title = f"{message.author.name}'s Verification"
+                desc = f"Great, {message.author.mention}!\n\nNow, please type and send `Safe For Work` " \
+                       f"to verify that you know we're a SFW server. \n\nThis expires in 2 minutes."
+
+                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'), delete_after=120)
+
+                def check_msg(m):
+                    return m.author == message.author and m.channel == message.channel \
+                           and 'safe for work' in m.content.lower()
+
+                try:
+                    reply = await self.client.wait_for('message', timeout=120.0, check=check_msg)
+                except asyncio.TimeoutError:
+                    return
+                if not reply:
+                    return
+
+                verified = message.guild.get_role(verified_id)
+                newbie = message.guild.get_role(newbie_id)
+                await message.author.add_roles(verified)
+                await message.author.add_roles(newbie)
+                await msg.delete()
 
                 # Welcome in #general
                 welcomer_id = 892221189274103868
