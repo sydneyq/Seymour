@@ -97,7 +97,7 @@ class Welcome(commands.Cog):
                                                                                      f"We are fully Safe For Work, {message.author.mention}."
                                                                                      f"\n\nPlease leave if you are "
                                                                                      f"not expecting a SFW "
-                                                                                     f"community."))
+                                                                                     f"community. Thank you."))
 
                     return str(reaction.emoji) == '🫒' and user == message.author
                 try:
