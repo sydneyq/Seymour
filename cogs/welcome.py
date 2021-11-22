@@ -80,7 +80,7 @@ class Welcome(commands.Cog):
 
                 # SFW
                 title = f"{message.author.name}'s Verification"
-                desc = f"Hi {message.author.mention}!\n\n**What kind of server are we?**" \
+                desc = f"Hi {message.author.mention}!\n\nJust confirming: **what kind of server are we?**" \
                        f"\n[🌶️] NSFW" \
                        f"\n[🫒] SFW" \
                        f"\n[🍋] NSFW and SFW"
