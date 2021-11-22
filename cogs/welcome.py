@@ -101,7 +101,7 @@ class Welcome(commands.Cog):
                     await msg.delete()
                     return
 
-                if not emoji == '🫒' and user == message.author:
+                if not emoji == '🫒':
                     wrong = await message.channel.send(embed=self.meta.embedOops("No, that's not quite right.\n"
                                                                                  f"We are fully Safe For Work, {message.author.mention}."
                                                                                  f"\n\nPlease leave if you are "
