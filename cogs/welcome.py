@@ -62,8 +62,8 @@ class Welcome(commands.Cog):
 
                 # Ask if 18+.
                 title = f"{message.author.name}'s Verification"
-                desc = f"Hi {message.author.mention}!\n\nConfirm you are **at least 18 years of age." \
-                       f"\n\nIf we have any reason to suspect you are underage, we may ask for proof." \
+                desc = f"Hi {message.author.mention}!\nConfirm you are **at least 18 years of age.**" \
+                       f"\nIf we have any reason to suspect you are underage, we may ask for proof." \
                        f"\n\nThis will time out in 2 minutes."
 
                 msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'), delete_after=120)
@@ -74,6 +74,7 @@ class Welcome(commands.Cog):
 
                 try:
                     react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check)
+                    await msg.delete()
                 except asyncio.TimeoutError:
                     await msg.delete()
                     return
