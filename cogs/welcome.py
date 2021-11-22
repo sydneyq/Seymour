@@ -62,7 +62,7 @@ class Welcome(commands.Cog):
 
                 # Ask if 18+.
                 title = f"{message.author.name}'s Verification"
-                desc = f"Hi {message.author.mention}!\nConfirm you are **at least 18 years of age.**" \
+                desc = f"Hi {message.author.mention}!\nConfirm you are **at least 18 years of age.** by reacting with ✅." \
                        f"\nIf we have any reason to suspect you are underage, we may ask for proof." \
                        f"\n\nThis will time out in 2 minutes."
 
@@ -82,6 +82,7 @@ class Welcome(commands.Cog):
                 # SFW
                 title = f"{message.author.name}'s Verification"
                 desc = f"Hi {message.author.mention}!\n\nJust confirming: **what kind of server are we?**" \
+                       f"\nAdd the corresponding emoji reaction." \
                        f"\n[🌶️] NSFW" \
                        f"\n[🫒] SFW" \
                        f"\n[🍋] NSFW and SFW"
