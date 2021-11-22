@@ -60,13 +60,13 @@ class Welcome(commands.Cog):
                     await msg.delete(delay=60)
                     return
 
-                # Ask if 18+ and read the rules.
+                # Ask if 18+.
                 title = f"{message.author.name}'s Verification"
-                desc = f"Hi {message.author.mention}!\n\nPlease react with a ✅ to confirm you're **at least 18 years of " \
-                       f"age** and " \
-                       f"have **read over and accept all of our server rules!**\n\nThis will time out in 2 minutes. "
+                desc = f"Hi {message.author.mention}!\n\nConfirm you are **at least 18 years of age." \
+                       f"\n\nIf we have any reason to suspect you are underage, we may ask for proof." \
+                       f"\n\nThis will time out in 2 minutes."
 
-                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'))
+                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'), delete_after=120)
                 await msg.add_reaction('✅')
 
                 def check(reaction, user):
@@ -77,12 +77,33 @@ class Welcome(commands.Cog):
                 except asyncio.TimeoutError:
                     await msg.delete()
                     return
-                else:
-                    verified = message.guild.get_role(verified_id)
-                    newbie = message.guild.get_role(newbie_id)
-                    await message.author.add_roles(verified)
-                    await message.author.add_roles(newbie)
+
+                # SFW
+                title = f"{message.author.name}'s Verification"
+                desc = f"Hi {message.author.mention}!\n\n**What kind of server are we?**" \
+                       f"\n[🌶️] NSFW" \
+                       f"\n[🫒] SFW" \
+                       f"\n[🍋] NSFW and SFW"
+
+                msg = await message.channel.send(embed=self.meta.embed(title, desc, 'gold'), delete_after=120)
+                await msg.add_reaction('🌶️')
+                await msg.add_reaction('🫒')
+                await msg.add_reaction('🍋')
+
+                def check_reaction(reaction, user):
+                    return str(reaction.emoji) == '🫒' and user == message.author
+
+                try:
+                    react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check_reaction)
+                except asyncio.TimeoutError:
                     await msg.delete()
+                    return
+
+                verified = message.guild.get_role(verified_id)
+                newbie = message.guild.get_role(newbie_id)
+                await message.author.add_roles(verified)
+                await message.author.add_roles(newbie)
+                await msg.delete()
 
                 # Welcome in #general
                 welcomer_id = 892221189274103868
