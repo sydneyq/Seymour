@@ -90,20 +90,23 @@ class Welcome(commands.Cog):
                 await msg.add_reaction('🌶️')
                 await msg.add_reaction('🫒')
                 await msg.add_reaction('🍋')
+                emoji = ''
 
                 def check_reaction(reaction, user):
-                    if not str(reaction.emoji) == '🫒' and user == message.author:
-                        wrong = await message.channel.send(embed=self.meta.embedOops("No, that's not quite right.\n"
-                                                                                     f"We are fully Safe For Work, {message.author.mention}."
-                                                                                     f"\n\nPlease leave if you are "
-                                                                                     f"not expecting a SFW "
-                                                                                     f"community. Thank you."))
-
-                    return str(reaction.emoji) == '🫒' and user == message.author
+                    emoji = str(reaction.emoji)
+                    return (str(reaction.emoji) == '🫒' or str(reaction.emoji) == '🌶️' or str(reaction.emoji) == '🍋') and user == message.author
                 try:
                     react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check_reaction)
                 except asyncio.TimeoutError:
                     await msg.delete()
+                    return
+
+                if not emoji == '🫒' and user == message.author:
+                    wrong = await message.channel.send(embed=self.meta.embedOops("No, that's not quite right.\n"
+                                                                                 f"We are fully Safe For Work, {message.author.mention}."
+                                                                                 f"\n\nPlease leave if you are "
+                                                                                 f"not expecting a SFW "
+                                                                                 f"community. Thank you."))
                     return
 
                 verified = message.guild.get_role(verified_id)
