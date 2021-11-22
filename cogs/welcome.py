@@ -92,8 +92,14 @@ class Welcome(commands.Cog):
                 await msg.add_reaction('🍋')
 
                 def check_reaction(reaction, user):
-                    return str(reaction.emoji) == '🫒' and user == message.author
+                    if not str(reaction.emoji) == '🫒' and user == message.author:
+                        wrong = await message.channel.send(embed=self.meta.embedOops("No, that's not quite right.\n"
+                                                                                     f"We are fully Safe For Work, {message.author.mention}."
+                                                                                     f"\n\nPlease leave if you are "
+                                                                                     f"not expecting a SFW "
+                                                                                     f"community."))
 
+                    return str(reaction.emoji) == '🫒' and user == message.author
                 try:
                     react, user = await self.client.wait_for('reaction_add', timeout=120.0, check=check_reaction)
                 except asyncio.TimeoutError:
