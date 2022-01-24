@@ -137,16 +137,18 @@ class Welcome(commands.Cog):
         # 30 messages minimum requirement
         elif 811695521717551154 == message.guild.id:
             if newbie_id in [role.id for role in message.author.roles]:
-                newbie = message.guild.get_role(newbie_id)
-                profile = self.meta.getProfile(message.author)
-                message_count = profile['message_count'] + 1
-                if message_count >= 30:
-                    await message.author.remove_roles(newbie)
-                    general = message.guild.get_channel(general_id)
-                    await general.send(f"**{message.author.mention}**, you've reached at least 30 messages and your "
-                                       f"Newbie role is removed!")
-                self.meta.update_profile(message.author, 'message_count', message_count)
-                return
+                bot_prefixes = ['pk;', ';', '!d', '%', '-', '>', 't!']
+                if not message.content.lower.startswith(tuple(bot_prefixes)):
+                    newbie = message.guild.get_role(newbie_id)
+                    profile = self.meta.getProfile(message.author)
+                    message_count = profile['message_count'] + 1
+                    if message_count >= 30:
+                        await message.author.remove_roles(newbie)
+                        general = message.guild.get_channel(general_id)
+                        await general.send(f"**{message.author.mention}**, you've reached at least 30 messages and your "
+                                           f"Newbie role is removed!")
+                    self.meta.update_profile(message.author, 'message_count', message_count)
+                    return
 
 
 def setup(client):
