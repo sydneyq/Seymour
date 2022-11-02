@@ -6,7 +6,7 @@ import random
 import pymongo
 from bson import objectid
 
-class Profile(commands.Cog):
+class Quotes(commands.Cog):
 
     def __init__(self, client, database, meta):
         self.client = client
@@ -148,4 +148,4 @@ class Profile(commands.Cog):
 async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    await client.add_cog(Profile(client, database_connection, meta_class))
+    await client.add_cog(Quotes(client, database_connection, meta_class))
