@@ -13,7 +13,7 @@ import secret
 
 from cogs.meta import Meta
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.reactions = True
 #client = discord.Client(intents=intents)
 client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True, intents=intents)
@@ -22,7 +22,7 @@ client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True, in
 async def on_ready():
     for f in os.listdir('./cogs'):
         if f.endswith('.py'):
-            client.load_extension(f'cogs.{filename[:-3]}')
+            await client.load_extension(f'cogs.{filename[:-3]}')
     print('Online!\n---')
     await client.change_presence(status=discord.Status.online)#, activity=discord.Game('DM me for ModMail!'))
 
