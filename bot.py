@@ -64,5 +64,5 @@ async def setup():
     await client.start(secret.BOT_TOKEN)
 
 
-asyncio.run(load_cogs())
+asyncio.run(setup())
 # client.run(secret.BOT_TOKEN)
