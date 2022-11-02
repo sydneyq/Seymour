@@ -13,7 +13,10 @@ import secret
 
 from cogs.meta import Meta
 
-client = discord.Client(intents=discord.Intents.default())
+intents = discord.Intents.default()
+intents.reactions = True
+#client = discord.Client(intents=intents)
+client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True, intents=intents)
 
 @client.event
 async def on_ready():
