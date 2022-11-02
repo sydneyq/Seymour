@@ -180,6 +180,8 @@ class Currency(commands.Cog):
             currency = 'pies'
         elif currency in ['bumps', 'bump']:
             currency = 'bumps'
+        elif currency in ['msgs', 'msg', 'messages', 'message']:
+            currency = 'message_count'
         else:
             await ctx.send(embed=self.meta.embedOops('Invalid currency type.'))
             return
