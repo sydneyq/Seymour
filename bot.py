@@ -61,8 +61,9 @@ async def load_cogs():
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py'):
                 print(f'Loading {filename}')
-                client.load_extension(f'cogs.{filename[:-3]}')
+                await client.load_extension(f'cogs.{filename[:-3]}')
+        await client.start(secret.BOT_TOKEN)
 
 
 asyncio.run(load_cogs())
-client.run(secret.BOT_TOKEN)
+# client.run(secret.BOT_TOKEN)
