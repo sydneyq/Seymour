@@ -20,10 +20,6 @@ client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True, in
 
 @client.event
 async def on_ready():
-    for f in os.listdir('./cogs'):
-        if f.endswith('.py'):
-            print(f'Loading {f}')
-            await client.load_extension(f'cogs.{f[:-3]}')
     print('Online!\n---')
     await client.change_presence(status=discord.Status.online)#, activity=discord.Game('DM me for ModMail!'))
 
@@ -57,6 +53,7 @@ async def unload(ctx, extension):
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
+        print(f'Loading {filename}')
         client.load_extension(f'cogs.{filename[:-3]}')
 
 client.run(secret.BOT_TOKEN)
