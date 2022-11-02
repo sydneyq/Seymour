@@ -15,13 +15,15 @@ from cogs.meta import Meta
 
 intents = discord.Intents.all()
 intents.reactions = True
-#client = discord.Client(intents=intents)
+# client = discord.Client(intents=intents)
 client = commands.Bot(commands.when_mentioned_or(';'), case_insensitive=True, intents=intents)
+
 
 @client.event
 async def on_ready():
     print('Online!\n---')
-    await client.change_presence(status=discord.Status.online)#, activity=discord.Game('DM me for ModMail!'))
+    await client.change_presence(status=discord.Status.online)  # , activity=discord.Game('DM me for ModMail!'))
+
 
 @client.command()
 async def reload(ctx, extension):
@@ -33,6 +35,7 @@ async def reload(ctx, extension):
     else:
         await ctx.send('You don\'t have the permissions to do that!')
 
+
 @client.command()
 async def load(ctx, extension):
     member = ctx.author
@@ -41,6 +44,7 @@ async def load(ctx, extension):
         await ctx.send('Cog loaded!')
     else:
         await ctx.send('You don\'t have the permissions to do that!')
+
 
 @client.command()
 async def unload(ctx, extension):
@@ -51,9 +55,14 @@ async def unload(ctx, extension):
     else:
         await ctx.send('You don\'t have the permissions to do that!')
 
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        print(f'Loading {filename}')
-        client.load_extension(f'cogs.{filename[:-3]}')
 
+async def load_cogs():
+    async with client:
+        for filename in os.listdir('./cogs'):
+            if filename.endswith('.py'):
+                print(f'Loading {filename}')
+                client.load_extension(f'cogs.{filename[:-3]}')
+
+
+asyncio.run(load_cogs())
 client.run(secret.BOT_TOKEN)
