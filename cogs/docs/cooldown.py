@@ -125,7 +125,7 @@ class Cooldown(commands.Cog):
             embed.set_footer(text = 'Evolved Companion detected! You have a higher chance of getting more coins.')
         await ctx.channel.send(embed = embed)
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Cooldown(client, database_connection, meta_class))
+    await client.add_cog(Cooldown(client, database_connection, meta_class))

@@ -635,7 +635,7 @@ class Global(commands.Cog):
         await ctx.send(embed=self.meta.embed("Teams", f"`{0}`: {teams['0']}\n`{1}`: {teams['1']}\n`{2}`: {teams['2']}"))
 
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Global(client, database_connection, meta_class))
+    await client.add_cog(Global(client, database_connection, meta_class))

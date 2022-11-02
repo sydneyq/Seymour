@@ -218,7 +218,7 @@ class Supporter(commands.Cog):
         user = self.meta.getProfile(member)
         self.dbConnection.removeProfile({"id": id})
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Supporter(client, database_connection, meta_class))
+    await client.add_cog(Supporter(client, database_connection, meta_class))

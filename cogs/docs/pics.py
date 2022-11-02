@@ -48,5 +48,5 @@ class Pics(commands.Cog):
         data = response.json()
         await ctx.message.channel.send(data['file'])
 
-def setup(client):
-    client.add_cog(Pics(client))
+async def setup(client):
+    await client.add_cog(Pics(client))

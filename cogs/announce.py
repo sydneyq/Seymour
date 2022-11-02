@@ -111,7 +111,7 @@ class Announce(commands.Cog):
         await ctx.send(embed = e)
         return
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Announce(client, database_connection, meta_class))
+    await client.add_cog(Announce(client, database_connection, meta_class))

@@ -153,7 +153,7 @@ class Profile(commands.Cog):
         await ctx.send(embed=embed)
 
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Profile(client, database_connection, meta_class))
+    await client.add_cog(Profile(client, database_connection, meta_class))

@@ -45,5 +45,5 @@ class MsgPersist(commands.Cog):
 
                 await message.channel.send(embed = embed)
 
-def setup(client):
-    client.add_cog(MsgPersist(client))
+async def setup(client):
+    await client.add_cog(MsgPersist(client))

@@ -582,7 +582,7 @@ class Store(commands.Cog):
                     await ctx.send(embed = embed)
                     return
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Store(client, database_connection, meta_class))
+    await client.add_cog(Store(client, database_connection, meta_class))

@@ -155,7 +155,7 @@ class Triggers(commands.Cog):
             d += '\n**[+]** Get enough Help Points for a Helped Companion `+store h`'
             await channel.send(embed = self.meta.embed(t,d))
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Triggers(client, database_connection, meta_class))
+    await client.add_cog(Triggers(client, database_connection, meta_class))

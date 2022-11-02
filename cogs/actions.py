@@ -243,7 +243,7 @@ class Actions(commands.Cog):
         pass
 
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Actions(client, database_connection, meta_class))
+    await client.add_cog(Actions(client, database_connection, meta_class))

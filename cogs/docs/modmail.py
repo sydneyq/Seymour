@@ -110,7 +110,7 @@ class ModMail(commands.Cog):
                 await newChannel.send('__New ModMail ticket created by **' + message.author.name + '**.__ <@&592070664169455616>')
                 await newChannel.send(embed = embed)
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(ModMail(client, database_connection, meta_class))
+    await client.add_cog(ModMail(client, database_connection, meta_class))

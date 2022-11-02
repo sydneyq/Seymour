@@ -374,7 +374,7 @@ class Support(commands.Cog):
                 msg = await newChannel.send("Topic: " + topic)
                 await msg.pin()
 
-def setup(client):
+async def setup(client):
     database_connection = Database()
     meta_class = Meta(database_connection)
-    client.add_cog(Support(client, database_connection, meta_class))
+    await client.add_cog(Support(client, database_connection, meta_class))
