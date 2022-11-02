@@ -56,13 +56,12 @@ async def unload(ctx, extension):
         await ctx.send('You don\'t have the permissions to do that!')
 
 
-async def load_cogs():
-    async with client:
-        for filename in os.listdir('./cogs'):
-            if filename.endswith('.py'):
-                print(f'Loading {filename}')
-                await client.load_extension(f'cogs.{filename[:-3]}')
-        await client.start(secret.BOT_TOKEN)
+async def setup():
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            print(f'Loading {filename}')
+            await client.load_extension(f'cogs.{filename[:-3]}')
+    await client.start(secret.BOT_TOKEN)
 
 
 asyncio.run(load_cogs())
