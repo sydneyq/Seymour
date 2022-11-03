@@ -151,8 +151,6 @@ class Welcome(commands.Cog):
                     self.meta.update_profile(message.author, 'message_count', message_count)
                     return
 
-        await self.client.process_commands(message)
-
 
 async def setup(client):
     database_connection = Database()
