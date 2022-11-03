@@ -48,6 +48,8 @@ class Bump(commands.Cog):
 
                     await message.channel.send(embed=self.meta.embed(title, desc, 'gold'))
 
+        await self.client.process_commands(message)
+
 
 async def setup(client):
     database_connection = Database()
