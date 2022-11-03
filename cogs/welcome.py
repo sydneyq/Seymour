@@ -13,6 +13,7 @@ class Welcome(commands.Cog):
         self.meta = meta
 
     @commands.Cog.listener()
+    @asyncio.coroutine
     async def on_message(self, message):
         if message.author.bot:
             return
